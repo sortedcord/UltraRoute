@@ -1,0 +1,14 @@
+services:
+  authocookie:
+    build: .
+    image: authocookie:local
+    container_name: authocookie
+    restart: unless-stopped
+    init: true
+    shm_size: "512mb"
+    environment:
+      COOKIE_FILE: /session/cookie.txt
+      REFRESH_INTERVAL_MS: "300000"
+      PAGE_SETTLE_MS: "5000"
+    volumes:
+      - ./session:/session
