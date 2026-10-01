@@ -55410,25 +55410,8 @@ var __iconData17 = {
 __iconData17.node;
 var LogOut = createLucideIcon(__iconData17);
 
-// node_modules/lucide-react/dist/esm/icons/message-square.mjs
-var __iconData18 = {
-  name: "message-square",
-  size: 24,
-  node: [
-    [
-      "path",
-      {
-        d: "M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z",
-        key: "18887p"
-      }
-    ]
-  ]
-};
-__iconData18.node;
-var MessageSquare = createLucideIcon(__iconData18);
-
 // node_modules/lucide-react/dist/esm/icons/mic.mjs
-var __iconData19 = {
+var __iconData18 = {
   name: "mic",
   size: 24,
   node: [
@@ -55437,11 +55420,11 @@ var __iconData19 = {
     ["rect", { x: "9", y: "2", width: "6", height: "13", rx: "3", key: "s6n7sd" }]
   ]
 };
-__iconData19.node;
-var Mic = createLucideIcon(__iconData19);
+__iconData18.node;
+var Mic = createLucideIcon(__iconData18);
 
 // node_modules/lucide-react/dist/esm/icons/panel-left-close.mjs
-var __iconData20 = {
+var __iconData19 = {
   name: "panel-left-close",
   size: 24,
   node: [
@@ -55451,11 +55434,11 @@ var __iconData20 = {
   ],
   aliases: ["sidebar-close"]
 };
-__iconData20.node;
-var PanelLeftClose = createLucideIcon(__iconData20);
+__iconData19.node;
+var PanelLeftClose = createLucideIcon(__iconData19);
 
 // node_modules/lucide-react/dist/esm/icons/panel-left.mjs
-var __iconData21 = {
+var __iconData20 = {
   name: "panel-left",
   size: 24,
   node: [
@@ -55464,11 +55447,11 @@ var __iconData21 = {
   ],
   aliases: ["sidebar"]
 };
-__iconData21.node;
-var PanelLeft = createLucideIcon(__iconData21);
+__iconData20.node;
+var PanelLeft = createLucideIcon(__iconData20);
 
 // node_modules/lucide-react/dist/esm/icons/plus.mjs
-var __iconData22 = {
+var __iconData21 = {
   name: "plus",
   size: 24,
   node: [
@@ -55476,11 +55459,11 @@ var __iconData22 = {
     ["path", { d: "M12 5v14", key: "s699le" }]
   ]
 };
-__iconData22.node;
-var Plus = createLucideIcon(__iconData22);
+__iconData21.node;
+var Plus = createLucideIcon(__iconData21);
 
 // node_modules/lucide-react/dist/esm/icons/search.mjs
-var __iconData23 = {
+var __iconData22 = {
   name: "search",
   size: 24,
   node: [
@@ -55488,11 +55471,11 @@ var __iconData23 = {
     ["circle", { cx: "11", cy: "11", r: "8", key: "4ej97u" }]
   ]
 };
-__iconData23.node;
-var Search = createLucideIcon(__iconData23);
+__iconData22.node;
+var Search = createLucideIcon(__iconData22);
 
 // node_modules/lucide-react/dist/esm/icons/settings.mjs
-var __iconData24 = {
+var __iconData23 = {
   name: "settings",
   size: 24,
   node: [
@@ -55506,11 +55489,11 @@ var __iconData24 = {
     ["circle", { cx: "12", cy: "12", r: "3", key: "1v7zrd" }]
   ]
 };
-__iconData24.node;
-var Settings = createLucideIcon(__iconData24);
+__iconData23.node;
+var Settings = createLucideIcon(__iconData23);
 
 // node_modules/lucide-react/dist/esm/icons/sliders-horizontal.mjs
-var __iconData25 = {
+var __iconData24 = {
   name: "sliders-horizontal",
   size: 24,
   node: [
@@ -55525,11 +55508,11 @@ var __iconData25 = {
     ["path", { d: "M8 12H3", key: "a7s4jb" }]
   ]
 };
-__iconData25.node;
-var SlidersHorizontal = createLucideIcon(__iconData25);
+__iconData24.node;
+var SlidersHorizontal = createLucideIcon(__iconData24);
 
 // node_modules/lucide-react/dist/esm/icons/thumbs-down.mjs
-var __iconData26 = {
+var __iconData25 = {
   name: "thumbs-down",
   size: 24,
   node: [
@@ -55543,11 +55526,11 @@ var __iconData26 = {
     ["path", { d: "M17 14V2", key: "8ymqnk" }]
   ]
 };
-__iconData26.node;
-var ThumbsDown = createLucideIcon(__iconData26);
+__iconData25.node;
+var ThumbsDown = createLucideIcon(__iconData25);
 
 // node_modules/lucide-react/dist/esm/icons/thumbs-up.mjs
-var __iconData27 = {
+var __iconData26 = {
   name: "thumbs-up",
   size: 24,
   node: [
@@ -55561,11 +55544,11 @@ var __iconData27 = {
     ["path", { d: "M7 10v12", key: "1qc93n" }]
   ]
 };
-__iconData27.node;
-var ThumbsUp = createLucideIcon(__iconData27);
+__iconData26.node;
+var ThumbsUp = createLucideIcon(__iconData26);
 
 // node_modules/lucide-react/dist/esm/icons/trash.mjs
-var __iconData28 = {
+var __iconData27 = {
   name: "trash",
   size: 24,
   node: [
@@ -55577,11 +55560,11 @@ var __iconData28 = {
   ],
   aliases: ["trash-2"]
 };
-__iconData28.node;
-var Trash = createLucideIcon(__iconData28);
+__iconData27.node;
+var Trash = createLucideIcon(__iconData27);
 
 // node_modules/lucide-react/dist/esm/icons/x.mjs
-var __iconData29 = {
+var __iconData28 = {
   name: "x",
   size: 24,
   node: [
@@ -55589,11 +55572,11 @@ var __iconData29 = {
     ["path", { d: "m6 6 12 12", key: "d8bk6v" }]
   ]
 };
-__iconData29.node;
-var X = createLucideIcon(__iconData29);
+__iconData28.node;
+var X = createLucideIcon(__iconData28);
 
 // node_modules/lucide-react/dist/esm/icons/zap.mjs
-var __iconData30 = {
+var __iconData29 = {
   name: "zap",
   size: 24,
   node: [
@@ -55606,8 +55589,8 @@ var __iconData30 = {
     ]
   ]
 };
-__iconData30.node;
-var Zap = createLucideIcon(__iconData30);
+__iconData29.node;
+var Zap = createLucideIcon(__iconData29);
 
 // src/client/panels.tsx
 var import_react38 = __toESM(require_react(), 1);
@@ -55998,8 +55981,6 @@ function ModelDropdown({ selected, onSelect }) {
           ] }),
           /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("div", { role: "menu", "aria-label": `${group.name} models`, children: visibleModels.map((model) => /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("button", { className: "pf-model-option", type: "button", role: "menuitemradio", "aria-checked": model.id === selected, disabled: model.disabled, onClick: () => {
             onSelect(model.id);
-            setOpen(false);
-            triggerRef.current?.focus();
           }, children: [
             /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("span", { className: "pf-model-option-copy", children: [
               /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("span", { className: "pf-model-option-name", children: model.name }),
@@ -56173,7 +56154,7 @@ function Sidebar({
 }
 
 // src/client/app.css
-var app_default = '@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=VT323&display=swap");\n.pf-drawer-backdrop { display: none; }\n@media (max-width: 859px) {\n  .pf-drawer-backdrop { display: block; position: absolute; inset: 64px 0 0; background: rgb(11 11 15 / 25%); z-index: 190; border: 0; border-radius: 0; }\n}\n\n:root {\n  --paper: #f2efe8;\n  --canvas: #ffffff;\n  --canvas-soft: #faf9f6;\n  --ink: #0b0b0f;\n  --graphite: #5a5a66;\n  --mute: #8b8b95;\n  --hairline: #e4e2dd;\n  --hairline-strong: #d4d2cc;\n  --lime: #7ce25b;\n  --lime-ink: #0b1a05;\n  --danger: #e44b4b;\n  --prism-ribbon: linear-gradient(90deg, #e8429b, #9b5be8 22%, #3fc7e8 48%, #b8f25f 72%, #f5b946);\n  --prism-frame: conic-gradient(from 200deg at 50% 50%, #e8429b, #f5b946 19.4%, #b8f25f 38.9%, #3fc7e8 58.3%, #9b5be8 77.8%, #e8429b);\n  --font-display: "Space Grotesk", system-ui, sans-serif;\n  --font-body: "Inter", system-ui, sans-serif;\n  --font-pixel: "VT323", monospace;\n  --shadow-card: 0 1px 0 rgb(11 11 15 / 2%), 0 8px 24px -16px rgb(11 11 15 / 18%);\n  --shadow-pop: 0 12px 32px -16px rgb(11 11 15 / 28%);\n  --shadow-focus: 0 0 0 3px rgb(63 199 232 / 32%);\n}\n\n*, *::before, *::after { box-sizing: border-box; }\nbody { margin: 0; background: var(--paper); color: var(--ink); font: 14px/1.5 var(--font-body); -webkit-font-smoothing: antialiased; }\nbutton, input, textarea, select { font: inherit; }\nbutton { transition: background 120ms ease, border-color 120ms ease; }\nbutton:disabled { cursor: not-allowed; }\nbutton:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focus-visible { outline: 2px solid #3fc7e8; outline-offset: 2px; box-shadow: var(--shadow-focus); }\n::selection { background: #b8f25f; color: var(--ink); }\nh1, h2, h3, p { margin: 0; }\n.pf-stage { height: 100dvh; padding: 22px; background: radial-gradient(circle, rgb(255 255 255 / 22%) .7px, transparent .7px) 0 0 / 5px 5px, var(--prism-frame); }\n.pf-canvas { position: relative; display: flex; height: 100%; border: 1px solid var(--hairline); border-radius: 14px; overflow: hidden; background: var(--canvas); box-shadow: var(--shadow-card); }\n.pf-main { flex: 1; min-width: 0; display: flex; flex-direction: column; overflow: hidden; }\n.pf-thread { flex: 1; min-height: 0; display: flex; flex-direction: column; background: var(--canvas); }\n.pf-topbar { min-height: 64px; height: 64px; flex-shrink: 0; border-bottom: 1px solid var(--hairline); display: flex; align-items: center; gap: 12px; padding: 0 24px; }\n.pf-topbar-title { display: flex; align-items: center; gap: 14px; min-width: 0; }\n.pf-wordmark { font: 20px/1 var(--font-pixel); letter-spacing: .16em; }\n.pf-topbar-divider { width: 1px; height: 12px; background: var(--hairline); }\n.pf-label { font-size: 11px; font-weight: 600; letter-spacing: .08em; color: var(--graphite); }\n.pf-session-badge { margin-left: auto; display: flex; gap: 7px; align-items: center; padding: 4px 8px; border: 1px solid var(--hairline); border-radius: 4px; font-size: 10px; letter-spacing: .08em; white-space: nowrap; }\n.pf-status-dot { display: inline-block; width: 6px; height: 6px; flex-shrink: 0; border-radius: 50%; background: var(--lime); }\n.pf-icon-button { width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid transparent; border-radius: 6px; background: transparent; color: var(--graphite); cursor: pointer; }\n.pf-icon-button:hover { background: var(--canvas-soft); border-color: var(--hairline); color: var(--ink); }\n.pf-desktop-hidden { display: none; }\n.pf-welcome-scroll { flex: 1; min-height: 0; overflow-y: auto; padding: 40px 32px; display: flex; }\n.pf-welcome { width: 100%; max-width: 760px; margin: auto; }\n.pf-composer-heading { display: flex; justify-content: center; margin: 28px 0 12px; text-align: center; }\n.pf-composer-heading h2 { font: 600 22px/1.25 var(--font-display); letter-spacing: -.02em; }\n.pf-composer { width: 100%; padding: 18px 16px 12px; display: flex; flex-direction: column; gap: 16px; border: 1px solid var(--hairline); border-radius: 10px; background: var(--canvas); box-shadow: var(--shadow-card); }\n.pf-composer:focus-within { border-color: transparent; background: linear-gradient(white, white) padding-box, var(--prism-ribbon) border-box; box-shadow: var(--shadow-focus); }\n.pf-composer-input { width: 100%; min-height: 76px; max-height: 200px; resize: none; border: 0; outline: 0; background: transparent; color: var(--ink); font: 14px/1.6 var(--font-body); }\n.pf-composer-input::placeholder { color: var(--mute); }\n.pf-composer-toolbar, .pf-composer-tools, .pf-composer-controls { display: flex; align-items: center; gap: 8px; min-width: 0; }\n.pf-composer-toolbar { justify-content: space-between; padding-top: 10px; border-top: 1px solid var(--hairline); flex-wrap: wrap; }\n.pf-composer-controls { margin-left: auto; }\n.pf-mode-tabs { display: flex; align-items: center; gap: 12px; font-size: 12px; color: var(--graphite); }\n.pf-mode-tabs > span { display: flex; align-items: center; gap: 5px; padding: 5px 0; }\n.pf-mode-active { position: relative; color: var(--ink); font-weight: 600; }\n.pf-mode-active::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--prism-ribbon); }\n.pf-send { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border: 1px solid transparent; border-radius: 10px; color: var(--lime-ink); background: var(--lime); cursor: pointer; box-shadow: 0 8px 18px -8px rgb(124 226 91 / 55%); flex-shrink: 0; }\n.pf-send:hover:not(:disabled) { background: #92ea73; }\n.pf-send:disabled { background: var(--canvas-soft); border-color: var(--hairline); color: var(--mute); box-shadow: none; }\n.pf-transcript { flex: 1; min-height: 0; overflow-y: auto; padding: 32px 24px 0; display: flex; flex-direction: column; }\n.pf-messages { flex: 1; display: flex; flex-direction: column; gap: 28px; width: 100%; max-width: 800px; margin: 0 auto; }\n.pf-user-message { align-self: flex-end; max-width: 85%; display: flex; flex-direction: column; gap: 8px; }\n.pf-message-label { display: flex; align-items: center; gap: 7px; font-size: 11px; font-weight: 600; letter-spacing: .08em; color: var(--graphite); }\n.pf-user-message > .pf-message-label { justify-content: flex-end; }\n.pf-user-content { padding: 14px 18px; border: 1px solid var(--hairline); border-radius: 10px; background: var(--canvas-soft); font-size: 14px; line-height: 1.65; overflow-wrap: anywhere; }\n.pf-assistant-message { width: 100%; display: flex; flex-direction: column; gap: 12px; }\n.pf-mini-prism { display: inline-block; width: 12px; height: 12px; background: var(--prism-ribbon); border-radius: 2px; }\n.pf-assistant-content { font-size: 15px; line-height: 1.75; overflow-wrap: anywhere; }\n.pf-assistant-content pre { max-width: 100%; overflow: auto; background: var(--canvas-soft); border: 1px solid var(--hairline); padding: 16px; border-radius: 6px; }\n.pf-assistant-content a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }\n.pf-message-actions { display: flex; gap: 4px; }\n.pf-error, .pf-runtime-error { border: 1px solid var(--danger); border-radius: 6px; padding: 12px 16px; color: #a22c2c; background: var(--canvas); font-size: 13px; overflow-wrap: anywhere; }\n.pf-runtime-error { margin: 12px 24px 0; flex-shrink: 0; }\n.pf-running { display: flex; gap: 8px; align-items: center; font-size: 13px; color: var(--graphite); }\n.pf-running .pf-status-dot { animation: pf-pulse 1.2s ease-in-out infinite; }\n.pf-transcript-footer { position: sticky; bottom: 0; width: 100%; max-width: 800px; margin: 0 auto; padding: 24px 0 12px; background: var(--canvas); }\n.pf-composer-note { font-size: 13px; color: var(--graphite); margin-top: 12px; }\n@keyframes pf-pulse { 50% { opacity: .35; } }\n@media (max-width: 859px) {\n  .pf-stage { padding: 14px; }\n  .pf-desktop-hidden { display: inline-flex; }\n  .pf-topbar { padding: 0 16px; }\n  .pf-welcome-scroll { padding: 24px 16px; }\n  .pf-topbar-title { gap: 10px; }\n  .pf-topbar-title .pf-label, .pf-topbar-divider { display: none; }\n  .pf-workspace-note { flex-direction: column; gap: 4px; }\n  .pf-transcript { padding: 24px 16px 0; }\n  .pf-runtime-error { margin: 12px 16px 0; }\n}\n@media (max-width: 560px) {\n  .pf-topbar { gap: 8px; }\n  .pf-wordmark { font-size: 18px; letter-spacing: .1em; }\n  .pf-session-badge { font-size: 9px; padding: 4px 6px; }\n  .pf-composer-heading { margin-top: 24px; }\n  .pf-composer-heading h2 { font-size: 20px; }\n  .pf-composer-heading .pf-label { display: none; }\n  .pf-composer { padding: 14px 12px 10px; }\n  .pf-composer-toolbar { gap: 8px; }\n  .pf-composer-controls { flex: 1 1 100%; justify-content: flex-end; }\n  .pf-composer-controls > :first-child { margin-right: auto; min-width: 0; }\n  .pf-voice-button { width: 28px; }\n  .pf-composer-note { font-size: 13px; }\n}\n@media (prefers-reduced-motion: reduce) {\n  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }\n}\n';
+var app_default = '@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=VT323&display=swap");\n.pf-drawer-backdrop { display: none; }\n@media (max-width: 859px) {\n  .pf-drawer-backdrop { display: block; position: absolute; inset: 64px 0 0; background: rgb(11 11 15 / 25%); z-index: 190; border: 0; border-radius: 0; }\n}\n\n:root {\n  --paper: #f2efe8;\n  --canvas: #ffffff;\n  --canvas-soft: #faf9f6;\n  --ink: #0b0b0f;\n  --graphite: #5a5a66;\n  --mute: #8b8b95;\n  --hairline: #e4e2dd;\n  --hairline-strong: #d4d2cc;\n  --lime: #7ce25b;\n  --lime-ink: #0b1a05;\n  --danger: #e44b4b;\n  --prism-ribbon: linear-gradient(90deg, #e8429b, #9b5be8 22%, #3fc7e8 48%, #b8f25f 72%, #f5b946);\n  --prism-frame: conic-gradient(from 200deg at 50% 50%, #e8429b, #f5b946 19.4%, #b8f25f 38.9%, #3fc7e8 58.3%, #9b5be8 77.8%, #e8429b);\n  --font-display: "Space Grotesk", system-ui, sans-serif;\n  --font-body: "Inter", system-ui, sans-serif;\n  --font-pixel: "VT323", monospace;\n  --shadow-card: 0 1px 0 rgb(11 11 15 / 2%), 0 8px 24px -16px rgb(11 11 15 / 18%);\n  --shadow-pop: 0 12px 32px -16px rgb(11 11 15 / 28%);\n  --shadow-focus: 0 0 0 3px rgb(63 199 232 / 32%);\n}\n\n*, *::before, *::after { box-sizing: border-box; }\nbody { margin: 0; background: var(--paper); color: var(--ink); font: 14px/1.5 var(--font-body); -webkit-font-smoothing: antialiased; }\nbutton, input, textarea, select { font: inherit; }\nbutton { transition: background 120ms ease, border-color 120ms ease; }\nbutton:disabled { cursor: not-allowed; }\nbutton:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focus-visible { outline: 2px solid #3fc7e8; outline-offset: 2px; box-shadow: var(--shadow-focus); }\n::selection { background: #b8f25f; color: var(--ink); }\nh1, h2, h3, p { margin: 0; }\n.pf-stage { height: 100dvh; padding: 22px; background: radial-gradient(circle, rgb(255 255 255 / 22%) .7px, transparent .7px) 0 0 / 5px 5px, var(--prism-frame); }\n.pf-canvas { position: relative; display: flex; height: 100%; border: 1px solid var(--hairline); border-radius: 14px; overflow: hidden; background: var(--canvas); box-shadow: var(--shadow-card); }\n.pf-main { flex: 1; min-width: 0; display: flex; flex-direction: column; overflow: hidden; }\n.pf-thread { flex: 1; min-height: 0; display: flex; flex-direction: column; background: var(--canvas); }\n.pf-topbar { min-height: 64px; height: 64px; flex-shrink: 0; border-bottom: 1px solid var(--hairline); display: flex; align-items: center; gap: 12px; padding: 0 24px; }\n.pf-topbar-title { display: flex; align-items: center; gap: 14px; min-width: 0; }\n.pf-wordmark { font: 20px/1 var(--font-pixel); letter-spacing: .16em; }\n.pf-topbar-divider { width: 1px; height: 12px; background: var(--hairline); }\n.pf-label { font-size: 11px; font-weight: 600; letter-spacing: .08em; color: var(--graphite); }\n.pf-session-badge { margin-left: auto; display: flex; gap: 7px; align-items: center; padding: 4px 8px; border: 1px solid var(--hairline); border-radius: 4px; font-size: 10px; letter-spacing: .08em; white-space: nowrap; }\n.pf-status-dot { display: inline-block; width: 6px; height: 6px; flex-shrink: 0; border-radius: 50%; background: var(--lime); }\n.pf-icon-button { width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid transparent; border-radius: 6px; background: transparent; color: var(--graphite); cursor: pointer; }\n.pf-icon-button:hover { background: var(--canvas-soft); border-color: var(--hairline); color: var(--ink); }\n.pf-desktop-hidden { display: none; }\n.pf-welcome-scroll { flex: 1; min-height: 0; overflow-y: auto; padding: 40px 32px; display: flex; }\n.pf-welcome { width: 100%; max-width: 760px; margin: auto; }\n.pf-composer-heading { display: flex; justify-content: center; margin: 28px 0 12px; text-align: center; }\n.pf-composer-heading h2 { font: 600 22px/1.25 var(--font-display); letter-spacing: -.02em; }\n.pf-composer { width: 100%; padding: 18px 16px 12px; display: flex; flex-direction: column; gap: 16px; border: 1px solid var(--hairline); border-radius: 10px; background: var(--canvas); box-shadow: var(--shadow-card); }\n.pf-composer:focus-within { border-color: transparent; background: linear-gradient(white, white) padding-box, var(--prism-ribbon) border-box; box-shadow: var(--shadow-focus); }\n.pf-composer-input { width: 100%; min-height: 76px; max-height: 200px; resize: none; border: 0; outline: 0; background: transparent; color: var(--ink); font: 14px/1.6 var(--font-body); }\n.pf-composer-input::placeholder { color: var(--mute); }\n.pf-composer-toolbar, .pf-composer-tools, .pf-composer-controls { display: flex; align-items: center; gap: 8px; min-width: 0; }\n.pf-composer-toolbar { justify-content: space-between; padding-top: 10px; border-top: 1px solid var(--hairline); flex-wrap: wrap; }\n.pf-composer-controls { margin-left: auto; }\n.pf-send { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border: 1px solid transparent; border-radius: 10px; color: var(--lime-ink); background: var(--lime); cursor: pointer; box-shadow: 0 8px 18px -8px rgb(124 226 91 / 55%); flex-shrink: 0; }\n.pf-send:hover:not(:disabled) { background: #92ea73; }\n.pf-send:disabled { background: var(--canvas-soft); border-color: var(--hairline); color: var(--mute); box-shadow: none; }\n.pf-transcript { flex: 1; min-height: 0; overflow-y: auto; padding: 32px 24px 0; display: flex; flex-direction: column; }\n.pf-messages { flex: 1; display: flex; flex-direction: column; gap: 28px; width: 100%; max-width: 800px; margin: 0 auto; }\n.pf-user-message { align-self: flex-end; max-width: 85%; display: flex; flex-direction: column; gap: 8px; }\n.pf-message-label { display: flex; align-items: center; gap: 7px; font-size: 11px; font-weight: 600; letter-spacing: .08em; color: var(--graphite); }\n.pf-user-message > .pf-message-label { justify-content: flex-end; }\n.pf-user-content { padding: 14px 18px; border: 1px solid var(--hairline); border-radius: 10px; background: var(--canvas-soft); font-size: 14px; line-height: 1.65; overflow-wrap: anywhere; }\n.pf-assistant-message { width: 100%; display: flex; flex-direction: column; gap: 12px; }\n.pf-mini-prism { display: inline-block; width: 12px; height: 12px; background: var(--prism-ribbon); border-radius: 2px; }\n.pf-assistant-content { font-size: 15px; line-height: 1.75; overflow-wrap: anywhere; }\n.pf-assistant-content pre { max-width: 100%; overflow: auto; background: var(--canvas-soft); border: 1px solid var(--hairline); padding: 16px; border-radius: 6px; }\n.pf-assistant-content a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }\n.pf-message-actions { display: flex; gap: 4px; }\n.pf-error, .pf-runtime-error { border: 1px solid var(--danger); border-radius: 6px; padding: 12px 16px; color: #a22c2c; background: var(--canvas); font-size: 13px; overflow-wrap: anywhere; }\n.pf-runtime-error { margin: 12px 24px 0; flex-shrink: 0; }\n.pf-running { display: flex; gap: 8px; align-items: center; font-size: 13px; color: var(--graphite); }\n.pf-running .pf-status-dot { animation: pf-pulse 1.2s ease-in-out infinite; }\n.pf-transcript-footer { position: sticky; bottom: 0; width: 100%; max-width: 800px; margin: 0 auto; padding: 24px 0 12px; background: var(--canvas); }\n.pf-composer-note { font-size: 13px; color: var(--graphite); margin-top: 12px; }\n@keyframes pf-pulse { 50% { opacity: .35; } }\n@media (max-width: 859px) {\n  .pf-stage { padding: 14px; }\n  .pf-desktop-hidden { display: inline-flex; }\n  .pf-topbar { padding: 0 16px; }\n  .pf-welcome-scroll { padding: 24px 16px; }\n  .pf-topbar-title { gap: 10px; }\n  .pf-topbar-title .pf-label, .pf-topbar-divider { display: none; }\n  .pf-workspace-note { flex-direction: column; gap: 4px; }\n  .pf-transcript { padding: 24px 16px 0; }\n  .pf-runtime-error { margin: 12px 16px 0; }\n}\n@media (max-width: 560px) {\n  .pf-topbar { gap: 8px; }\n  .pf-wordmark { font-size: 18px; letter-spacing: .1em; }\n  .pf-session-badge { font-size: 9px; padding: 4px 6px; }\n  .pf-composer-heading { margin-top: 24px; }\n  .pf-composer-heading h2 { font-size: 20px; }\n  .pf-composer-heading .pf-label { display: none; }\n  .pf-composer { padding: 14px 12px 10px; }\n  .pf-composer-toolbar { gap: 8px; }\n  .pf-composer-controls { flex: 1 1 100%; justify-content: flex-end; }\n  .pf-composer-controls > :first-child { margin-right: auto; min-width: 0; }\n  .pf-voice-button { width: 28px; }\n  .pf-composer-note { font-size: 13px; }\n}\n@media (prefers-reduced-motion: reduce) {\n  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }\n}\n';
 
 // src/client/panels.css
 var panels_default = '/* Secondary surfaces share the canvas tokens without styling the chat workspace. */\n.pf-sidebar,\n.pf-settings-dialog,\n.pf-model-selector {\n  color: var(--ink);\n  font-family: var(--font-body);\n  font-size: 13px;\n  line-height: 1.5;\n}\n\n.pf-sidebar *,\n.pf-settings-dialog *,\n.pf-model-selector * {\n  box-sizing: border-box;\n}\n\n.pf-sidebar button,\n.pf-settings-dialog button,\n.pf-settings-dialog input,\n.pf-settings-dialog select,\n.pf-model-selector button {\n  font-family: inherit;\n  font-size: inherit;\n  line-height: inherit;\n}\n\n.pf-sidebar button,\n.pf-settings-dialog button,\n.pf-model-selector button {\n  cursor: pointer;\n}\n\n.pf-sidebar button:focus-visible,\n.pf-settings-dialog button:focus-visible,\n.pf-settings-dialog input:focus-visible,\n.pf-settings-dialog select:focus-visible,\n.pf-model-selector button:focus-visible {\n  outline: 2px solid #3fc7e8;\n  outline-offset: 2px;\n  box-shadow: var(--shadow-focus);\n}\n\n.pf-sidebar svg,\n.pf-settings-dialog svg,\n.pf-model-selector svg {\n  flex-shrink: 0;\n}\n\n.pf-panel-icon-button {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  width: 30px;\n  height: 30px;\n  flex-shrink: 0;\n  padding: 0;\n  border: 1px solid transparent;\n  border-radius: 6px;\n  color: var(--graphite);\n  background: transparent;\n}\n\n.pf-panel-icon-button:hover {\n  color: var(--ink);\n  border-color: var(--hairline);\n  background: var(--canvas-soft);\n}\n\n.pf-sidebar {\n  display: flex;\n  flex-direction: column;\n  flex: 0 0 220px;\n  width: 220px;\n  height: 100%;\n  min-height: 0;\n  background: var(--canvas);\n  border-right: 1px solid var(--hairline);\n}\n\n.pf-sidebar-header {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  flex-shrink: 0;\n  min-height: 64px;\n  padding: 12px 12px 12px 18px;\n  gap: 6px;\n}\n\n.pf-sidebar-wordmark {\n  display: inline-flex;\n  align-items: center;\n  gap: 8px;\n  color: var(--ink);\n  font-family: var(--font-pixel);\n  font-size: 23px;\n  letter-spacing: .02em;\n  line-height: 1;\n}\n\n.pf-brand-prism {\n  width: 15px;\n  height: 15px;\n  flex-shrink: 0;\n  border-radius: 3px;\n  background: var(--prism-ribbon);\n}\n\n.pf-sidebar-new-wrap {\n  padding: 8px 16px 20px;\n}\n\n.pf-sidebar-new {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  width: 100%;\n  height: 38px;\n  padding: 0 12px;\n  border: 1px solid var(--hairline-strong);\n  border-radius: 10px;\n  background: var(--canvas);\n  color: var(--ink);\n  font-weight: 500;\n}\n\n.pf-sidebar-new:hover {\n  border-color: var(--ink);\n  background: var(--canvas-soft);\n}\n\n.pf-sidebar-navigation {\n  flex-shrink: 0;\n  padding: 0 16px 16px;\n  border-bottom: 1px solid var(--hairline);\n}\n\n.pf-group-label,\n.pf-menu-heading {\n  padding: 0 10px 9px;\n  color: var(--graphite);\n  font-size: 11px;\n  font-weight: 600;\n  letter-spacing: .08em;\n  text-transform: uppercase;\n}\n\n.pf-sidebar .pf-group-label {\n  font-family: var(--font-pixel);\n  font-size: 15px;\n  font-weight: 400;\n}\n\n.pf-sidebar-nav-item {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  min-height: 38px;\n  padding: 8px 10px;\n  color: var(--graphite);\n  font-weight: 500;\n  border: 1px solid transparent;\n  border-radius: 6px;\n}\n\n.pf-sidebar-threads {\n  flex: 1;\n  min-height: 0;\n  overflow-y: auto;\n  overscroll-behavior: contain;\n  padding: 20px 16px 12px;\n}\n\n.pf-thread-row {\n  position: relative;\n  display: flex;\n  align-items: center;\n  min-width: 0;\n  margin-bottom: 3px;\n  border: 1px solid transparent;\n  border-radius: 6px;\n  color: var(--graphite);\n}\n\n.pf-thread-row:hover {\n  background: var(--canvas-soft);\n}\n\n.pf-thread-row-active {\n  color: var(--ink);\n  border-color: var(--hairline);\n  background: var(--canvas-soft);\n}\n\n.pf-thread-row-active::before,\n.pf-settings-nav-items button[aria-current="page"]::before {\n  content: "";\n  position: absolute;\n  top: 7px;\n  bottom: 7px;\n  left: -1px;\n  width: 3px;\n  border-radius: 2px;\n  background: var(--prism-ribbon);\n}\n\n.pf-thread-select {\n  display: flex;\n  align-items: center;\n  flex: 1;\n  min-width: 0;\n  min-height: 38px;\n  padding: 8px 4px 8px 10px;\n  border: 0;\n  border-radius: 6px;\n  background: transparent;\n  color: inherit;\n  text-align: left;\n}\n\n.pf-thread-select span {\n  min-width: 0;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n\n.pf-thread-select[aria-current="page"] {\n  font-weight: 500;\n}\n\n.pf-thread-delete {\n  width: 26px;\n  height: 28px;\n  margin-right: 3px;\n  color: var(--mute);\n}\n\n.pf-profile {\n  position: relative;\n  flex-shrink: 0;\n  padding: 12px;\n  border-top: 1px solid var(--hairline);\n}\n\n.pf-profile-trigger {\n  display: flex;\n  align-items: center;\n  gap: 9px;\n  width: 100%;\n  padding: 6px;\n  border: 1px solid transparent;\n  border-radius: 6px;\n  color: var(--graphite);\n  background: transparent;\n  text-align: left;\n}\n\n.pf-profile-trigger:hover,\n.pf-profile-trigger[aria-expanded="true"] {\n  background: var(--canvas-soft);\n  border-color: var(--hairline);\n}\n\n.pf-profile-avatar {\n  display: grid;\n  place-items: center;\n  width: 30px;\n  height: 30px;\n  flex-shrink: 0;\n  border: 1px solid var(--hairline);\n  border-radius: 50%;\n  background: var(--canvas-soft);\n  color: var(--ink);\n  font-family: var(--font-pixel);\n  font-size: 19px;\n}\n\n.pf-profile-copy {\n  flex: 1;\n  min-width: 0;\n}\n\n.pf-profile-name,\n.pf-profile-plan {\n  display: block;\n}\n\n.pf-profile-name {\n  color: var(--ink);\n  font-size: 13px;\n  font-weight: 500;\n}\n\n.pf-profile-plan {\n  color: var(--graphite);\n  font-size: 13px;\n}\n\n.pf-account-menu {\n  position: absolute;\n  left: 8px;\n  right: 8px;\n  bottom: calc(100% + 8px);\n  z-index: 150;\n  max-height: min(580px, calc(100dvh - 130px));\n  overflow-y: auto;\n  overscroll-behavior: contain;\n  padding: 6px;\n  border: 1px solid var(--hairline);\n  border-radius: 10px;\n  background: var(--canvas);\n  box-shadow: var(--shadow-pop);\n}\n\n.pf-account-item,\n.pf-account-address {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  width: 100%;\n  min-height: 36px;\n  padding: 8px;\n  border: 0;\n  border-radius: 6px;\n  color: var(--ink);\n  background: transparent;\n  text-align: left;\n}\n\n.pf-account-item:hover,\n.pf-account-address:hover,\n.pf-account-item[aria-checked="true"],\n.pf-account-item[aria-expanded="true"] {\n  background: var(--canvas-soft);\n}\n\n.pf-account-item > span {\n  min-width: 0;\n  overflow-wrap: anywhere;\n}\n\n.pf-account-item small {\n  display: block;\n  color: var(--graphite);\n  font-size: 13px;\n}\n\n.pf-account-address {\n  color: var(--graphite);\n  overflow-wrap: anywhere;\n  font-size: 13px;\n}\n\n.pf-account-shortcut {\n  margin-left: auto;\n  color: var(--graphite);\n  font-size: 11px;\n  white-space: nowrap;\n}\n\n.pf-account-chevron {\n  margin-left: auto;\n  color: var(--graphite);\n}\n\n.pf-menu-divider {\n  height: 1px;\n  margin: 5px 3px;\n  background: var(--hairline);\n}\n\n/* Inline nesting keeps every language option inside the sidebar/mobile canvas. */\n.pf-language-menu {\n  margin: 3px 0 6px;\n  padding: 4px;\n  border: 1px solid var(--hairline);\n  border-radius: 6px;\n  background: var(--canvas);\n}\n\n.pf-language-menu .pf-account-item {\n  padding-left: 28px;\n}\n\n.pf-model-selector {\n  position: relative;\n  min-width: 0;\n  max-width: 100%;\n  flex: 0 1 280px;\n}\n\n.pf-model-trigger {\n  display: flex;\n  align-items: center;\n  gap: 6px;\n  width: 280px;\n  max-width: 100%;\n  min-height: 30px;\n  padding: 4px 8px;\n  border: 1px solid transparent;\n  border-radius: 6px;\n  background: transparent;\n  color: var(--graphite);\n}\n\n.pf-model-trigger:hover,\n.pf-model-trigger[aria-expanded="true"] {\n  border-color: var(--hairline);\n  background: var(--canvas-soft);\n}\n\n.pf-model-name {\n  min-width: 0;\n  overflow: hidden;\n  color: var(--ink);\n  font-weight: 500;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  flex: 1;\n}\n\n.pf-model-effort {\n  color: var(--graphite);\n  font-size: 13px;\n  white-space: nowrap;\n}\n\n.pf-model-menu {\n  position: absolute;\n  right: 0;\n  bottom: calc(100% + 8px);\n  z-index: 100;\n  display: flex;\n  flex-direction: column;\n  width: 360px;\n  max-width: calc(100vw - 88px);\n  min-height: 0;\n  max-height: min(380px, calc(100dvh - 180px));\n  overflow: hidden;\n  border: 1px solid var(--hairline);\n  border-radius: 10px;\n  background: var(--canvas);\n  box-shadow: var(--shadow-pop);\n}\n\n.pf-model-menu-body { display: flex; flex: 1; min-height: 0; overflow: hidden; }\n\n.pf-model-provider-rail {\n  display: flex;\n  flex-direction: column;\n  gap: 8px;\n  flex: 0 0 56px;\n  padding: 10px 7px;\n  border-right: 1px solid var(--hairline);\n  background: var(--canvas-soft);\n}\n\n.pf-model-provider-tab {\n  position: relative;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 40px;\n  height: 40px;\n  flex-shrink: 0;\n  padding: 8px;\n  border: 1px solid transparent;\n  border-radius: 6px;\n  color: var(--graphite);\n  background: transparent;\n}\n\n.pf-model-provider-tab img { display: block; opacity: .65; }\n.pf-model-provider-tab:hover { border-color: var(--hairline-strong); }\n.pf-model-provider-tab[aria-selected="true"] { border-color: var(--hairline); background: var(--canvas); color: var(--ink); }\n.pf-model-provider-tab[aria-selected="true"] img { opacity: 1; }\n.pf-model-provider-tab[aria-selected="true"]::before { content: ""; position: absolute; left: -8px; top: 8px; bottom: 8px; width: 3px; background: var(--prism-ribbon); }\n.pf-model-provider-content { flex: 1; min-width: 0; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }\n.pf-model-provider-list { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 6px; }\n.pf-model-provider-content .pf-menu-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; }\n.pf-model-group-count { font: 18px/1 var(--font-pixel); }\n\n.pf-reasoning { display: flex; align-items: center; gap: 12px; flex-shrink: 0; padding: 6px 14px; border-top: 1px solid var(--hairline); background: var(--canvas); }\n.pf-reasoning-value { flex: 0 0 68px; font: 18px/1 var(--font-pixel); color: var(--ink); animation: pf-reasoning-label-in 200ms ease-out; }\n.pf-reasoning-slider { position: relative; flex: 1; min-width: 0; height: 38px; }\n.pf-reasoning-track { --reasoning-position: calc(10px + (100% - 20px) * var(--reasoning-progress)); position: absolute; left: 14px; right: 14px; top: 8px; height: 22px; border-radius: 6px; background: var(--canvas-soft); border: 1px solid var(--hairline); }\n.pf-reasoning-fill { position: absolute; left: 0; top: 0; bottom: 0; width: var(--reasoning-position); border-radius: 5px; background-color: var(--reasoning-accent, var(--lime)); transition: width 380ms cubic-bezier(.22, 1.35, .36, 1), background-color 300ms ease, opacity 200ms ease; overflow: hidden; }\n.pf-reasoning-tick { position: absolute; top: 50%; width: 4px; height: 4px; transform: translate(-50%, -50%); background: var(--hairline-strong); border-radius: 1px; transition: background 180ms ease; }\n.pf-reasoning-tick.is-filled { background: var(--lime-ink); }\n.pf-reasoning-knob { position: absolute; top: 0; left: var(--reasoning-position); transform: translateX(-50%); width: 20px; height: 100%; display: grid; place-items: center; border: 1px solid var(--hairline-strong); border-radius: 5px; color: var(--lime-ink); background: var(--canvas); transition: left 300ms cubic-bezier(.2, 0, 0, 1); }\n.pf-reasoning-input { position: absolute; inset: 0 15px; width: calc(100% - 30px); height: 38px; margin: 0; padding: 0; border: 0; appearance: none; background: transparent; opacity: 0; cursor: grab; touch-action: pan-y; }\n.pf-reasoning-input::-webkit-slider-thumb { appearance: none; width: 20px; height: 20px; border: 0; background: transparent; }\n.pf-reasoning-input::-moz-range-thumb { width: 20px; height: 20px; border: 0; background: transparent; }\n.pf-reasoning-input:active { cursor: grabbing; }\n.pf-reasoning-input:disabled { cursor: default; }\n.pf-reasoning-slider:has(.pf-reasoning-input:focus-visible) .pf-reasoning-track { outline: 1px solid var(--ink); outline-offset: 3px; }\n.pf-reasoning-slider.is-highest .pf-reasoning-fill { opacity: 0; }\n.pf-reasoning-slider.is-highest .pf-reasoning-tick { opacity: 0; }\n.pf-reasoning-slider.is-highest .pf-reasoning-track { background: #e8e6e2; }\n.pf-reasoning-prism { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 5px; pointer-events: none; }\n@keyframes pf-reasoning-label-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }\n\n.pf-menu-heading {\n  padding: 8px 10px;\n  margin-bottom: 3px;\n  border-bottom: 1px solid var(--hairline);\n}\n\n.pf-model-option {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 10px;\n  width: 100%;\n  min-height: 58px;\n  padding: 8px 10px;\n  border: 1px solid transparent;\n  border-radius: 6px;\n  background: transparent;\n  color: var(--ink);\n  text-align: left;\n}\n\n.pf-model-option:hover:not(:disabled),\n.pf-model-option[aria-checked="true"] {\n  border-color: var(--hairline);\n  background: var(--canvas-soft);\n}\n\n.pf-model-option:disabled {\n  color: var(--graphite);\n  opacity: .6;\n  cursor: not-allowed;\n}\n\n.pf-model-option-copy {\n  display: flex;\n  flex-direction: column;\n  min-width: 0;\n  overflow-wrap: anywhere;\n}\n\n.pf-model-option-name {\n  font-weight: 500;\n}\n\n.pf-model-option-detail {\n  color: var(--graphite);\n  font-size: 13px;\n}\n\n.pf-model-selected {\n  display: grid;\n  place-items: center;\n  flex-shrink: 0;\n  width: 19px;\n  height: 19px;\n  border-radius: 50%;\n  background: var(--lime);\n  color: var(--lime-ink);\n}\n\n.pf-model-discovery {\n  display: flex;\n  align-items: flex-start;\n  gap: 8px;\n  padding: 9px 10px;\n  color: var(--graphite);\n  overflow-wrap: anywhere;\n}\n\n.pf-model-discovery svg {\n  margin-top: 3px;\n}\n\n.pf-model-discovery span {\n  min-width: 0;\n}\n\n.pf-model-error {\n  color: #a82d2d;\n}\n\n.pf-discovery-spinner {\n  animation: pf-discovery-spin 1s linear infinite;\n}\n\n@keyframes pf-discovery-spin {\n  to { transform: rotate(360deg); }\n}\n\n.pf-settings-overlay {\n  position: fixed;\n  inset: 0;\n  z-index: 500;\n  display: grid;\n  place-items: center;\n  padding: 24px;\n  background: rgba(11, 11, 15, .48);\n}\n\n.pf-settings-dialog {\n  position: relative;\n  display: flex;\n  width: min(1000px, 100%);\n  height: min(820px, calc(100dvh - 48px));\n  overflow: hidden;\n  border: 1px solid var(--hairline);\n  border-radius: 14px;\n  background: var(--canvas);\n  box-shadow: var(--shadow-pop);\n}\n\n.pf-settings-dialog::before {\n  content: "";\n  position: absolute;\n  inset: 0 0 auto;\n  z-index: 2;\n  height: 3px;\n  background: var(--prism-ribbon);\n}\n\n.pf-settings-close {\n  position: absolute;\n  top: 16px;\n  right: 16px;\n  z-index: 3;\n  width: 34px;\n  height: 34px;\n  background: var(--canvas);\n}\n\n.pf-settings-nav {\n  display: flex;\n  flex-direction: column;\n  width: 220px;\n  flex: 0 0 220px;\n  overflow-y: auto;\n  padding: 24px 12px 16px;\n  border-right: 1px solid var(--hairline);\n}\n\n.pf-settings-nav h2 {\n  margin: 0 10px 20px;\n  font-family: var(--font-display);\n  font-size: 22px;\n  font-weight: 600;\n  letter-spacing: -.02em;\n}\n\n.pf-settings-search {\n  position: relative;\n  margin: 0 4px 24px;\n}\n\n.pf-settings-search > svg {\n  position: absolute;\n  top: 12px;\n  left: 12px;\n  color: var(--graphite);\n  pointer-events: none;\n}\n\n.pf-settings-search input {\n  width: 100%;\n  height: 40px;\n  padding: 0 12px 0 36px;\n  border: 1px solid var(--hairline);\n  border-radius: 10px;\n  background: var(--canvas);\n  color: var(--ink);\n}\n\n.pf-settings-search input::placeholder {\n  color: var(--graphite);\n}\n\n.pf-settings-search input:hover,\n.pf-select-wrap select:hover {\n  border-color: var(--ink);\n}\n\n.pf-settings-search input:focus-visible,\n.pf-select-wrap select:focus-visible {\n  border-color: transparent;\n  background: linear-gradient(var(--canvas), var(--canvas)) padding-box, var(--prism-ribbon) border-box;\n}\n\n.pf-settings-nav-group {\n  margin-bottom: 20px;\n}\n\n.pf-settings-nav-items {\n  display: flex;\n  flex-direction: column;\n  gap: 2px;\n}\n\n.pf-settings-nav-items button {\n  position: relative;\n  min-height: 38px;\n  width: 100%;\n  padding: 8px 10px;\n  border: 1px solid transparent;\n  border-radius: 6px;\n  background: transparent;\n  color: var(--graphite);\n  text-align: left;\n  font-weight: 500;\n}\n\n.pf-settings-nav-items button:hover {\n  color: var(--ink);\n  background: var(--canvas-soft);\n}\n\n.pf-settings-nav-items button[aria-current="page"] {\n  border-color: var(--hairline);\n  background: var(--canvas-soft);\n  color: var(--ink);\n}\n\n.pf-settings-api {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  margin-top: auto;\n  padding: 16px 10px 4px;\n  border-top: 1px solid var(--hairline);\n  color: var(--graphite);\n}\n\n.pf-settings-content {\n  flex: 1;\n  min-width: 0;\n  overflow-y: auto;\n  overscroll-behavior: contain;\n  padding: 32px 40px 40px;\n}\n\n.pf-settings-form {\n  width: 100%;\n  max-width: 560px;\n}\n\n.pf-settings-form h3 {\n  margin: 32px 0 4px;\n  color: var(--ink);\n  font-family: var(--font-display);\n  font-size: 22px;\n  font-weight: 600;\n  line-height: 1.25;\n  letter-spacing: -.02em;\n}\n\n.pf-settings-form h3:first-child {\n  margin-top: 4px;\n  padding-right: 30px;\n}\n\n.pf-settings-field {\n  padding: 20px 0;\n  border-bottom: 1px solid var(--hairline);\n}\n\n.pf-field-label {\n  color: var(--graphite);\n  font-size: 11px;\n  font-weight: 600;\n  letter-spacing: .08em;\n  text-transform: uppercase;\n}\n\n.pf-field-description {\n  margin: 6px 0 0;\n  color: var(--graphite);\n  font-size: 13px;\n}\n\n.pf-field-control {\n  margin-top: 10px;\n}\n\n.pf-segmented {\n  display: inline-flex;\n  flex-wrap: wrap;\n  align-items: center;\n  max-width: 100%;\n  gap: 3px;\n  padding: 3px;\n  border: 1px solid var(--hairline);\n  border-radius: 10px;\n  background: var(--canvas-soft);\n}\n\n.pf-segmented button {\n  min-height: 32px;\n  padding: 5px 12px;\n  border: 1px solid transparent;\n  border-radius: 6px;\n  background: transparent;\n  color: var(--graphite);\n}\n\n.pf-segmented button:hover {\n  color: var(--ink);\n}\n\n.pf-segmented button[aria-pressed="true"] {\n  border-color: var(--hairline);\n  background: var(--canvas);\n  box-shadow: var(--shadow-card);\n  color: var(--ink);\n}\n\n.pf-select-wrap {\n  position: relative;\n  width: min(100%, 320px);\n}\n\n.pf-select-wrap select {\n  width: 100%;\n  height: 40px;\n  appearance: none;\n  padding: 0 36px 0 12px;\n  border: 1px solid var(--hairline);\n  border-radius: 10px;\n  color: var(--ink);\n  background: var(--canvas);\n  cursor: pointer;\n}\n\n.pf-select-wrap > svg {\n  position: absolute;\n  top: 12px;\n  right: 12px;\n  color: var(--graphite);\n  pointer-events: none;\n}\n\n.pf-switch {\n  width: 42px;\n  height: 24px;\n  padding: 3px;\n  border: 1px solid var(--hairline-strong);\n  border-radius: 999px;\n  background: var(--hairline-strong);\n}\n\n.pf-switch[aria-checked="true"] {\n  background: var(--lime);\n  border-color: var(--lime);\n}\n\n.pf-switch span {\n  display: block;\n  width: 16px;\n  height: 16px;\n  border-radius: 50%;\n  background: var(--canvas);\n  transform: translateX(0);\n  transition: transform .15s ease;\n}\n\n.pf-switch[aria-checked="true"] span {\n  transform: translateX(18px);\n}\n\n.pf-settings-description {\n  margin-top: 16px;\n  color: var(--graphite);\n  font-size: 13px;\n}\n\n@media (max-width: 859px) {\n  .pf-sidebar {\n    position: absolute;\n    top: 64px;\n    bottom: 0;\n    left: 0;\n    z-index: 200;\n    height: auto;\n    box-shadow: var(--shadow-pop);\n  }\n\n  .pf-model-menu {\n    left: 0;\n    right: auto;\n  }\n\n  .pf-sidebar-header {\n    min-height: 56px;\n  }\n\n  .pf-sidebar-new-wrap {\n    padding-bottom: 12px;\n  }\n\n  .pf-sidebar-navigation {\n    padding-bottom: 10px;\n  }\n\n  .pf-sidebar-threads {\n    padding-top: 14px;\n  }\n\n  .pf-settings-overlay {\n    padding: 16px;\n  }\n\n  .pf-settings-dialog {\n    height: min(820px, calc(100dvh - 32px));\n  }\n\n  .pf-settings-nav {\n    width: 190px;\n    flex-basis: 190px;\n  }\n\n  .pf-settings-content {\n    padding: 32px 24px;\n  }\n}\n\n@media (max-width: 600px) {\n  .pf-settings-dialog {\n    flex-direction: column;\n  }\n\n  .pf-settings-nav {\n    flex: 0 0 auto;\n    width: 100%;\n    max-height: 250px;\n    padding: 18px 12px 12px;\n    border-right: 0;\n    border-bottom: 1px solid var(--hairline);\n  }\n\n  .pf-settings-nav h2 {\n    margin: 0 6px 12px;\n    padding-right: 42px;\n  }\n\n  .pf-settings-search {\n    margin: 0 4px 12px;\n  }\n\n  .pf-settings-nav-groups {\n    flex-shrink: 0;\n    display: flex;\n    gap: 16px;\n    padding: 3px 4px;\n    overflow-x: auto;\n  }\n\n  .pf-settings-nav-group {\n    flex-shrink: 0;\n    margin-bottom: 0;\n  }\n\n  .pf-settings-nav-group .pf-group-label {\n    padding: 0 4px 6px;\n  }\n\n  .pf-settings-nav-items {\n    flex-direction: row;\n    gap: 4px;\n  }\n\n  .pf-settings-nav-items button {\n    width: auto;\n    white-space: nowrap;\n  }\n\n  .pf-settings-api {\n    margin: 8px 4px 0;\n    padding: 8px 4px 0;\n  }\n\n  .pf-settings-content {\n    min-height: 0;\n    padding: 24px 20px;\n  }\n\n  .pf-settings-close {\n    top: 16px;\n    right: 12px;\n  }\n\n  .pf-model-effort {\n    max-width: 70px;\n    overflow: hidden;\n    text-overflow: ellipsis;\n  }\n}\n\n@media (max-width: 560px) {\n  .pf-model-effort { display: none; }\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .pf-discovery-spinner {\n    animation: none;\n  }\n\n  .pf-switch span {\n    transition: none;\n  }\n  .pf-reasoning *, .pf-reasoning *::after { animation: none; transition: none; }\n}\n';
@@ -56255,16 +56236,7 @@ function ClaudeComposer({ selectedModel, onSelectModel }) {
   return /* @__PURE__ */ (0, import_jsx_runtime54.jsxs)(composer_exports.Root, { className: "pf-composer", children: [
     /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(composer_exports.Input, { className: "pf-composer-input", "aria-label": "Message", placeholder: "Ask a question, explore an idea, or make something\u2026" }),
     /* @__PURE__ */ (0, import_jsx_runtime54.jsxs)("div", { className: "pf-composer-toolbar", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime54.jsxs)("div", { className: "pf-composer-tools", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime54.jsx)("button", { type: "button", className: "pf-icon-button", title: "Attach file", "aria-label": "Attach file", children: /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(Plus, { size: 18 }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime54.jsxs)("div", { className: "pf-mode-tabs", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime54.jsxs)("span", { className: "pf-mode-active", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(MessageSquare, { size: 13 }),
-            "Chat"
-          ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime54.jsx)("span", { children: "Cowork" })
-        ] })
-      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime54.jsx)("div", { className: "pf-composer-tools", children: /* @__PURE__ */ (0, import_jsx_runtime54.jsx)("button", { type: "button", className: "pf-icon-button", title: "Attach file", "aria-label": "Attach file", children: /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(Plus, { size: 18 }) }) }),
       /* @__PURE__ */ (0, import_jsx_runtime54.jsxs)("div", { className: "pf-composer-controls", children: [
         /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(ModelDropdown, { selected: selectedModel, onSelect: onSelectModel }),
         /* @__PURE__ */ (0, import_jsx_runtime54.jsx)("button", { type: "button", className: "pf-icon-button pf-voice-button", "aria-label": "Voice input", title: "Voice input", children: /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(Mic, { size: 17 }) }),
@@ -56309,13 +56281,22 @@ function App() {
         if (!response.ok)
           throw new Error(data.error ?? "Claude model discovery failed");
         const catalog = data;
-        const discovered = catalog.models.map((model) => ({
-          id: model.id,
-          name: model.name,
-          provider: "claude-web",
-          disabled: model.disabled,
-          availability: model.disabled ? `${model.badge ?? model.requiredPlan ?? "Unavailable"} \u2014 ${model.disabledReason === "upgrade_required" ? "Upgrade required" : "Unavailable"}` : model.section === "overflow" ? "Available \xB7 More models" : "Available"
-        }));
+        const discovered = catalog.models.map((model) => {
+          const supportedEfforts = model.capabilities?.supportedThinkingEfforts ?? [];
+          const reasoningLevels = supportedEfforts.length > 0 ? supportedEfforts.map((eff) => ({
+            value: eff,
+            label: eff === "xhigh" ? "XHigh" : eff.charAt(0).toUpperCase() + eff.slice(1)
+          })) : void 0;
+          return {
+            id: model.id,
+            name: model.name,
+            provider: "claude-web",
+            disabled: model.disabled,
+            availability: model.disabled ? `${model.badge ?? model.requiredPlan ?? "Unavailable"} \u2014 ${model.disabledReason === "upgrade_required" ? "Upgrade required" : "Unavailable"}` : model.section === "overflow" ? "Available \xB7 More models" : "Available",
+            reasoningLevels,
+            defaultReasoningLevel: reasoningLevels ? reasoningLevels[0]?.value : void 0
+          };
+        });
         if (!abort.signal.aborted)
           setClaudeDiscovery({ models: discovered, loading: false, error: null });
       } catch (error2) {
@@ -56336,12 +56317,18 @@ function App() {
         if (!response.ok)
           throw new Error(data.error ?? "Gemini Web model discovery failed");
         const catalog = data;
+        const GEMINI_REASONING_LEVELS = [
+          { value: "low", label: "Low" },
+          { value: "high", label: "High" }
+        ];
         const discovered = catalog.models.map((model) => ({
           id: model.id,
           name: model.name,
           provider: "gemini-web",
           disabled: model.disabled,
-          availability: model.availability
+          availability: model.availability,
+          reasoningLevels: GEMINI_REASONING_LEVELS,
+          defaultReasoningLevel: "low"
         }));
         if (!abort.signal.aborted)
           setGeminiDiscovery({ models: discovered, loading: false, error: null });
@@ -56375,9 +56362,23 @@ function App() {
     },
     transport: new AssistantChatTransport({
       api: "/api/chat",
-      body: {
-        model: selectedModel,
-        provider: currentProvider
+      prepareSendMessagesRequest: ({ id, messages }) => {
+        const currentModel = models.find((m) => m.id === selectedModel);
+        const levels = currentModel?.reasoningLevels ?? (currentModel?.provider === "claude-web" || currentModel?.provider === "gemini-web" ? [] : void 0);
+        const selectedLevel = reasoningByModel[selectedModel];
+        let effectiveReasoning = selectedLevel;
+        if (!effectiveReasoning && levels && levels.length > 0) {
+          effectiveReasoning = currentModel?.defaultReasoningLevel ?? levels[0]?.value;
+        }
+        return {
+          body: {
+            id,
+            messages,
+            model: selectedModel,
+            provider: currentProvider,
+            reasoning_effort: effectiveReasoning
+          }
+        };
       }
     })
   });
@@ -56556,7 +56557,6 @@ lucide-react/dist/esm/icons/key-round.mjs:
 lucide-react/dist/esm/icons/layout-grid.mjs:
 lucide-react/dist/esm/icons/loader-circle.mjs:
 lucide-react/dist/esm/icons/log-out.mjs:
-lucide-react/dist/esm/icons/message-square.mjs:
 lucide-react/dist/esm/icons/mic.mjs:
 lucide-react/dist/esm/icons/panel-left-close.mjs:
 lucide-react/dist/esm/icons/panel-left.mjs:

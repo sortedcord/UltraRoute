@@ -59,10 +59,6 @@ h1, h2, h3, p { margin: 0; }
 .pf-composer-toolbar, .pf-composer-tools, .pf-composer-controls { display: flex; align-items: center; gap: 8px; min-width: 0; }
 .pf-composer-toolbar { justify-content: space-between; padding-top: 10px; border-top: 1px solid var(--hairline); flex-wrap: wrap; }
 .pf-composer-controls { margin-left: auto; }
-.pf-mode-tabs { display: flex; align-items: center; gap: 12px; font-size: 12px; color: var(--graphite); }
-.pf-mode-tabs > span { display: flex; align-items: center; gap: 5px; padding: 5px 0; }
-.pf-mode-active { position: relative; color: var(--ink); font-weight: 600; }
-.pf-mode-active::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--prism-ribbon); }
 .pf-send { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border: 1px solid transparent; border-radius: 10px; color: var(--lime-ink); background: var(--lime); cursor: pointer; box-shadow: 0 8px 18px -8px rgb(124 226 91 / 55%); flex-shrink: 0; }
 .pf-send:hover:not(:disabled) { background: #92ea73; }
 .pf-send:disabled { background: var(--canvas-soft); border-color: var(--hairline); color: var(--mute); box-shadow: none; }

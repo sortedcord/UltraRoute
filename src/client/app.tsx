@@ -11,7 +11,7 @@ import {
 import { useChatRuntime, AssistantChatTransport } from "@assistant-ui/ai-sdk";
 import {
   ArrowUpIcon, ClipboardIcon, ThumbsUp, ThumbsDown, PanelLeft, ArrowUpRight,
-  Plus, Mic, AudioWaveform, MessageSquare,
+  Plus, Mic, AudioWaveform,
 } from "lucide-react";
 import type { ClaudeModelCatalog } from "../providers/claude/models.ts";
 import type { GeminiModelCatalog } from "../providers/gemini/models.ts";
@@ -114,7 +114,6 @@ function ClaudeComposer({ selectedModel, onSelectModel }: {
       <div className="pf-composer-toolbar">
         <div className="pf-composer-tools">
           <button type="button" className="pf-icon-button" title="Attach file" aria-label="Attach file"><Plus size={18} /></button>
-          <div className="pf-mode-tabs"><span className="pf-mode-active"><MessageSquare size={13} />Chat</span><span>Cowork</span></div>
         </div>
         <div className="pf-composer-controls">
           <ModelDropdown selected={selectedModel} onSelect={onSelectModel} />
@@ -163,17 +162,28 @@ function App() {
         if (!response.ok)
           throw new Error(data.error ?? "Claude model discovery failed");
         const catalog = data as ClaudeModelCatalog;
-        const discovered = catalog.models.map((model): ModelOption => ({
-          id: model.id,
-          name: model.name,
-          provider: "claude-web",
-          disabled: model.disabled,
-          availability: model.disabled
-            ? `${model.badge ?? model.requiredPlan ?? "Unavailable"} — ${model.disabledReason === "upgrade_required" ? "Upgrade required" : "Unavailable"}`
-            : model.section === "overflow"
-              ? "Available · More models"
-              : "Available",
-        }));
+        const discovered = catalog.models.map((model): ModelOption => {
+          const supportedEfforts = model.capabilities?.supportedThinkingEfforts ?? [];
+          const reasoningLevels = supportedEfforts.length > 0
+            ? supportedEfforts.map(eff => ({
+                value: eff,
+                label: eff === "xhigh" ? "XHigh" : eff.charAt(0).toUpperCase() + eff.slice(1),
+              }))
+            : undefined;
+          return {
+            id: model.id,
+            name: model.name,
+            provider: "claude-web",
+            disabled: model.disabled,
+            availability: model.disabled
+              ? `${model.badge ?? model.requiredPlan ?? "Unavailable"} — ${model.disabledReason === "upgrade_required" ? "Upgrade required" : "Unavailable"}`
+              : model.section === "overflow"
+                ? "Available · More models"
+                : "Available",
+            reasoningLevels,
+            defaultReasoningLevel: reasoningLevels ? reasoningLevels[0]?.value : undefined,
+          };
+        });
         if (!abort.signal.aborted)
           setClaudeDiscovery({ models: discovered, loading: false, error: null });
       } catch (error) {
@@ -197,12 +207,18 @@ function App() {
         if (!response.ok)
           throw new Error(data.error ?? "Gemini Web model discovery failed");
         const catalog = data as GeminiModelCatalog;
+        const GEMINI_REASONING_LEVELS = [
+          { value: "low", label: "Low" },
+          { value: "high", label: "High" },
+        ] as const;
         const discovered = catalog.models.map((model): ModelOption => ({
           id: model.id,
           name: model.name,
           provider: "gemini-web",
           disabled: model.disabled,
           availability: model.availability,
+          reasoningLevels: GEMINI_REASONING_LEVELS,
+          defaultReasoningLevel: "low",
         }));
         if (!abort.signal.aborted)
           setGeminiDiscovery({ models: discovered, loading: false, error: null });
@@ -242,9 +258,23 @@ function App() {
     },
     transport: new AssistantChatTransport({
       api: "/api/chat",
-      body: {
-        model: selectedModel,
-        provider: currentProvider,
+      prepareSendMessagesRequest: ({ id, messages }) => {
+        const currentModel = models.find((m) => m.id === selectedModel);
+        const levels = currentModel?.reasoningLevels ?? (currentModel?.provider === "claude-web" || currentModel?.provider === "gemini-web" ? [] : undefined);
+        const selectedLevel = reasoningByModel[selectedModel];
+        let effectiveReasoning = selectedLevel;
+        if (!effectiveReasoning && levels && levels.length > 0) {
+          effectiveReasoning = currentModel?.defaultReasoningLevel ?? levels[0]?.value;
+        }
+        return {
+          body: {
+            id,
+            messages,
+            model: selectedModel,
+            provider: currentProvider,
+            reasoning_effort: effectiveReasoning,
+          },
+        };
       },
     }),
   });
