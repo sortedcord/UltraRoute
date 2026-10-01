@@ -154,8 +154,12 @@ export class GeminiWebAdapter extends BaseWebProviderAdapter {
     if (!modelMeta) throw new InvalidRequestError("Unknown Gemini Web model");
     if (modelMeta.disabled) throw new InvalidRequestError("Gemini Web model unavailable for this account");
     let thinkSetting = 0;
+    let extendedThinking = 1; // 1 = normal, 2 = extended thinking
     if (request.reasoning_effort && request.reasoning_effort in GEMINI_REASONING_MAP) {
       thinkSetting = GEMINI_REASONING_MAP[request.reasoning_effort] ?? 0;
+      if (request.reasoning_effort === "high" || request.reasoning_effort === "xhigh" || request.reasoning_effort === "max") {
+        extendedThinking = 2;
+      }
     }
 
     // 4. Continuation lookup
@@ -197,8 +201,8 @@ export class GeminiWebAdapter extends BaseWebProviderAdapter {
     innerReq[59] = randomUUID();
     innerReq[61] = [];
     innerReq[68] = 1;
-    innerReq[79] = 1;
-    innerReq[80] = 1;
+    innerReq[GEMINI_WEB_CONSTANTS.PAYLOAD_SLOT_MODEL_CATEGORY] = 1;
+    innerReq[GEMINI_WEB_CONSTANTS.PAYLOAD_SLOT_EXTENDED_THINKING] = extendedThinking;
 
     // 6. Post request to upstream
     const rawResponse = await this.transport.postStreamGenerate(

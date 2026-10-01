@@ -5,12 +5,15 @@ import {
   ThreadPrimitive,
   ComposerPrimitive,
   MessagePrimitive,
+  MessagePartPrimitive,
+  ActionBarPrimitive,
   ErrorPrimitive,
   AuiIf,
 } from "@assistant-ui/react";
+import { MarkdownTextPrimitive } from "@assistant-ui/react-markdown";
 import { useChatRuntime, AssistantChatTransport } from "@assistant-ui/ai-sdk";
 import {
-  ArrowUpIcon, ClipboardIcon, ThumbsUp, ThumbsDown, PanelLeft, ArrowUpRight,
+  ArrowUpIcon, ClipboardIcon, Check, ThumbsUp, ThumbsDown, PanelLeft, ArrowUpRight,
   Plus, Mic, AudioWaveform,
 } from "lucide-react";
 import type { ClaudeModelCatalog } from "../providers/claude/models.ts";
@@ -82,17 +85,46 @@ function ClaudeThread({ selectedModel, onSelectModel, isSidebarOpen, onToggleSid
               AssistantMessage: () => (
                 <MessagePrimitive.Root className="pf-assistant-message">
                   <span className="pf-message-label"><span className="pf-mini-prism" />ULTRAROUTE</span>
-                  <div className="pf-assistant-content"><MessagePrimitive.Parts /></div>
-                  <MessagePrimitive.Error><ErrorPrimitive.Root role="alert" className="pf-error"><ErrorPrimitive.Message /></ErrorPrimitive.Root></MessagePrimitive.Error>
-                  <div className="pf-message-actions">
-                    <button type="button" className="pf-icon-button" aria-label="Copy response" title="Copy response"><ClipboardIcon size={15} /></button>
-                    <button type="button" className="pf-icon-button" aria-label="Good response" title="Good response"><ThumbsUp size={15} /></button>
-                    <button type="button" className="pf-icon-button" aria-label="Bad response" title="Bad response"><ThumbsDown size={15} /></button>
+                  <div className="pf-assistant-content">
+                    <MessagePrimitive.Parts
+                      components={{
+                        Text: () => (
+                          <div className="pf-markdown">
+                            <MarkdownTextPrimitive />
+                            <MessagePartPrimitive.InProgress>
+                              <span className="pf-running-inline">
+                                <span className="pf-status-dot" />
+                                <span>Working on your response…</span>
+                              </span>
+                            </MessagePartPrimitive.InProgress>
+                          </div>
+                        ),
+                      }}
+                    />
                   </div>
+                  <MessagePrimitive.Error><ErrorPrimitive.Root role="alert" className="pf-error"><ErrorPrimitive.Message /></ErrorPrimitive.Root></MessagePrimitive.Error>
+                  <MessagePrimitive.If hasContent={true}>
+                    <div className="pf-message-actions">
+                      <ActionBarPrimitive.Copy asChild>
+                        <button type="button" className="pf-icon-button pf-copy-button" aria-label="Copy response" title="Copy response">
+                          <MessagePrimitive.If copied={false}>
+                            <ClipboardIcon size={15} />
+                          </MessagePrimitive.If>
+                          <MessagePrimitive.If copied={true}>
+                            <Check size={15} color="var(--lime)" />
+                          </MessagePrimitive.If>
+                        </button>
+                      </ActionBarPrimitive.Copy>
+                      <button type="button" className="pf-icon-button" aria-label="Good response" title="Good response"><ThumbsUp size={15} /></button>
+                      <button type="button" className="pf-icon-button" aria-label="Bad response" title="Bad response"><ThumbsDown size={15} /></button>
+                    </div>
+                  </MessagePrimitive.If>
                 </MessagePrimitive.Root>
               ),
             }} />
-            <AuiIf condition={(s) => s.thread.isRunning}><div role="status" className="pf-running"><span className="pf-status-dot" />Working on your response…</div></AuiIf>
+            <AuiIf condition={(s) => s.thread.isRunning && s.thread.messages.length > 0 && s.thread.messages[s.thread.messages.length - 1]?.role !== "assistant"}>
+              <div role="status" className="pf-running"><span className="pf-status-dot" />Working on your response…</div>
+            </AuiIf>
           </div>
           <ThreadPrimitive.ViewportFooter className="pf-transcript-footer">
             <ClaudeComposer selectedModel={selectedModel} onSelectModel={onSelectModel} />

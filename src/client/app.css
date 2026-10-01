@@ -53,7 +53,7 @@ h1, h2, h3, p { margin: 0; }
 .pf-composer-heading { display: flex; justify-content: center; margin: 28px 0 12px; text-align: center; }
 .pf-composer-heading h2 { font: 600 22px/1.25 var(--font-display); letter-spacing: -.02em; }
 .pf-composer { width: 100%; padding: 18px 16px 12px; display: flex; flex-direction: column; gap: 16px; border: 1px solid var(--hairline); border-radius: 10px; background: var(--canvas); box-shadow: var(--shadow-card); }
-.pf-composer:focus-within { border-color: transparent; background: linear-gradient(white, white) padding-box, var(--prism-ribbon) border-box; box-shadow: var(--shadow-focus); }
+.pf-composer:focus-within { border-color: transparent; background: linear-gradient(white, white) padding-box, var(--prism-ribbon) border-box; }
 .pf-composer-input { width: 100%; min-height: 76px; max-height: 200px; resize: none; border: 0; outline: 0; background: transparent; color: var(--ink); font: 14px/1.6 var(--font-body); }
 .pf-composer-input::placeholder { color: var(--mute); }
 .pf-composer-toolbar, .pf-composer-tools, .pf-composer-controls { display: flex; align-items: center; gap: 8px; min-width: 0; }
@@ -71,13 +71,32 @@ h1, h2, h3, p { margin: 0; }
 .pf-assistant-message { width: 100%; display: flex; flex-direction: column; gap: 12px; }
 .pf-mini-prism { display: inline-block; width: 12px; height: 12px; background: var(--prism-ribbon); border-radius: 2px; }
 .pf-assistant-content { font-size: 15px; line-height: 1.75; overflow-wrap: anywhere; }
-.pf-assistant-content pre { max-width: 100%; overflow: auto; background: var(--canvas-soft); border: 1px solid var(--hairline); padding: 16px; border-radius: 6px; }
+.pf-assistant-content pre { max-width: 100%; overflow: auto; background: var(--canvas-soft); border: 1px solid var(--hairline); padding: 14px 16px; border-radius: 6px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 13px; line-height: 1.5; margin: 12px 0; }
+.pf-assistant-content code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.9em; background: var(--canvas-soft); border: 1px solid var(--hairline); padding: 2px 5px; border-radius: 4px; }
+.pf-assistant-content pre code { background: transparent; border: 0; padding: 0; font-size: inherit; }
 .pf-assistant-content a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+.pf-assistant-content p { margin: 0 0 12px 0; }
+.pf-assistant-content p:last-child { margin-bottom: 0; }
+.pf-assistant-content ul, .pf-assistant-content ol { margin: 8px 0 12px 20px; padding: 0; }
+.pf-assistant-content li { margin-bottom: 4px; }
+.pf-assistant-content blockquote { margin: 12px 0; padding: 8px 16px; border-left: 3px solid var(--lime); background: var(--canvas-soft); color: var(--graphite); border-radius: 0 6px 6px 0; }
+.pf-assistant-content h1, .pf-assistant-content h2, .pf-assistant-content h3, .pf-assistant-content h4 { font-family: var(--font-display); font-weight: 600; margin: 18px 0 8px 0; color: var(--ink); }
+.pf-assistant-content h1 { font-size: 1.5rem; }
+.pf-assistant-content h2 { font-size: 1.3rem; }
+.pf-assistant-content h3 { font-size: 1.15rem; }
+.pf-assistant-content table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 14px; }
+.pf-assistant-content th, .pf-assistant-content td { border: 1px solid var(--hairline); padding: 8px 12px; text-align: left; }
+.pf-assistant-content th { background: var(--canvas-soft); font-weight: 600; }
+.pf-markdown { width: 100%; }
+.pf-markdown > *:first-child { margin-top: 0; }
+.pf-markdown > *:last-child { margin-bottom: 0; }
 .pf-message-actions { display: flex; gap: 4px; }
 .pf-error, .pf-runtime-error { border: 1px solid var(--danger); border-radius: 6px; padding: 12px 16px; color: #a22c2c; background: var(--canvas); font-size: 13px; overflow-wrap: anywhere; }
 .pf-runtime-error { margin: 12px 24px 0; flex-shrink: 0; }
 .pf-running { display: flex; gap: 8px; align-items: center; font-size: 13px; color: var(--graphite); }
 .pf-running .pf-status-dot { animation: pf-pulse 1.2s ease-in-out infinite; }
+.pf-running-inline { display: inline-flex; gap: 8px; align-items: center; font-size: 13px; color: var(--graphite); margin-left: 2px; }
+.pf-running-inline .pf-status-dot { animation: pf-pulse 1.2s ease-in-out infinite; }
 .pf-transcript-footer { position: sticky; bottom: 0; width: 100%; max-width: 800px; margin: 0 auto; padding: 24px 0 12px; background: var(--canvas); }
 .pf-composer-note { font-size: 13px; color: var(--graphite); margin-top: 12px; }
 @keyframes pf-pulse { 50% { opacity: .35; } }

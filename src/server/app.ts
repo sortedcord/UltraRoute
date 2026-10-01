@@ -18,7 +18,7 @@ import {
   InvalidRequestError,
   ProviderTimeoutError,
 } from "../shared/errors.ts";
-import type { ChatMessage } from "../shared/types.ts";
+import type { ChatMessage, ReasoningEffort } from "../shared/types.ts";
 import { resolveChatRoute, getCredentialsForProvider } from "./routing.ts";
 import {
   awaitWithAbort,
@@ -157,9 +157,10 @@ const server = createServer(
         }
         if (
           (body.model !== undefined && typeof body.model !== "string") ||
-          (body.provider !== undefined && typeof body.provider !== "string")
+          (body.provider !== undefined && typeof body.provider !== "string") ||
+          (body.reasoning_effort !== undefined && typeof body.reasoning_effort !== "string")
         ) {
-          throw new InvalidRequestError("Model and provider must be strings");
+          throw new InvalidRequestError("Model, provider, and reasoning_effort must be strings");
         }
         const route = resolveChatRoute(
           globalModelRegistry,
@@ -238,6 +239,7 @@ const server = createServer(
             model: route.model,
             messages: modelMessages,
             stream: true,
+            reasoning_effort: body.reasoning_effort as ReasoningEffort | undefined,
           };
           const result = await awaitWithAbort(
             provider.execute(request, credentials, upstream.signal),
