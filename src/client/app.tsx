@@ -5,16 +5,14 @@ import {
   ThreadPrimitive,
   ComposerPrimitive,
   MessagePrimitive,
-  MessagePartPrimitive,
   ActionBarPrimitive,
   ErrorPrimitive,
   AuiIf,
 } from "@assistant-ui/react";
-import { MarkdownTextPrimitive } from "@assistant-ui/react-markdown";
 import { useChatRuntime, AssistantChatTransport } from "@assistant-ui/ai-sdk";
 import {
   ArrowUpIcon, ClipboardIcon, Check, ThumbsUp, ThumbsDown, PanelLeft, ArrowUpRight,
-  Plus, Mic, AudioWaveform,
+  Plus, Mic, AudioWaveform, Globe,
 } from "lucide-react";
 import type { ClaudeModelCatalog } from "../providers/claude/models.ts";
 import type { GeminiModelCatalog } from "../providers/gemini/models.ts";
@@ -24,6 +22,7 @@ import {
 } from "./panels.tsx";
 import workspaceStyles from "./app.css";
 import panelStyles from "./panels.css";
+import { CitationText, useInlineSourceIds } from "./citationText.tsx";
 
 
 const OTHER_MODELS: ModelOption[] = [
@@ -88,17 +87,55 @@ function ClaudeThread({ selectedModel, onSelectModel, isSidebarOpen, onToggleSid
                   <div className="pf-assistant-content">
                     <MessagePrimitive.Parts
                       components={{
-                        Text: () => (
-                          <div className="pf-markdown">
-                            <MarkdownTextPrimitive />
-                            <MessagePartPrimitive.InProgress>
-                              <span className="pf-running-inline">
-                                <span className="pf-status-dot" />
-                                <span>Working on your response…</span>
-                              </span>
-                            </MessagePartPrimitive.InProgress>
-                          </div>
-                        ),
+                        Text: CitationText,
+                        Source: (part: {
+                          id: string;
+                          url?: string;
+                          title?: string;
+                          providerMetadata?: Record<string, unknown>;
+                        }) => {
+                          const inlineSourceIds = useInlineSourceIds();
+                          if (inlineSourceIds.has(part.id)) return null;
+                          if (!part.url) return null;
+                          const geminiMeta = part.providerMetadata?.gemini as {
+                            citationNumber?: number;
+                            favicon?: string;
+                            snippet?: string;
+                          } | undefined;
+                          let displayTitle = part.title;
+                          if (!displayTitle) {
+                            try {
+                              displayTitle = new URL(part.url).hostname.replace(/^www\./, "");
+                            } catch {
+                              displayTitle = part.url;
+                            }
+                          }
+                          return (
+                            <a
+                              className="pf-source-chip"
+                              href={part.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              title={geminiMeta?.snippet || part.title || part.url}
+                            >
+                              {geminiMeta?.favicon ? (
+                                <img
+                                  className="pf-source-favicon"
+                                  src={geminiMeta.favicon}
+                                  alt=""
+                                  width={14}
+                                  height={14}
+                                />
+                              ) : (
+                                <Globe size={13} className="pf-source-icon" />
+                              )}
+                              <span className="pf-source-title">{displayTitle}</span>
+                              {geminiMeta?.citationNumber ? (
+                                <span className="pf-source-number">[{geminiMeta.citationNumber}]</span>
+                              ) : null}
+                            </a>
+                          );
+                        },
                       }}
                     />
                   </div>
@@ -128,7 +165,6 @@ function ClaudeThread({ selectedModel, onSelectModel, isSidebarOpen, onToggleSid
           </div>
           <ThreadPrimitive.ViewportFooter className="pf-transcript-footer">
             <ClaudeComposer selectedModel={selectedModel} onSelectModel={onSelectModel} />
-            <p className="pf-composer-note">A fresh perspective, not the final word. Check important details.</p>
           </ThreadPrimitive.ViewportFooter>
         </ThreadPrimitive.Viewport>
       </AuiIf>
