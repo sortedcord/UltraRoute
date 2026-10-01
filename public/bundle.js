@@ -786,7 +786,7 @@ var require_scheduler = __commonJS({
 var require_react_dom_production = __commonJS({
   "node_modules/react-dom/cjs/react-dom.production.js"(exports) {
     "use strict";
-    var React14 = require_react();
+    var React16 = require_react();
     function formatProdErrorMessage(code) {
       var url = "https://react.dev/errors/" + code;
       if (1 < arguments.length) {
@@ -828,7 +828,7 @@ var require_react_dom_production = __commonJS({
         implementation
       };
     }
-    var ReactSharedInternals = React14.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
+    var ReactSharedInternals = React16.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
     function getCrossOriginStringAs(as, input) {
       if ("font" === as) return "";
       if ("string" === typeof input)
@@ -970,7 +970,7 @@ var require_react_dom_client_production = __commonJS({
   "node_modules/react-dom/cjs/react-dom-client.production.js"(exports) {
     "use strict";
     var Scheduler = require_scheduler();
-    var React14 = require_react();
+    var React16 = require_react();
     var ReactDOM2 = require_react_dom();
     function formatProdErrorMessage(code) {
       var url = "https://react.dev/errors/" + code;
@@ -1261,7 +1261,7 @@ var require_react_dom_client_production = __commonJS({
       return null;
     }
     var isArrayImpl = Array.isArray;
-    var ReactSharedInternals = React14.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
+    var ReactSharedInternals = React16.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
     var ReactDOMSharedInternals = ReactDOM2.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
     var sharedNotPendingObject = {
       pending: false,
@@ -14410,7 +14410,7 @@ var require_react_dom_client_production = __commonJS({
         0 === i && attemptExplicitHydrationTarget(target);
       }
     };
-    var isomorphicReactPackageVersion$jscomp$inline_2043 = React14.version;
+    var isomorphicReactPackageVersion$jscomp$inline_2043 = React16.version;
     if ("19.3.0" !== isomorphicReactPackageVersion$jscomp$inline_2043)
       throw Error(
         formatProdErrorMessage(
@@ -14711,7 +14711,7 @@ var require_throttleit = __commonJS({
 });
 
 // src/client/app.tsx
-var import_react37 = __toESM(require_react(), 1);
+var import_react39 = __toESM(require_react(), 1);
 var import_client16 = __toESM(require_client(), 1);
 
 // node_modules/@assistant-ui/tap/dist/core/helpers/execution-context.js
@@ -39699,11 +39699,11 @@ var TextStreamAnimator = class {
 };
 var SMOOTH_STATUS = Object.freeze({ type: "running" });
 var positiveOr = (value, fallback) => value !== void 0 && value > 0 ? value : fallback;
-var useSmooth = (state, smooth = false) => {
+var useSmooth = (state, smooth2 = false) => {
   const { text } = state;
   const reduceMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
-  const options = typeof smooth === "object" && smooth !== null ? smooth : void 0;
-  const enabled = smooth !== false && smooth !== null && !reduceMotion;
+  const options = typeof smooth2 === "object" && smooth2 !== null ? smooth2 : void 0;
+  const enabled = smooth2 !== false && smooth2 !== null && !reduceMotion;
   const drainMs = positiveOr(options?.drainMs, DEFAULT_DRAIN_MS);
   const maxCharIntervalMs = positiveOr(options?.maxCharIntervalMs, DEFAULT_MAX_CHAR_INTERVAL_MS);
   const maxCharsPerFrame = positiveOr(options?.maxCharsPerFrame, Infinity);
@@ -39825,8 +39825,8 @@ function _temp60(s) {
 
 // node_modules/@assistant-ui/react/dist/primitives/messagePart/MessagePartText.js
 var import_jsx_runtime41 = __toESM(require_jsx_runtime(), 1);
-var MessagePartPrimitiveText = forwardRef(({ smooth = true, component: Component = Primitive3.span, render, ...rest }, forwardedRef) => {
-  const { text, status } = useSmooth(useMessagePartText(), smooth);
+var MessagePartPrimitiveText = forwardRef(({ smooth: smooth2 = true, component: Component = Primitive3.span, render, ...rest }, forwardedRef) => {
+  const { text, status } = useSmooth(useMessagePartText(), smooth2);
   const mergedProps = {
     "data-status": status.type,
     ...rest,
@@ -55185,8 +55185,20 @@ function createLucideIcon(iconDataOrName, iconNode = [], aliases = []) {
   return Component;
 }
 
-// node_modules/lucide-react/dist/esm/icons/arrow-up.mjs
+// node_modules/lucide-react/dist/esm/icons/arrow-up-right.mjs
 var __iconData = {
+  name: "arrow-up-right",
+  size: 24,
+  node: [
+    ["path", { d: "M7 7h10v10", key: "1tivn9" }],
+    ["path", { d: "M7 17 17 7", key: "1vkiza" }]
+  ]
+};
+__iconData.node;
+var ArrowUpRight = createLucideIcon(__iconData);
+
+// node_modules/lucide-react/dist/esm/icons/arrow-up.mjs
+var __iconData2 = {
   name: "arrow-up",
   size: 24,
   node: [
@@ -55194,11 +55206,11 @@ var __iconData = {
     ["path", { d: "M12 19V5", key: "x0mq9r" }]
   ]
 };
-__iconData.node;
-var ArrowUp = createLucideIcon(__iconData);
+__iconData2.node;
+var ArrowUp = createLucideIcon(__iconData2);
 
 // node_modules/lucide-react/dist/esm/icons/audio-waveform.mjs
-var __iconData2 = {
+var __iconData3 = {
   name: "audio-waveform",
   size: 24,
   node: [
@@ -55211,29 +55223,52 @@ var __iconData2 = {
     ]
   ]
 };
-__iconData2.node;
-var AudioWaveform = createLucideIcon(__iconData2);
+__iconData3.node;
+var AudioWaveform = createLucideIcon(__iconData3);
 
 // node_modules/lucide-react/dist/esm/icons/check.mjs
-var __iconData3 = {
+var __iconData4 = {
   name: "check",
   size: 24,
   node: [["path", { d: "M20 6 9 17l-5-5", key: "1gmf2c" }]]
 };
-__iconData3.node;
-var Check = createLucideIcon(__iconData3);
+__iconData4.node;
+var Check = createLucideIcon(__iconData4);
 
 // node_modules/lucide-react/dist/esm/icons/chevron-down.mjs
-var __iconData4 = {
+var __iconData5 = {
   name: "chevron-down",
   size: 24,
   node: [["path", { d: "m6 9 6 6 6-6", key: "qrunsl" }]]
 };
-__iconData4.node;
-var ChevronDown = createLucideIcon(__iconData4);
+__iconData5.node;
+var ChevronDown = createLucideIcon(__iconData5);
+
+// node_modules/lucide-react/dist/esm/icons/chevron-right.mjs
+var __iconData6 = {
+  name: "chevron-right",
+  size: 24,
+  node: [["path", { d: "m9 18 6-6-6-6", key: "mthhwq" }]]
+};
+__iconData6.node;
+var ChevronRight = createLucideIcon(__iconData6);
+
+// node_modules/lucide-react/dist/esm/icons/circle-question-mark.mjs
+var __iconData7 = {
+  name: "circle-question-mark",
+  size: 24,
+  node: [
+    ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
+    ["path", { d: "M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3", key: "1u773s" }],
+    ["path", { d: "M12 17h.01", key: "p32p05" }]
+  ],
+  aliases: ["help-circle", "circle-help"]
+};
+__iconData7.node;
+var CircleQuestionMark = createLucideIcon(__iconData7);
 
 // node_modules/lucide-react/dist/esm/icons/clipboard.mjs
-var __iconData5 = {
+var __iconData8 = {
   name: "clipboard",
   size: 24,
   node: [
@@ -55247,11 +55282,11 @@ var __iconData5 = {
     ]
   ]
 };
-__iconData5.node;
-var Clipboard = createLucideIcon(__iconData5);
+__iconData8.node;
+var Clipboard = createLucideIcon(__iconData8);
 
 // node_modules/lucide-react/dist/esm/icons/code-xml.mjs
-var __iconData6 = {
+var __iconData9 = {
   name: "code-xml",
   size: 24,
   node: [
@@ -55261,11 +55296,24 @@ var __iconData6 = {
   ],
   aliases: ["code-2"]
 };
-__iconData6.node;
-var CodeXml = createLucideIcon(__iconData6);
+__iconData9.node;
+var CodeXml = createLucideIcon(__iconData9);
+
+// node_modules/lucide-react/dist/esm/icons/download.mjs
+var __iconData10 = {
+  name: "download",
+  size: 24,
+  node: [
+    ["path", { d: "M12 15V3", key: "m9g1x1" }],
+    ["path", { d: "M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4", key: "ih7n3h" }],
+    ["path", { d: "m7 10 5 5 5-5", key: "brsn70" }]
+  ]
+};
+__iconData10.node;
+var Download = createLucideIcon(__iconData10);
 
 // node_modules/lucide-react/dist/esm/icons/folder-open.mjs
-var __iconData7 = {
+var __iconData11 = {
   name: "folder-open",
   size: 24,
   node: [
@@ -55278,11 +55326,55 @@ var __iconData7 = {
     ]
   ]
 };
-__iconData7.node;
-var FolderOpen = createLucideIcon(__iconData7);
+__iconData11.node;
+var FolderOpen = createLucideIcon(__iconData11);
+
+// node_modules/lucide-react/dist/esm/icons/globe.mjs
+var __iconData12 = {
+  name: "globe",
+  size: 24,
+  node: [
+    ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
+    ["path", { d: "M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20", key: "13o1zl" }],
+    ["path", { d: "M2 12h20", key: "9i4pu4" }]
+  ]
+};
+__iconData12.node;
+var Globe = createLucideIcon(__iconData12);
+
+// node_modules/lucide-react/dist/esm/icons/info.mjs
+var __iconData13 = {
+  name: "info",
+  size: 24,
+  node: [
+    ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
+    ["path", { d: "M12 16v-4", key: "1dtifu" }],
+    ["path", { d: "M12 8h.01", key: "e9boi3" }]
+  ]
+};
+__iconData13.node;
+var Info = createLucideIcon(__iconData13);
+
+// node_modules/lucide-react/dist/esm/icons/key-round.mjs
+var __iconData14 = {
+  name: "key-round",
+  size: 24,
+  node: [
+    [
+      "path",
+      {
+        d: "M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z",
+        key: "1s6t7t"
+      }
+    ],
+    ["circle", { cx: "16.5", cy: "7.5", r: ".5", fill: "currentColor", key: "w0ekpg" }]
+  ]
+};
+__iconData14.node;
+var KeyRound = createLucideIcon(__iconData14);
 
 // node_modules/lucide-react/dist/esm/icons/layout-grid.mjs
-var __iconData8 = {
+var __iconData15 = {
   name: "layout-grid",
   size: 24,
   node: [
@@ -55292,11 +55384,51 @@ var __iconData8 = {
     ["rect", { width: "7", height: "7", x: "3", y: "14", rx: "1", key: "1bb6yr" }]
   ]
 };
-__iconData8.node;
-var LayoutGrid = createLucideIcon(__iconData8);
+__iconData15.node;
+var LayoutGrid = createLucideIcon(__iconData15);
+
+// node_modules/lucide-react/dist/esm/icons/loader-circle.mjs
+var __iconData16 = {
+  name: "loader-circle",
+  size: 24,
+  node: [["path", { d: "M21 12a9 9 0 1 1-6.219-8.56", key: "13zald" }]],
+  aliases: ["loader-2"]
+};
+__iconData16.node;
+var LoaderCircle = createLucideIcon(__iconData16);
+
+// node_modules/lucide-react/dist/esm/icons/log-out.mjs
+var __iconData17 = {
+  name: "log-out",
+  size: 24,
+  node: [
+    ["path", { d: "m16 17 5-5-5-5", key: "1bji2h" }],
+    ["path", { d: "M21 12H9", key: "dn1m92" }],
+    ["path", { d: "M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4", key: "1uf3rs" }]
+  ]
+};
+__iconData17.node;
+var LogOut = createLucideIcon(__iconData17);
+
+// node_modules/lucide-react/dist/esm/icons/message-square.mjs
+var __iconData18 = {
+  name: "message-square",
+  size: 24,
+  node: [
+    [
+      "path",
+      {
+        d: "M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z",
+        key: "18887p"
+      }
+    ]
+  ]
+};
+__iconData18.node;
+var MessageSquare = createLucideIcon(__iconData18);
 
 // node_modules/lucide-react/dist/esm/icons/mic.mjs
-var __iconData9 = {
+var __iconData19 = {
   name: "mic",
   size: 24,
   node: [
@@ -55305,11 +55437,11 @@ var __iconData9 = {
     ["rect", { x: "9", y: "2", width: "6", height: "13", rx: "3", key: "s6n7sd" }]
   ]
 };
-__iconData9.node;
-var Mic = createLucideIcon(__iconData9);
+__iconData19.node;
+var Mic = createLucideIcon(__iconData19);
 
 // node_modules/lucide-react/dist/esm/icons/panel-left-close.mjs
-var __iconData10 = {
+var __iconData20 = {
   name: "panel-left-close",
   size: 24,
   node: [
@@ -55319,11 +55451,11 @@ var __iconData10 = {
   ],
   aliases: ["sidebar-close"]
 };
-__iconData10.node;
-var PanelLeftClose = createLucideIcon(__iconData10);
+__iconData20.node;
+var PanelLeftClose = createLucideIcon(__iconData20);
 
 // node_modules/lucide-react/dist/esm/icons/panel-left.mjs
-var __iconData11 = {
+var __iconData21 = {
   name: "panel-left",
   size: 24,
   node: [
@@ -55332,11 +55464,11 @@ var __iconData11 = {
   ],
   aliases: ["sidebar"]
 };
-__iconData11.node;
-var PanelLeft = createLucideIcon(__iconData11);
+__iconData21.node;
+var PanelLeft = createLucideIcon(__iconData21);
 
 // node_modules/lucide-react/dist/esm/icons/plus.mjs
-var __iconData12 = {
+var __iconData22 = {
   name: "plus",
   size: 24,
   node: [
@@ -55344,11 +55476,41 @@ var __iconData12 = {
     ["path", { d: "M12 5v14", key: "s699le" }]
   ]
 };
-__iconData12.node;
-var Plus = createLucideIcon(__iconData12);
+__iconData22.node;
+var Plus = createLucideIcon(__iconData22);
+
+// node_modules/lucide-react/dist/esm/icons/search.mjs
+var __iconData23 = {
+  name: "search",
+  size: 24,
+  node: [
+    ["path", { d: "m21 21-4.34-4.34", key: "14j7rj" }],
+    ["circle", { cx: "11", cy: "11", r: "8", key: "4ej97u" }]
+  ]
+};
+__iconData23.node;
+var Search = createLucideIcon(__iconData23);
+
+// node_modules/lucide-react/dist/esm/icons/settings.mjs
+var __iconData24 = {
+  name: "settings",
+  size: 24,
+  node: [
+    [
+      "path",
+      {
+        d: "M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915",
+        key: "1i5ecw"
+      }
+    ],
+    ["circle", { cx: "12", cy: "12", r: "3", key: "1v7zrd" }]
+  ]
+};
+__iconData24.node;
+var Settings = createLucideIcon(__iconData24);
 
 // node_modules/lucide-react/dist/esm/icons/sliders-horizontal.mjs
-var __iconData13 = {
+var __iconData25 = {
   name: "sliders-horizontal",
   size: 24,
   node: [
@@ -55363,28 +55525,11 @@ var __iconData13 = {
     ["path", { d: "M8 12H3", key: "a7s4jb" }]
   ]
 };
-__iconData13.node;
-var SlidersHorizontal = createLucideIcon(__iconData13);
-
-// node_modules/lucide-react/dist/esm/icons/sparkle.mjs
-var __iconData14 = {
-  name: "sparkle",
-  size: 24,
-  node: [
-    [
-      "path",
-      {
-        d: "M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z",
-        key: "1s2grr"
-      }
-    ]
-  ]
-};
-__iconData14.node;
-var Sparkle = createLucideIcon(__iconData14);
+__iconData25.node;
+var SlidersHorizontal = createLucideIcon(__iconData25);
 
 // node_modules/lucide-react/dist/esm/icons/thumbs-down.mjs
-var __iconData15 = {
+var __iconData26 = {
   name: "thumbs-down",
   size: 24,
   node: [
@@ -55398,11 +55543,11 @@ var __iconData15 = {
     ["path", { d: "M17 14V2", key: "8ymqnk" }]
   ]
 };
-__iconData15.node;
-var ThumbsDown = createLucideIcon(__iconData15);
+__iconData26.node;
+var ThumbsDown = createLucideIcon(__iconData26);
 
 // node_modules/lucide-react/dist/esm/icons/thumbs-up.mjs
-var __iconData16 = {
+var __iconData27 = {
   name: "thumbs-up",
   size: 24,
   node: [
@@ -55416,11 +55561,11 @@ var __iconData16 = {
     ["path", { d: "M7 10v12", key: "1qc93n" }]
   ]
 };
-__iconData16.node;
-var ThumbsUp = createLucideIcon(__iconData16);
+__iconData27.node;
+var ThumbsUp = createLucideIcon(__iconData27);
 
 // node_modules/lucide-react/dist/esm/icons/trash.mjs
-var __iconData17 = {
+var __iconData28 = {
   name: "trash",
   size: 24,
   node: [
@@ -55432,12 +55577,609 @@ var __iconData17 = {
   ],
   aliases: ["trash-2"]
 };
-__iconData17.node;
-var Trash = createLucideIcon(__iconData17);
+__iconData28.node;
+var Trash = createLucideIcon(__iconData28);
+
+// node_modules/lucide-react/dist/esm/icons/x.mjs
+var __iconData29 = {
+  name: "x",
+  size: 24,
+  node: [
+    ["path", { d: "M18 6 6 18", key: "1bl5f8" }],
+    ["path", { d: "m6 6 12 12", key: "d8bk6v" }]
+  ]
+};
+__iconData29.node;
+var X = createLucideIcon(__iconData29);
+
+// node_modules/lucide-react/dist/esm/icons/zap.mjs
+var __iconData30 = {
+  name: "zap",
+  size: 24,
+  node: [
+    [
+      "path",
+      {
+        d: "M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z",
+        key: "1v7up4"
+      }
+    ]
+  ]
+};
+__iconData30.node;
+var Zap = createLucideIcon(__iconData30);
+
+// src/client/panels.tsx
+var import_react38 = __toESM(require_react(), 1);
+
+// src/client/reasoning.tsx
+var import_react37 = __toESM(require_react(), 1);
+
+// src/client/prismField.ts
+var PALETTE = [
+  [232, 66, 155],
+  [155, 91, 232],
+  [63, 199, 232],
+  [184, 242, 95],
+  [245, 185, 70]
+];
+var NEUTRAL = [232, 230, 226];
+var mix = (a, b, amount) => a + (b - a) * amount;
+var hash = (value) => Math.abs(Math.sin(value) * 43758.5453) % 1;
+var smooth = (low, high, value) => {
+  const t = Math.max(0, Math.min(1, (value - low) / (high - low)));
+  return t * t * (3 - 2 * t);
+};
+function createPrismField(width, height) {
+  const cell = width < 280 ? 5 : 6;
+  const pixels = [];
+  for (let row = 0; row < Math.ceil(height / cell); row++) {
+    for (let column = 0; column < Math.ceil(width / cell); column++) {
+      pixels.push({
+        column,
+        row,
+        x: column * cell,
+        y: row * cell,
+        nx: (column * cell + cell / 2) / width,
+        seed: hash(column * 12.9898 + row * 78.233),
+        period: 500 + hash(column * 7.13 + row * 19.41) * 1500,
+        phase: hash(column * 31.17 + row * 11.93)
+      });
+    }
+  }
+  return (context, elapsed, reducedMotion = false) => {
+    context.clearRect(0, 0, width, height);
+    const reveal = reducedMotion ? 1 : smooth(0, 1, elapsed / 1e3);
+    const frontier = 1 - reveal;
+    const flowTime = reducedMotion ? 0 : elapsed / 4e3;
+    const flowCycle = Math.floor(flowTime);
+    const flow = flowCycle + smooth(0, 1, flowTime - flowCycle);
+    const time2 = reducedMotion ? 0 : elapsed;
+    context.save();
+    context.beginPath();
+    context.roundRect(0, 0, width, height, 5);
+    context.clip();
+    for (const pixel of pixels) {
+      const { column, row, nx, seed, period, phase } = pixel;
+      const revealAlpha = smooth(frontier - 0.1, frontier + 0.07, nx);
+      if (revealAlpha <= 2e-3) continue;
+      const intensity = smooth(0.04, 0.38, nx);
+      const depth = smooth(0.1, 0.88, nx);
+      const localTime = time2 + phase * period;
+      const cycle = Math.floor(localTime / period);
+      const cycleProgress = localTime % period / period;
+      const cycleHash = hash(column * 17.17 + row * 41.73 + cycle * 13.11);
+      const pulseWidth = 0.09 + hash(column * 5.37 + row * 29.11 + cycle * 7.43) * 0.08;
+      const pulseDistance = (cycleProgress - (0.2 + cycleHash * 0.55)) / pulseWidth;
+      const flicker = Math.exp(-pulseDistance * pulseDistance * 1.45) * (cycleHash > 0.12 ? 1 : 0.26);
+      const coordinate = (nx + flow) * 9;
+      const flowIndex = Math.floor(coordinate);
+      const clusterA = hash(flowIndex * 18.31 + row * 37.17);
+      const clusterB = hash((flowIndex + 1) * 18.31 + row * 37.17);
+      const cluster = smooth(0.46, 0.84, mix(clusterA, clusterB, smooth(0, 1, coordinate - flowIndex)));
+      const wave = Math.pow(0.5 + 0.5 * Math.cos((nx + flow + row * 0.06 + seed * 0.02) * Math.PI * 2), 5);
+      const directional = Math.max(cluster, wave * 0.62);
+      const light = Math.max(flicker * (0.48 + directional * 0.58), directional * (0.38 + seed * 0.28));
+      const frontierGlow = reveal < 0.995 ? Math.exp(-((nx - frontier) ** 2) / 0.012) * (1 - smooth(0.7, 1, reveal)) : 0;
+      const glow = Math.max(light, frontierGlow * (0.4 + seed * 0.4));
+      const hot = glow > 0.4 && flicker > 0.16 && cycleHash > 0.26 && cluster > 0.04;
+      const highlight = hot ? 0.92 : Math.min(0.64, glow * (0.44 + cycleHash * 0.3));
+      const huePosition = Math.max(0, Math.min(1, (nx - 0.15) / 0.8)) * PALETTE.length + row * 0.035 + Math.sin(time2 * 35e-5) * 0.2 + seed * 0.12;
+      const hue = (huePosition % PALETTE.length + PALETTE.length) % PALETTE.length;
+      const toneIndex = Math.floor(hue);
+      const toneA = PALETTE[toneIndex];
+      const toneB = PALETTE[(toneIndex + 1) % PALETTE.length];
+      const toneMix = smooth(0, 1, hue - toneIndex);
+      const chroma = depth * (0.72 + seed * 0.18);
+      const red = mix(NEUTRAL[0], mix(toneA[0], toneB[0], toneMix), chroma);
+      const green = mix(NEUTRAL[1], mix(toneA[1], toneB[1], toneMix), chroma);
+      const blue = mix(NEUTRAL[2], mix(toneA[2], toneB[2], toneMix), chroma);
+      context.globalAlpha = revealAlpha * intensity * (hot ? 1 : Math.min(1, 0.88 + seed * 0.1 + light * 0.08));
+      context.fillStyle = `rgb(${Math.round(mix(red, 250, highlight))} ${Math.round(mix(green, 248, highlight))} ${Math.round(mix(blue, 246, highlight))})`;
+      context.fillRect(pixel.x + 0.55, pixel.y + 0.55, cell - 1.1, cell - 1.1);
+    }
+    context.restore();
+  };
+}
+
+// src/client/reasoning.tsx
+var import_jsx_runtime52 = __toESM(require_jsx_runtime(), 1);
+var DEFAULT_REASONING_LEVELS = [
+  { value: "low", label: "Light" },
+  { value: "medium", label: "Medium" },
+  { value: "high", label: "High" },
+  { value: "xhigh", label: "XHigh" },
+  { value: "max", label: "Ultra" }
+];
+function ReasoningPrismField() {
+  const canvasRef = (0, import_react37.useRef)(null);
+  (0, import_react37.useEffect)(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const context = canvas.getContext("2d");
+    if (!context) return;
+    const motion = matchMedia("(prefers-reduced-motion: reduce)");
+    let frame = 0;
+    let lastFrame = -Infinity;
+    let started = performance.now();
+    let paint;
+    const draw = (time2) => {
+      if (!paint) return;
+      if (time2 - lastFrame >= 33 || motion.matches) {
+        lastFrame = time2;
+        paint(context, time2 - started, motion.matches);
+      }
+      if (!motion.matches && !document.hidden) frame = requestAnimationFrame(draw);
+    };
+    const restart = () => {
+      cancelAnimationFrame(frame);
+      frame = 0;
+      lastFrame = -Infinity;
+      if (!document.hidden) draw(performance.now());
+    };
+    const resize = () => {
+      const { width, height } = canvas.getBoundingClientRect();
+      if (!width || !height) return;
+      const ratio = Math.min(devicePixelRatio || 1, 2);
+      canvas.width = Math.round(width * ratio);
+      canvas.height = Math.round(height * ratio);
+      context.setTransform(ratio, 0, 0, ratio, 0, 0);
+      paint = createPrismField(width, height);
+      restart();
+    };
+    const changeMotion = () => {
+      started = performance.now();
+      restart();
+    };
+    const observer = new ResizeObserver(resize);
+    observer.observe(canvas);
+    motion.addEventListener("change", changeMotion);
+    document.addEventListener("visibilitychange", restart);
+    resize();
+    return () => {
+      cancelAnimationFrame(frame);
+      observer.disconnect();
+      motion.removeEventListener("change", changeMotion);
+      document.removeEventListener("visibilitychange", restart);
+    };
+  }, []);
+  return /* @__PURE__ */ (0, import_jsx_runtime52.jsx)("canvas", { ref: canvasRef, className: "pf-reasoning-prism", "aria-hidden": "true" });
+}
+function reasoningChoice(levels, selected, defaultValue) {
+  const selectedIndex = levels.findIndex((level) => level.value === selected);
+  if (selectedIndex >= 0) return selectedIndex;
+  const defaultIndex = levels.findIndex((level) => level.value === defaultValue);
+  return defaultIndex >= 0 ? defaultIndex : Math.min(1, Math.max(0, levels.length - 1));
+}
+function ReasoningSlider({ levels, value, onChange }) {
+  const id = (0, import_react37.useId)();
+  const [dragging, setDragging] = (0, import_react37.useState)(false);
+  if (!levels.length) return null;
+  const index3 = reasoningChoice(levels, value);
+  const current = levels[index3];
+  const progress = levels.length > 1 ? index3 / (levels.length - 1) : 0;
+  const highest = levels.length > 1 && index3 === levels.length - 1;
+  const accent = current.value === "high" ? "#3fc7e8" : current.value === "xhigh" ? "#9b5be8" : "var(--lime)";
+  return /* @__PURE__ */ (0, import_jsx_runtime52.jsxs)("section", { className: `pf-reasoning ${highest ? "is-highest" : ""}`, "aria-label": "Reasoning settings", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime52.jsx)("span", { className: "pf-reasoning-value", "aria-hidden": "true", children: current.label }, current.value),
+    /* @__PURE__ */ (0, import_jsx_runtime52.jsxs)("div", { className: `pf-reasoning-slider ${dragging ? "is-dragging" : ""} ${highest ? "is-highest" : ""}`, style: { "--reasoning-progress": progress, "--reasoning-accent": accent }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime52.jsxs)("div", { className: "pf-reasoning-track", "aria-hidden": "true", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime52.jsx)("div", { className: "pf-reasoning-fill" }),
+        highest && /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(ReasoningPrismField, {}),
+        levels.map((level, stop) => /* @__PURE__ */ (0, import_jsx_runtime52.jsx)("span", { className: `pf-reasoning-tick ${stop <= index3 ? "is-filled" : ""}`, style: { left: `calc(10px + (100% - 20px) * ${levels.length > 1 ? stop / (levels.length - 1) : 0})` } }, level.value)),
+        /* @__PURE__ */ (0, import_jsx_runtime52.jsx)("span", { className: "pf-reasoning-knob", children: /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(Zap, { size: 13 }) })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime52.jsx)("input", { id, className: "pf-reasoning-input", type: "range", min: 0, max: Math.max(0, levels.length - 1), step: 1, value: index3, disabled: levels.length < 2, "aria-label": "Reasoning level", "aria-valuetext": current.label, onChange: (event) => onChange(levels[Number(event.target.value)].value), onPointerDown: () => setDragging(true), onPointerUp: () => setDragging(false), onPointerCancel: () => setDragging(false), onBlur: () => setDragging(false) })
+    ] })
+  ] });
+}
+
+// src/client/panels.tsx
+var import_jsx_runtime53 = __toESM(require_jsx_runtime(), 1);
+var ModelCatalogContext = (0, import_react38.createContext)({ models: [], discoveries: [], reasoningByModel: {}, onReasoningChange: () => {
+  throw new Error("ModelCatalogContext provider is required");
+} });
+var SETTINGS_NAV = [
+  { title: "Settings", items: ["General", "Account", "Privacy", "Billing", "Capabilities", "Memory", "Reflect", "Time and focus", "Claude Code"] },
+  { title: "Customize", items: ["Skills", "Connectors", "Plugins"] }
+];
+function ClaudeSettings({ onClose }) {
+  const [section, setSection] = (0, import_react38.useState)("General");
+  const [query, setQuery] = (0, import_react38.useState)("");
+  const [theme, setTheme] = (0, import_react38.useState)("System");
+  const [font, setFont] = (0, import_react38.useState)("Anthropic Serif");
+  const [width, setWidth] = (0, import_react38.useState)("Narrow");
+  const [motion, setMotion] = (0, import_react38.useState)("System");
+  const [voiceLanguage, setVoiceLanguage] = (0, import_react38.useState)("English");
+  const [voiceStyle, setVoiceStyle] = (0, import_react38.useState)("Rounded");
+  const [voiceSpeed, setVoiceSpeed] = (0, import_react38.useState)("Normal");
+  const [notifications, setNotifications] = (0, import_react38.useState)(true);
+  const dialogRef = import_react38.default.useRef(null);
+  const closeRef = import_react38.default.useRef(null);
+  const onCloseRef = import_react38.default.useRef(onClose);
+  onCloseRef.current = onClose;
+  (0, import_react38.useEffect)(() => {
+    const previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    closeRef.current?.focus();
+    const handleKey = (event) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        onCloseRef.current();
+      }
+      if (event.key !== "Tab") return;
+      const controls = dialogRef.current?.querySelectorAll("button:not(:disabled), input, select, [tabindex='0']");
+      if (!controls?.length) return;
+      const first = controls[0];
+      const last = controls[controls.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener("keydown", handleKey);
+    return () => {
+      document.removeEventListener("keydown", handleKey);
+      previousFocus?.focus();
+    };
+  }, []);
+  const choose = (label, options, value, change) => /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("div", { className: "pf-segmented", role: "group", "aria-label": label, children: options.map((option) => /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("button", { type: "button", "aria-pressed": value === option, onClick: () => change(option), children: option }, option)) });
+  const row = (title, description, control) => /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("div", { className: "pf-settings-field", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("div", { className: "pf-field-label", children: title }),
+    description && /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("p", { className: "pf-field-description", children: description }),
+    /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("div", { className: "pf-field-control", children: control })
+  ] });
+  const select = (label, value, options, change) => /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("div", { className: "pf-select-wrap", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("select", { "aria-label": label, value, onChange: (event) => change(event.target.value), children: options.map((option) => /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("option", { children: option }, option)) }),
+    /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(ChevronDown, { size: 16, "aria-hidden": "true" })
+  ] });
+  return /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("div", { className: "pf-settings-overlay", role: "presentation", onMouseDown: (event) => {
+    if (event.target === event.currentTarget) onClose();
+  }, children: /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("section", { ref: dialogRef, className: "pf-settings-dialog", role: "dialog", "aria-modal": "true", "aria-label": "Settings", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("button", { ref: closeRef, className: "pf-panel-icon-button pf-settings-close", type: "button", "aria-label": "Close settings", onClick: onClose, children: /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(X, { size: 20, "aria-hidden": "true" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("nav", { className: "pf-settings-nav", "aria-label": "Settings", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("h2", { children: "Settings" }),
+      /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("div", { className: "pf-settings-search", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(Search, { size: 16, "aria-hidden": "true" }),
+        /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("input", { "aria-label": "Search settings", placeholder: "Search", value: query, onChange: (event) => setQuery(event.target.value) })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("div", { className: "pf-settings-nav-groups", children: SETTINGS_NAV.map((group) => {
+        const items = group.items.filter((item) => item.toLowerCase().includes(query.toLowerCase()));
+        if (!items.length) return null;
+        return /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("div", { className: "pf-settings-nav-group", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("div", { className: "pf-group-label", children: group.title }),
+          /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("div", { className: "pf-settings-nav-items", children: items.map((item) => /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("button", { type: "button", "aria-current": section === item ? "page" : void 0, onClick: () => setSection(item), children: item }, item)) })
+        ] }, group.title);
+      }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("div", { className: "pf-settings-api", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(ArrowUpRight, { size: 16, "aria-hidden": "true" }),
+        "API keys"
+      ] })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("main", { className: "pf-settings-content", children: section === "General" ? /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("div", { className: "pf-settings-form", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("h3", { children: "Appearance" }),
+      row("Theme", void 0, choose("Theme", ["System", "Light", "Dark"], theme, setTheme)),
+      row("Chat font", void 0, select("Chat font", font, ["Anthropic Serif", "Sans Serif", "System"], setFont)),
+      row("Transcript width", "Maximum width of the transcript and composer columns.", choose("Transcript width", ["Narrow", "Medium", "Wide"], width, setWidth)),
+      row("Motion", "Reduce animation in streaming responses and other interface elements.", choose("Motion", ["System", "Reduced"], motion, setMotion)),
+      /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("h3", { children: "Voice" }),
+      row("Language", void 0, select("Language", voiceLanguage, ["English", "Spanish", "French", "German", "Japanese"], setVoiceLanguage)),
+      row("Style", void 0, select("Style", voiceStyle, ["Rounded", "Natural", "Professional"], setVoiceStyle)),
+      row("Speed", void 0, select("Speed", voiceSpeed, ["Slow", "Normal", "Fast"], setVoiceSpeed)),
+      /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("h3", { children: "Notifications" }),
+      row("Response completions", "Get notified when Claude has finished a response. Useful for long-running tasks.", /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("button", { className: "pf-switch", type: "button", role: "switch", "aria-checked": notifications, "aria-label": "Response completions", onClick: () => setNotifications(!notifications), children: /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("span", {}) }))
+    ] }) : /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("div", { className: "pf-settings-form", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("h3", { children: section }),
+      /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("p", { className: "pf-settings-description", children: [
+        "Manage ",
+        section.toLowerCase(),
+        " preferences for your UltraRoute session."
+      ] })
+    ] }) })
+  ] }) });
+}
+var MODEL_GROUPS = [
+  { id: "openai", name: "OpenAI", discovery: null, icon: "openai" },
+  { id: "gemini", name: "Gemini", discovery: "Gemini Web", icon: "googlegemini" },
+  { id: "claude", name: "Claude", discovery: "Claude", icon: "claude" },
+  { id: "misc", name: "Miscellaneous", discovery: null, icon: null }
+];
+function modelGroup(provider) {
+  switch (provider) {
+    case "chatgpt-web":
+      return "openai";
+    case "gemini-web":
+      return "gemini";
+    case "claude-web":
+      return "claude";
+    default:
+      return "misc";
+  }
+}
+function ModelDropdown({ selected, onSelect }) {
+  const [open2, setOpen] = (0, import_react38.useState)(false);
+  const { models, discoveries, reasoningByModel, onReasoningChange } = (0, import_react38.useContext)(ModelCatalogContext);
+  const current = models.find((model) => model.id === selected) ?? models[0];
+  const [activeGroup, setActiveGroup] = (0, import_react38.useState)(() => modelGroup(current?.provider ?? ""));
+  const group = MODEL_GROUPS.find((item) => item.id === activeGroup);
+  const visibleModels = models.filter((model) => modelGroup(model.provider) === activeGroup);
+  const discovery = discoveries.find((item) => item.name === group.discovery);
+  const largestGroupSize = Math.max(...MODEL_GROUPS.map((item) => models.filter((model) => modelGroup(model.provider) === item.id).length));
+  const menuHeight = Math.max(262, 112 + largestGroupSize * 58);
+  const triggerRef = import_react38.default.useRef(null);
+  const selectorRef = import_react38.default.useRef(null);
+  const reasoningLevels = current?.reasoningLevels ?? DEFAULT_REASONING_LEVELS;
+  const reasoningLevel = reasoningLevels[reasoningChoice(reasoningLevels, current ? reasoningByModel[current.id] : void 0, current?.defaultReasoningLevel)];
+  (0, import_react38.useEffect)(() => {
+    if (!open2) return;
+    const closeEscape = (event) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setOpen(false);
+        triggerRef.current?.focus();
+      }
+    };
+    const closeOutside = (event) => {
+      if (event.target instanceof Node && !selectorRef.current?.contains(event.target)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("pointerdown", closeOutside, true);
+    document.addEventListener("keydown", closeEscape);
+    return () => {
+      document.removeEventListener("keydown", closeEscape);
+      document.removeEventListener("pointerdown", closeOutside, true);
+    };
+  }, [open2]);
+  return /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("div", { ref: selectorRef, className: "pf-model-selector", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("button", { ref: triggerRef, className: "pf-model-trigger", type: "button", "aria-label": `Select model: ${current?.name ?? "No model selected"}`, "aria-haspopup": "dialog", "aria-expanded": open2, onClick: () => {
+      if (!open2) setActiveGroup(modelGroup(current?.provider ?? ""));
+      setOpen(!open2);
+    }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("span", { className: "pf-model-name", children: current?.name ?? "Select model" }),
+      reasoningLevel && /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("span", { className: "pf-model-effort", children: reasoningLevel.label }),
+      /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(ChevronDown, { size: 14, "aria-hidden": "true" })
+    ] }),
+    open2 && /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("div", { className: "pf-model-menu", role: "dialog", "aria-label": "Choose a model", style: { height: menuHeight }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("div", { className: "pf-model-menu-body", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("div", { className: "pf-model-provider-rail", role: "tablist", "aria-label": "Model providers", "aria-orientation": "vertical", children: MODEL_GROUPS.map((item, index3) => /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("button", { id: `pf-provider-${item.id}`, type: "button", role: "tab", className: "pf-model-provider-tab", "aria-label": item.name, title: item.name, "aria-selected": activeGroup === item.id, "aria-controls": "pf-provider-models", tabIndex: activeGroup === item.id ? 0 : -1, onClick: () => setActiveGroup(item.id), onKeyDown: (event) => {
+          let next = index3;
+          if (event.key === "ArrowDown") next = (index3 + 1) % MODEL_GROUPS.length;
+          else if (event.key === "ArrowUp") next = (index3 + MODEL_GROUPS.length - 1) % MODEL_GROUPS.length;
+          else if (event.key === "Home") next = 0;
+          else if (event.key === "End") next = MODEL_GROUPS.length - 1;
+          else return;
+          event.preventDefault();
+          setActiveGroup(MODEL_GROUPS[next].id);
+          event.currentTarget.parentElement?.querySelectorAll('[role="tab"]')[next]?.focus();
+        }, children: item.icon ? /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("img", { width: 22, height: 22, alt: "", "aria-hidden": "true", src: `https://cdn.jsdelivr.net/npm/simple-icons@13.21.0/icons/${item.icon}.svg` }) : /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(Settings, { size: 22, "aria-hidden": "true" }) }, item.id)) }),
+        /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("div", { id: "pf-provider-models", className: "pf-model-provider-content", role: "tabpanel", "aria-labelledby": `pf-provider-${activeGroup}`, children: /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("div", { className: "pf-model-provider-list", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("div", { className: "pf-menu-heading", children: [
+            group.name,
+            /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("span", { className: "pf-model-group-count", children: visibleModels.length })
+          ] }),
+          discovery?.loading && /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("div", { className: "pf-model-discovery", role: "status", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(LoaderCircle, { className: "pf-discovery-spinner", size: 15, "aria-hidden": "true" }),
+            /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("span", { children: [
+              "Loading ",
+              discovery.name,
+              " models\u2026"
+            ] })
+          ] }),
+          discovery?.error && /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("div", { className: "pf-model-discovery pf-model-error", role: "alert", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(Info, { size: 15, "aria-hidden": "true" }),
+            /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("span", { children: [
+              discovery.name,
+              ": ",
+              discovery.error
+            ] })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("div", { role: "menu", "aria-label": `${group.name} models`, children: visibleModels.map((model) => /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("button", { className: "pf-model-option", type: "button", role: "menuitemradio", "aria-checked": model.id === selected, disabled: model.disabled, onClick: () => {
+            onSelect(model.id);
+            setOpen(false);
+            triggerRef.current?.focus();
+          }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("span", { className: "pf-model-option-copy", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("span", { className: "pf-model-option-name", children: model.name }),
+              /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("span", { className: "pf-model-option-detail", children: [
+                model.provider === "google" ? "API \xB7 " : "",
+                model.availability ?? (model.effort ? `${model.effort} reasoning` : "Available")
+              ] })
+            ] }),
+            model.id === selected && /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("span", { className: "pf-model-selected", children: /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(Check, { size: 13, "aria-hidden": "true" }) })
+          ] }, model.id)) }),
+          !visibleModels.length && !discovery?.loading && !discovery?.error && /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("p", { className: "pf-model-discovery", children: "No models available." })
+        ] }) })
+      ] }),
+      current && reasoningLevel && /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(ReasoningSlider, { levels: reasoningLevels, value: reasoningLevel.value, onChange: (value) => onReasoningChange(current.id, value) })
+    ] })
+  ] });
+}
+function Sidebar({
+  onSettings,
+  isOpen,
+  onToggle,
+  threads,
+  activeThreadId,
+  onSelectThread,
+  onNewThread,
+  onDeleteThread
+}) {
+  const [accountMenuOpen, setAccountMenuOpen] = (0, import_react38.useState)(false);
+  const [languageMenuOpen, setLanguageMenuOpen] = (0, import_react38.useState)(false);
+  const [language, setLanguage] = (0, import_react38.useState)("English");
+  const [copied, setCopied] = (0, import_react38.useState)(false);
+  const profileMenuRef = import_react38.default.useRef(null);
+  const profileTriggerRef = import_react38.default.useRef(null);
+  (0, import_react38.useEffect)(() => {
+    if (!accountMenuOpen) return;
+    const closeOutside = (event) => {
+      if (!profileMenuRef.current?.contains(event.target)) {
+        setAccountMenuOpen(false);
+        setLanguageMenuOpen(false);
+      }
+    };
+    const closeEscape = (event) => {
+      if (event.key === "Escape") {
+        setAccountMenuOpen(false);
+        setLanguageMenuOpen(false);
+        profileTriggerRef.current?.focus();
+      }
+    };
+    document.addEventListener("mousedown", closeOutside);
+    document.addEventListener("keydown", closeEscape);
+    return () => {
+      document.removeEventListener("mousedown", closeOutside);
+      document.removeEventListener("keydown", closeEscape);
+    };
+  }, [accountMenuOpen]);
+  const copyAddress = async () => {
+    await navigator.clipboard.writeText("adityakqx@gmail.com");
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 1500);
+  };
+  const openSettings = () => {
+    profileTriggerRef.current?.focus();
+    setAccountMenuOpen(false);
+    onSettings();
+  };
+  if (!isOpen) return null;
+  return /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("aside", { className: "pf-sidebar", "aria-label": "Chat sidebar", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("div", { className: "pf-sidebar-header", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("span", { className: "pf-sidebar-wordmark", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("span", { className: "pf-brand-prism", "aria-hidden": "true" }),
+        "UltraRoute"
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("button", { className: "pf-panel-icon-button", type: "button", "aria-label": "Collapse sidebar", "aria-expanded": isOpen, title: "Collapse sidebar", onClick: onToggle, children: /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(PanelLeftClose, { size: 18, "aria-hidden": "true" }) })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("div", { className: "pf-sidebar-new-wrap", children: /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("button", { className: "pf-sidebar-new", type: "button", onClick: onNewThread, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(Plus, { size: 18, "aria-hidden": "true" }),
+      /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("span", { children: "New" })
+    ] }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("div", { className: "pf-sidebar-navigation", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("div", { className: "pf-group-label", children: "Workspace" }),
+      /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("div", { className: "pf-sidebar-nav-item", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(FolderOpen, { size: 18, "aria-hidden": "true" }),
+        /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("span", { children: "Projects" })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("div", { className: "pf-sidebar-nav-item", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(LayoutGrid, { size: 18, "aria-hidden": "true" }),
+        /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("span", { children: "Artifacts" })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("div", { className: "pf-sidebar-nav-item", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(CodeXml, { size: 18, "aria-hidden": "true" }),
+        /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("span", { children: "Code" })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("div", { className: "pf-sidebar-nav-item", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(SlidersHorizontal, { size: 18, "aria-hidden": "true" }),
+        /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("span", { children: "Customize" })
+      ] })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("div", { className: "pf-sidebar-threads", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("div", { className: "pf-group-label", children: "Chats and tasks" }),
+      threads.map((thread) => /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("div", { className: `pf-thread-row${thread.id === activeThreadId ? " pf-thread-row-active" : ""}`, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("button", { className: "pf-thread-select", type: "button", "aria-current": thread.id === activeThreadId ? "page" : void 0, title: thread.title, onClick: () => onSelectThread(thread.id), children: /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("span", { children: thread.title }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("button", { className: "pf-thread-delete pf-panel-icon-button", type: "button", "aria-label": `Delete chat: ${thread.title}`, title: "Delete chat", onClick: () => onDeleteThread(thread.id), children: /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(Trash, { size: 14, "aria-hidden": "true" }) })
+      ] }, thread.id))
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("div", { ref: profileMenuRef, className: "pf-profile", children: [
+      accountMenuOpen && /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("div", { className: "pf-account-menu", role: "menu", "aria-label": "Account menu", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("button", { className: "pf-account-address", type: "button", role: "menuitem", "aria-label": "Copy account email address", onClick: copyAddress, children: copied ? "Copied" : "adityakqx@gmail.com" }),
+        /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("button", { className: "pf-account-item", type: "button", role: "menuitem", onClick: openSettings, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(Settings, { size: 16, "aria-hidden": "true" }),
+          /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("span", { children: "Settings" }),
+          /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("span", { className: "pf-account-shortcut", children: "Ctrl+Shift+," })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("button", { className: "pf-account-item", type: "button", role: "menuitem", "aria-haspopup": "menu", "aria-expanded": languageMenuOpen, onClick: () => setLanguageMenuOpen(!languageMenuOpen), children: [
+          /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(Globe, { size: 16, "aria-hidden": "true" }),
+          /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("span", { children: "Language" }),
+          /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(ChevronRight, { className: "pf-account-chevron", size: 15, "aria-hidden": "true" })
+        ] }),
+        languageMenuOpen && /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("div", { className: "pf-language-menu", role: "menu", "aria-label": "Language", children: ["English", "Espa\xF1ol", "Fran\xE7ais", "Deutsch", "\u65E5\u672C\u8A9E"].map((item) => /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("button", { className: "pf-account-item", type: "button", role: "menuitemradio", "aria-checked": language === item, onClick: () => {
+          setLanguage(item);
+          setLanguageMenuOpen(false);
+        }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("span", { children: item }),
+          language === item && /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(Check, { className: "pf-account-chevron", size: 14, "aria-hidden": "true" })
+        ] }, item)) }),
+        /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("button", { className: "pf-account-item", type: "button", role: "menuitem", onClick: openSettings, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(CircleQuestionMark, { size: 16, "aria-hidden": "true" }),
+          /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("span", { children: "Get help" })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("div", { className: "pf-menu-divider", role: "separator" }),
+        /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("button", { className: "pf-account-item", type: "button", role: "menuitem", onClick: openSettings, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(ArrowUpRight, { size: 16, "aria-hidden": "true" }),
+          /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("span", { children: "Upgrade plan" })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("button", { className: "pf-account-item", type: "button", role: "menuitem", onClick: openSettings, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(Download, { size: 16, "aria-hidden": "true" }),
+          /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("span", { children: "Get apps and extensions" })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("button", { className: "pf-account-item", type: "button", role: "menuitem", onClick: openSettings, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(Info, { size: 16, "aria-hidden": "true" }),
+          /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("span", { children: "Learn more" }),
+          /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(ChevronRight, { className: "pf-account-chevron", size: 15, "aria-hidden": "true" })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("div", { className: "pf-menu-divider", role: "separator" }),
+        /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("button", { className: "pf-account-item", type: "button", role: "menuitem", onClick: openSettings, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(KeyRound, { size: 16, "aria-hidden": "true" }),
+          /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("span", { children: [
+            "Get API keys",
+            /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("small", { children: "on Claude Platform" })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(ArrowUpRight, { className: "pf-account-chevron", size: 15, "aria-hidden": "true" })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("div", { className: "pf-menu-divider", role: "separator" }),
+        /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("button", { className: "pf-account-item", type: "button", role: "menuitem", onClick: () => setAccountMenuOpen(false), children: [
+          /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(LogOut, { size: 16, "aria-hidden": "true" }),
+          /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("span", { children: "Log out" })
+        ] })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("button", { ref: profileTriggerRef, className: "pf-profile-trigger", type: "button", "aria-haspopup": "menu", "aria-expanded": accountMenuOpen, "aria-label": "UltraRoute User Free session", onClick: () => {
+        setAccountMenuOpen(!accountMenuOpen);
+        setLanguageMenuOpen(false);
+      }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("span", { className: "pf-profile-avatar", "aria-hidden": "true", children: "AG" }),
+        /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)("span", { className: "pf-profile-copy", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("span", { className: "pf-profile-name", children: "UltraRoute User" }),
+          /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("span", { className: "pf-profile-plan", children: "Free session" })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(ChevronDown, { size: 14, "aria-hidden": "true" })
+      ] })
+    ] })
+  ] });
+}
+
+// src/client/app.css
+var app_default = '@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=VT323&display=swap");\n.pf-drawer-backdrop { display: none; }\n@media (max-width: 859px) {\n  .pf-drawer-backdrop { display: block; position: absolute; inset: 64px 0 0; background: rgb(11 11 15 / 25%); z-index: 190; border: 0; border-radius: 0; }\n}\n\n:root {\n  --paper: #f2efe8;\n  --canvas: #ffffff;\n  --canvas-soft: #faf9f6;\n  --ink: #0b0b0f;\n  --graphite: #5a5a66;\n  --mute: #8b8b95;\n  --hairline: #e4e2dd;\n  --hairline-strong: #d4d2cc;\n  --lime: #7ce25b;\n  --lime-ink: #0b1a05;\n  --danger: #e44b4b;\n  --prism-ribbon: linear-gradient(90deg, #e8429b, #9b5be8 22%, #3fc7e8 48%, #b8f25f 72%, #f5b946);\n  --prism-frame: conic-gradient(from 200deg at 50% 50%, #e8429b, #f5b946 19.4%, #b8f25f 38.9%, #3fc7e8 58.3%, #9b5be8 77.8%, #e8429b);\n  --font-display: "Space Grotesk", system-ui, sans-serif;\n  --font-body: "Inter", system-ui, sans-serif;\n  --font-pixel: "VT323", monospace;\n  --shadow-card: 0 1px 0 rgb(11 11 15 / 2%), 0 8px 24px -16px rgb(11 11 15 / 18%);\n  --shadow-pop: 0 12px 32px -16px rgb(11 11 15 / 28%);\n  --shadow-focus: 0 0 0 3px rgb(63 199 232 / 32%);\n}\n\n*, *::before, *::after { box-sizing: border-box; }\nbody { margin: 0; background: var(--paper); color: var(--ink); font: 14px/1.5 var(--font-body); -webkit-font-smoothing: antialiased; }\nbutton, input, textarea, select { font: inherit; }\nbutton { transition: background 120ms ease, border-color 120ms ease; }\nbutton:disabled { cursor: not-allowed; }\nbutton:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focus-visible { outline: 2px solid #3fc7e8; outline-offset: 2px; box-shadow: var(--shadow-focus); }\n::selection { background: #b8f25f; color: var(--ink); }\nh1, h2, h3, p { margin: 0; }\n.pf-stage { height: 100dvh; padding: 22px; background: radial-gradient(circle, rgb(255 255 255 / 22%) .7px, transparent .7px) 0 0 / 5px 5px, var(--prism-frame); }\n.pf-canvas { position: relative; display: flex; height: 100%; border: 1px solid var(--hairline); border-radius: 14px; overflow: hidden; background: var(--canvas); box-shadow: var(--shadow-card); }\n.pf-main { flex: 1; min-width: 0; display: flex; flex-direction: column; overflow: hidden; }\n.pf-thread { flex: 1; min-height: 0; display: flex; flex-direction: column; background: var(--canvas); }\n.pf-topbar { min-height: 64px; height: 64px; flex-shrink: 0; border-bottom: 1px solid var(--hairline); display: flex; align-items: center; gap: 12px; padding: 0 24px; }\n.pf-topbar-title { display: flex; align-items: center; gap: 14px; min-width: 0; }\n.pf-wordmark { font: 20px/1 var(--font-pixel); letter-spacing: .16em; }\n.pf-topbar-divider { width: 1px; height: 12px; background: var(--hairline); }\n.pf-label { font-size: 11px; font-weight: 600; letter-spacing: .08em; color: var(--graphite); }\n.pf-session-badge { margin-left: auto; display: flex; gap: 7px; align-items: center; padding: 4px 8px; border: 1px solid var(--hairline); border-radius: 4px; font-size: 10px; letter-spacing: .08em; white-space: nowrap; }\n.pf-status-dot { display: inline-block; width: 6px; height: 6px; flex-shrink: 0; border-radius: 50%; background: var(--lime); }\n.pf-icon-button { width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid transparent; border-radius: 6px; background: transparent; color: var(--graphite); cursor: pointer; }\n.pf-icon-button:hover { background: var(--canvas-soft); border-color: var(--hairline); color: var(--ink); }\n.pf-desktop-hidden { display: none; }\n.pf-welcome-scroll { flex: 1; min-height: 0; overflow-y: auto; padding: 40px 32px; display: flex; }\n.pf-welcome { width: 100%; max-width: 760px; margin: auto; }\n.pf-composer-heading { display: flex; justify-content: center; margin: 28px 0 12px; text-align: center; }\n.pf-composer-heading h2 { font: 600 22px/1.25 var(--font-display); letter-spacing: -.02em; }\n.pf-composer { width: 100%; padding: 18px 16px 12px; display: flex; flex-direction: column; gap: 16px; border: 1px solid var(--hairline); border-radius: 10px; background: var(--canvas); box-shadow: var(--shadow-card); }\n.pf-composer:focus-within { border-color: transparent; background: linear-gradient(white, white) padding-box, var(--prism-ribbon) border-box; box-shadow: var(--shadow-focus); }\n.pf-composer-input { width: 100%; min-height: 76px; max-height: 200px; resize: none; border: 0; outline: 0; background: transparent; color: var(--ink); font: 14px/1.6 var(--font-body); }\n.pf-composer-input::placeholder { color: var(--mute); }\n.pf-composer-toolbar, .pf-composer-tools, .pf-composer-controls { display: flex; align-items: center; gap: 8px; min-width: 0; }\n.pf-composer-toolbar { justify-content: space-between; padding-top: 10px; border-top: 1px solid var(--hairline); flex-wrap: wrap; }\n.pf-composer-controls { margin-left: auto; }\n.pf-mode-tabs { display: flex; align-items: center; gap: 12px; font-size: 12px; color: var(--graphite); }\n.pf-mode-tabs > span { display: flex; align-items: center; gap: 5px; padding: 5px 0; }\n.pf-mode-active { position: relative; color: var(--ink); font-weight: 600; }\n.pf-mode-active::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--prism-ribbon); }\n.pf-send { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border: 1px solid transparent; border-radius: 10px; color: var(--lime-ink); background: var(--lime); cursor: pointer; box-shadow: 0 8px 18px -8px rgb(124 226 91 / 55%); flex-shrink: 0; }\n.pf-send:hover:not(:disabled) { background: #92ea73; }\n.pf-send:disabled { background: var(--canvas-soft); border-color: var(--hairline); color: var(--mute); box-shadow: none; }\n.pf-transcript { flex: 1; min-height: 0; overflow-y: auto; padding: 32px 24px 0; display: flex; flex-direction: column; }\n.pf-messages { flex: 1; display: flex; flex-direction: column; gap: 28px; width: 100%; max-width: 800px; margin: 0 auto; }\n.pf-user-message { align-self: flex-end; max-width: 85%; display: flex; flex-direction: column; gap: 8px; }\n.pf-message-label { display: flex; align-items: center; gap: 7px; font-size: 11px; font-weight: 600; letter-spacing: .08em; color: var(--graphite); }\n.pf-user-message > .pf-message-label { justify-content: flex-end; }\n.pf-user-content { padding: 14px 18px; border: 1px solid var(--hairline); border-radius: 10px; background: var(--canvas-soft); font-size: 14px; line-height: 1.65; overflow-wrap: anywhere; }\n.pf-assistant-message { width: 100%; display: flex; flex-direction: column; gap: 12px; }\n.pf-mini-prism { display: inline-block; width: 12px; height: 12px; background: var(--prism-ribbon); border-radius: 2px; }\n.pf-assistant-content { font-size: 15px; line-height: 1.75; overflow-wrap: anywhere; }\n.pf-assistant-content pre { max-width: 100%; overflow: auto; background: var(--canvas-soft); border: 1px solid var(--hairline); padding: 16px; border-radius: 6px; }\n.pf-assistant-content a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }\n.pf-message-actions { display: flex; gap: 4px; }\n.pf-error, .pf-runtime-error { border: 1px solid var(--danger); border-radius: 6px; padding: 12px 16px; color: #a22c2c; background: var(--canvas); font-size: 13px; overflow-wrap: anywhere; }\n.pf-runtime-error { margin: 12px 24px 0; flex-shrink: 0; }\n.pf-running { display: flex; gap: 8px; align-items: center; font-size: 13px; color: var(--graphite); }\n.pf-running .pf-status-dot { animation: pf-pulse 1.2s ease-in-out infinite; }\n.pf-transcript-footer { position: sticky; bottom: 0; width: 100%; max-width: 800px; margin: 0 auto; padding: 24px 0 12px; background: var(--canvas); }\n.pf-composer-note { font-size: 13px; color: var(--graphite); margin-top: 12px; }\n@keyframes pf-pulse { 50% { opacity: .35; } }\n@media (max-width: 859px) {\n  .pf-stage { padding: 14px; }\n  .pf-desktop-hidden { display: inline-flex; }\n  .pf-topbar { padding: 0 16px; }\n  .pf-welcome-scroll { padding: 24px 16px; }\n  .pf-topbar-title { gap: 10px; }\n  .pf-topbar-title .pf-label, .pf-topbar-divider { display: none; }\n  .pf-workspace-note { flex-direction: column; gap: 4px; }\n  .pf-transcript { padding: 24px 16px 0; }\n  .pf-runtime-error { margin: 12px 16px 0; }\n}\n@media (max-width: 560px) {\n  .pf-topbar { gap: 8px; }\n  .pf-wordmark { font-size: 18px; letter-spacing: .1em; }\n  .pf-session-badge { font-size: 9px; padding: 4px 6px; }\n  .pf-composer-heading { margin-top: 24px; }\n  .pf-composer-heading h2 { font-size: 20px; }\n  .pf-composer-heading .pf-label { display: none; }\n  .pf-composer { padding: 14px 12px 10px; }\n  .pf-composer-toolbar { gap: 8px; }\n  .pf-composer-controls { flex: 1 1 100%; justify-content: flex-end; }\n  .pf-composer-controls > :first-child { margin-right: auto; min-width: 0; }\n  .pf-voice-button { width: 28px; }\n  .pf-composer-note { font-size: 13px; }\n}\n@media (prefers-reduced-motion: reduce) {\n  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }\n}\n';
+
+// src/client/panels.css
+var panels_default = '/* Secondary surfaces share the canvas tokens without styling the chat workspace. */\n.pf-sidebar,\n.pf-settings-dialog,\n.pf-model-selector {\n  color: var(--ink);\n  font-family: var(--font-body);\n  font-size: 13px;\n  line-height: 1.5;\n}\n\n.pf-sidebar *,\n.pf-settings-dialog *,\n.pf-model-selector * {\n  box-sizing: border-box;\n}\n\n.pf-sidebar button,\n.pf-settings-dialog button,\n.pf-settings-dialog input,\n.pf-settings-dialog select,\n.pf-model-selector button {\n  font-family: inherit;\n  font-size: inherit;\n  line-height: inherit;\n}\n\n.pf-sidebar button,\n.pf-settings-dialog button,\n.pf-model-selector button {\n  cursor: pointer;\n}\n\n.pf-sidebar button:focus-visible,\n.pf-settings-dialog button:focus-visible,\n.pf-settings-dialog input:focus-visible,\n.pf-settings-dialog select:focus-visible,\n.pf-model-selector button:focus-visible {\n  outline: 2px solid #3fc7e8;\n  outline-offset: 2px;\n  box-shadow: var(--shadow-focus);\n}\n\n.pf-sidebar svg,\n.pf-settings-dialog svg,\n.pf-model-selector svg {\n  flex-shrink: 0;\n}\n\n.pf-panel-icon-button {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  width: 30px;\n  height: 30px;\n  flex-shrink: 0;\n  padding: 0;\n  border: 1px solid transparent;\n  border-radius: 6px;\n  color: var(--graphite);\n  background: transparent;\n}\n\n.pf-panel-icon-button:hover {\n  color: var(--ink);\n  border-color: var(--hairline);\n  background: var(--canvas-soft);\n}\n\n.pf-sidebar {\n  display: flex;\n  flex-direction: column;\n  flex: 0 0 220px;\n  width: 220px;\n  height: 100%;\n  min-height: 0;\n  background: var(--canvas);\n  border-right: 1px solid var(--hairline);\n}\n\n.pf-sidebar-header {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  flex-shrink: 0;\n  min-height: 64px;\n  padding: 12px 12px 12px 18px;\n  gap: 6px;\n}\n\n.pf-sidebar-wordmark {\n  display: inline-flex;\n  align-items: center;\n  gap: 8px;\n  color: var(--ink);\n  font-family: var(--font-pixel);\n  font-size: 23px;\n  letter-spacing: .02em;\n  line-height: 1;\n}\n\n.pf-brand-prism {\n  width: 15px;\n  height: 15px;\n  flex-shrink: 0;\n  border-radius: 3px;\n  background: var(--prism-ribbon);\n}\n\n.pf-sidebar-new-wrap {\n  padding: 8px 16px 20px;\n}\n\n.pf-sidebar-new {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  width: 100%;\n  height: 38px;\n  padding: 0 12px;\n  border: 1px solid var(--hairline-strong);\n  border-radius: 10px;\n  background: var(--canvas);\n  color: var(--ink);\n  font-weight: 500;\n}\n\n.pf-sidebar-new:hover {\n  border-color: var(--ink);\n  background: var(--canvas-soft);\n}\n\n.pf-sidebar-navigation {\n  flex-shrink: 0;\n  padding: 0 16px 16px;\n  border-bottom: 1px solid var(--hairline);\n}\n\n.pf-group-label,\n.pf-menu-heading {\n  padding: 0 10px 9px;\n  color: var(--graphite);\n  font-size: 11px;\n  font-weight: 600;\n  letter-spacing: .08em;\n  text-transform: uppercase;\n}\n\n.pf-sidebar .pf-group-label {\n  font-family: var(--font-pixel);\n  font-size: 15px;\n  font-weight: 400;\n}\n\n.pf-sidebar-nav-item {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  min-height: 38px;\n  padding: 8px 10px;\n  color: var(--graphite);\n  font-weight: 500;\n  border: 1px solid transparent;\n  border-radius: 6px;\n}\n\n.pf-sidebar-threads {\n  flex: 1;\n  min-height: 0;\n  overflow-y: auto;\n  overscroll-behavior: contain;\n  padding: 20px 16px 12px;\n}\n\n.pf-thread-row {\n  position: relative;\n  display: flex;\n  align-items: center;\n  min-width: 0;\n  margin-bottom: 3px;\n  border: 1px solid transparent;\n  border-radius: 6px;\n  color: var(--graphite);\n}\n\n.pf-thread-row:hover {\n  background: var(--canvas-soft);\n}\n\n.pf-thread-row-active {\n  color: var(--ink);\n  border-color: var(--hairline);\n  background: var(--canvas-soft);\n}\n\n.pf-thread-row-active::before,\n.pf-settings-nav-items button[aria-current="page"]::before {\n  content: "";\n  position: absolute;\n  top: 7px;\n  bottom: 7px;\n  left: -1px;\n  width: 3px;\n  border-radius: 2px;\n  background: var(--prism-ribbon);\n}\n\n.pf-thread-select {\n  display: flex;\n  align-items: center;\n  flex: 1;\n  min-width: 0;\n  min-height: 38px;\n  padding: 8px 4px 8px 10px;\n  border: 0;\n  border-radius: 6px;\n  background: transparent;\n  color: inherit;\n  text-align: left;\n}\n\n.pf-thread-select span {\n  min-width: 0;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n\n.pf-thread-select[aria-current="page"] {\n  font-weight: 500;\n}\n\n.pf-thread-delete {\n  width: 26px;\n  height: 28px;\n  margin-right: 3px;\n  color: var(--mute);\n}\n\n.pf-profile {\n  position: relative;\n  flex-shrink: 0;\n  padding: 12px;\n  border-top: 1px solid var(--hairline);\n}\n\n.pf-profile-trigger {\n  display: flex;\n  align-items: center;\n  gap: 9px;\n  width: 100%;\n  padding: 6px;\n  border: 1px solid transparent;\n  border-radius: 6px;\n  color: var(--graphite);\n  background: transparent;\n  text-align: left;\n}\n\n.pf-profile-trigger:hover,\n.pf-profile-trigger[aria-expanded="true"] {\n  background: var(--canvas-soft);\n  border-color: var(--hairline);\n}\n\n.pf-profile-avatar {\n  display: grid;\n  place-items: center;\n  width: 30px;\n  height: 30px;\n  flex-shrink: 0;\n  border: 1px solid var(--hairline);\n  border-radius: 50%;\n  background: var(--canvas-soft);\n  color: var(--ink);\n  font-family: var(--font-pixel);\n  font-size: 19px;\n}\n\n.pf-profile-copy {\n  flex: 1;\n  min-width: 0;\n}\n\n.pf-profile-name,\n.pf-profile-plan {\n  display: block;\n}\n\n.pf-profile-name {\n  color: var(--ink);\n  font-size: 13px;\n  font-weight: 500;\n}\n\n.pf-profile-plan {\n  color: var(--graphite);\n  font-size: 13px;\n}\n\n.pf-account-menu {\n  position: absolute;\n  left: 8px;\n  right: 8px;\n  bottom: calc(100% + 8px);\n  z-index: 150;\n  max-height: min(580px, calc(100dvh - 130px));\n  overflow-y: auto;\n  overscroll-behavior: contain;\n  padding: 6px;\n  border: 1px solid var(--hairline);\n  border-radius: 10px;\n  background: var(--canvas);\n  box-shadow: var(--shadow-pop);\n}\n\n.pf-account-item,\n.pf-account-address {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  width: 100%;\n  min-height: 36px;\n  padding: 8px;\n  border: 0;\n  border-radius: 6px;\n  color: var(--ink);\n  background: transparent;\n  text-align: left;\n}\n\n.pf-account-item:hover,\n.pf-account-address:hover,\n.pf-account-item[aria-checked="true"],\n.pf-account-item[aria-expanded="true"] {\n  background: var(--canvas-soft);\n}\n\n.pf-account-item > span {\n  min-width: 0;\n  overflow-wrap: anywhere;\n}\n\n.pf-account-item small {\n  display: block;\n  color: var(--graphite);\n  font-size: 13px;\n}\n\n.pf-account-address {\n  color: var(--graphite);\n  overflow-wrap: anywhere;\n  font-size: 13px;\n}\n\n.pf-account-shortcut {\n  margin-left: auto;\n  color: var(--graphite);\n  font-size: 11px;\n  white-space: nowrap;\n}\n\n.pf-account-chevron {\n  margin-left: auto;\n  color: var(--graphite);\n}\n\n.pf-menu-divider {\n  height: 1px;\n  margin: 5px 3px;\n  background: var(--hairline);\n}\n\n/* Inline nesting keeps every language option inside the sidebar/mobile canvas. */\n.pf-language-menu {\n  margin: 3px 0 6px;\n  padding: 4px;\n  border: 1px solid var(--hairline);\n  border-radius: 6px;\n  background: var(--canvas);\n}\n\n.pf-language-menu .pf-account-item {\n  padding-left: 28px;\n}\n\n.pf-model-selector {\n  position: relative;\n  min-width: 0;\n  max-width: 100%;\n  flex: 0 1 280px;\n}\n\n.pf-model-trigger {\n  display: flex;\n  align-items: center;\n  gap: 6px;\n  width: 280px;\n  max-width: 100%;\n  min-height: 30px;\n  padding: 4px 8px;\n  border: 1px solid transparent;\n  border-radius: 6px;\n  background: transparent;\n  color: var(--graphite);\n}\n\n.pf-model-trigger:hover,\n.pf-model-trigger[aria-expanded="true"] {\n  border-color: var(--hairline);\n  background: var(--canvas-soft);\n}\n\n.pf-model-name {\n  min-width: 0;\n  overflow: hidden;\n  color: var(--ink);\n  font-weight: 500;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  flex: 1;\n}\n\n.pf-model-effort {\n  color: var(--graphite);\n  font-size: 13px;\n  white-space: nowrap;\n}\n\n.pf-model-menu {\n  position: absolute;\n  right: 0;\n  bottom: calc(100% + 8px);\n  z-index: 100;\n  display: flex;\n  flex-direction: column;\n  width: 360px;\n  max-width: calc(100vw - 88px);\n  min-height: 0;\n  max-height: min(380px, calc(100dvh - 180px));\n  overflow: hidden;\n  border: 1px solid var(--hairline);\n  border-radius: 10px;\n  background: var(--canvas);\n  box-shadow: var(--shadow-pop);\n}\n\n.pf-model-menu-body { display: flex; flex: 1; min-height: 0; overflow: hidden; }\n\n.pf-model-provider-rail {\n  display: flex;\n  flex-direction: column;\n  gap: 8px;\n  flex: 0 0 56px;\n  padding: 10px 7px;\n  border-right: 1px solid var(--hairline);\n  background: var(--canvas-soft);\n}\n\n.pf-model-provider-tab {\n  position: relative;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 40px;\n  height: 40px;\n  flex-shrink: 0;\n  padding: 8px;\n  border: 1px solid transparent;\n  border-radius: 6px;\n  color: var(--graphite);\n  background: transparent;\n}\n\n.pf-model-provider-tab img { display: block; opacity: .65; }\n.pf-model-provider-tab:hover { border-color: var(--hairline-strong); }\n.pf-model-provider-tab[aria-selected="true"] { border-color: var(--hairline); background: var(--canvas); color: var(--ink); }\n.pf-model-provider-tab[aria-selected="true"] img { opacity: 1; }\n.pf-model-provider-tab[aria-selected="true"]::before { content: ""; position: absolute; left: -8px; top: 8px; bottom: 8px; width: 3px; background: var(--prism-ribbon); }\n.pf-model-provider-content { flex: 1; min-width: 0; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }\n.pf-model-provider-list { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 6px; }\n.pf-model-provider-content .pf-menu-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; }\n.pf-model-group-count { font: 18px/1 var(--font-pixel); }\n\n.pf-reasoning { display: flex; align-items: center; gap: 12px; flex-shrink: 0; padding: 6px 14px; border-top: 1px solid var(--hairline); background: var(--canvas); }\n.pf-reasoning-value { flex: 0 0 68px; font: 18px/1 var(--font-pixel); color: var(--ink); animation: pf-reasoning-label-in 200ms ease-out; }\n.pf-reasoning-slider { position: relative; flex: 1; min-width: 0; height: 38px; }\n.pf-reasoning-track { --reasoning-position: calc(10px + (100% - 20px) * var(--reasoning-progress)); position: absolute; left: 14px; right: 14px; top: 8px; height: 22px; border-radius: 6px; background: var(--canvas-soft); border: 1px solid var(--hairline); }\n.pf-reasoning-fill { position: absolute; left: 0; top: 0; bottom: 0; width: var(--reasoning-position); border-radius: 5px; background-color: var(--reasoning-accent, var(--lime)); transition: width 380ms cubic-bezier(.22, 1.35, .36, 1), background-color 300ms ease, opacity 200ms ease; overflow: hidden; }\n.pf-reasoning-tick { position: absolute; top: 50%; width: 4px; height: 4px; transform: translate(-50%, -50%); background: var(--hairline-strong); border-radius: 1px; transition: background 180ms ease; }\n.pf-reasoning-tick.is-filled { background: var(--lime-ink); }\n.pf-reasoning-knob { position: absolute; top: 0; left: var(--reasoning-position); transform: translateX(-50%); width: 20px; height: 100%; display: grid; place-items: center; border: 1px solid var(--hairline-strong); border-radius: 5px; color: var(--lime-ink); background: var(--canvas); transition: left 300ms cubic-bezier(.2, 0, 0, 1); }\n.pf-reasoning-input { position: absolute; inset: 0 15px; width: calc(100% - 30px); height: 38px; margin: 0; padding: 0; border: 0; appearance: none; background: transparent; opacity: 0; cursor: grab; touch-action: pan-y; }\n.pf-reasoning-input::-webkit-slider-thumb { appearance: none; width: 20px; height: 20px; border: 0; background: transparent; }\n.pf-reasoning-input::-moz-range-thumb { width: 20px; height: 20px; border: 0; background: transparent; }\n.pf-reasoning-input:active { cursor: grabbing; }\n.pf-reasoning-input:disabled { cursor: default; }\n.pf-reasoning-slider:has(.pf-reasoning-input:focus-visible) .pf-reasoning-track { outline: 1px solid var(--ink); outline-offset: 3px; }\n.pf-reasoning-slider.is-highest .pf-reasoning-fill { opacity: 0; }\n.pf-reasoning-slider.is-highest .pf-reasoning-tick { opacity: 0; }\n.pf-reasoning-slider.is-highest .pf-reasoning-track { background: #e8e6e2; }\n.pf-reasoning-prism { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 5px; pointer-events: none; }\n@keyframes pf-reasoning-label-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }\n\n.pf-menu-heading {\n  padding: 8px 10px;\n  margin-bottom: 3px;\n  border-bottom: 1px solid var(--hairline);\n}\n\n.pf-model-option {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 10px;\n  width: 100%;\n  min-height: 58px;\n  padding: 8px 10px;\n  border: 1px solid transparent;\n  border-radius: 6px;\n  background: transparent;\n  color: var(--ink);\n  text-align: left;\n}\n\n.pf-model-option:hover:not(:disabled),\n.pf-model-option[aria-checked="true"] {\n  border-color: var(--hairline);\n  background: var(--canvas-soft);\n}\n\n.pf-model-option:disabled {\n  color: var(--graphite);\n  opacity: .6;\n  cursor: not-allowed;\n}\n\n.pf-model-option-copy {\n  display: flex;\n  flex-direction: column;\n  min-width: 0;\n  overflow-wrap: anywhere;\n}\n\n.pf-model-option-name {\n  font-weight: 500;\n}\n\n.pf-model-option-detail {\n  color: var(--graphite);\n  font-size: 13px;\n}\n\n.pf-model-selected {\n  display: grid;\n  place-items: center;\n  flex-shrink: 0;\n  width: 19px;\n  height: 19px;\n  border-radius: 50%;\n  background: var(--lime);\n  color: var(--lime-ink);\n}\n\n.pf-model-discovery {\n  display: flex;\n  align-items: flex-start;\n  gap: 8px;\n  padding: 9px 10px;\n  color: var(--graphite);\n  overflow-wrap: anywhere;\n}\n\n.pf-model-discovery svg {\n  margin-top: 3px;\n}\n\n.pf-model-discovery span {\n  min-width: 0;\n}\n\n.pf-model-error {\n  color: #a82d2d;\n}\n\n.pf-discovery-spinner {\n  animation: pf-discovery-spin 1s linear infinite;\n}\n\n@keyframes pf-discovery-spin {\n  to { transform: rotate(360deg); }\n}\n\n.pf-settings-overlay {\n  position: fixed;\n  inset: 0;\n  z-index: 500;\n  display: grid;\n  place-items: center;\n  padding: 24px;\n  background: rgba(11, 11, 15, .48);\n}\n\n.pf-settings-dialog {\n  position: relative;\n  display: flex;\n  width: min(1000px, 100%);\n  height: min(820px, calc(100dvh - 48px));\n  overflow: hidden;\n  border: 1px solid var(--hairline);\n  border-radius: 14px;\n  background: var(--canvas);\n  box-shadow: var(--shadow-pop);\n}\n\n.pf-settings-dialog::before {\n  content: "";\n  position: absolute;\n  inset: 0 0 auto;\n  z-index: 2;\n  height: 3px;\n  background: var(--prism-ribbon);\n}\n\n.pf-settings-close {\n  position: absolute;\n  top: 16px;\n  right: 16px;\n  z-index: 3;\n  width: 34px;\n  height: 34px;\n  background: var(--canvas);\n}\n\n.pf-settings-nav {\n  display: flex;\n  flex-direction: column;\n  width: 220px;\n  flex: 0 0 220px;\n  overflow-y: auto;\n  padding: 24px 12px 16px;\n  border-right: 1px solid var(--hairline);\n}\n\n.pf-settings-nav h2 {\n  margin: 0 10px 20px;\n  font-family: var(--font-display);\n  font-size: 22px;\n  font-weight: 600;\n  letter-spacing: -.02em;\n}\n\n.pf-settings-search {\n  position: relative;\n  margin: 0 4px 24px;\n}\n\n.pf-settings-search > svg {\n  position: absolute;\n  top: 12px;\n  left: 12px;\n  color: var(--graphite);\n  pointer-events: none;\n}\n\n.pf-settings-search input {\n  width: 100%;\n  height: 40px;\n  padding: 0 12px 0 36px;\n  border: 1px solid var(--hairline);\n  border-radius: 10px;\n  background: var(--canvas);\n  color: var(--ink);\n}\n\n.pf-settings-search input::placeholder {\n  color: var(--graphite);\n}\n\n.pf-settings-search input:hover,\n.pf-select-wrap select:hover {\n  border-color: var(--ink);\n}\n\n.pf-settings-search input:focus-visible,\n.pf-select-wrap select:focus-visible {\n  border-color: transparent;\n  background: linear-gradient(var(--canvas), var(--canvas)) padding-box, var(--prism-ribbon) border-box;\n}\n\n.pf-settings-nav-group {\n  margin-bottom: 20px;\n}\n\n.pf-settings-nav-items {\n  display: flex;\n  flex-direction: column;\n  gap: 2px;\n}\n\n.pf-settings-nav-items button {\n  position: relative;\n  min-height: 38px;\n  width: 100%;\n  padding: 8px 10px;\n  border: 1px solid transparent;\n  border-radius: 6px;\n  background: transparent;\n  color: var(--graphite);\n  text-align: left;\n  font-weight: 500;\n}\n\n.pf-settings-nav-items button:hover {\n  color: var(--ink);\n  background: var(--canvas-soft);\n}\n\n.pf-settings-nav-items button[aria-current="page"] {\n  border-color: var(--hairline);\n  background: var(--canvas-soft);\n  color: var(--ink);\n}\n\n.pf-settings-api {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  margin-top: auto;\n  padding: 16px 10px 4px;\n  border-top: 1px solid var(--hairline);\n  color: var(--graphite);\n}\n\n.pf-settings-content {\n  flex: 1;\n  min-width: 0;\n  overflow-y: auto;\n  overscroll-behavior: contain;\n  padding: 32px 40px 40px;\n}\n\n.pf-settings-form {\n  width: 100%;\n  max-width: 560px;\n}\n\n.pf-settings-form h3 {\n  margin: 32px 0 4px;\n  color: var(--ink);\n  font-family: var(--font-display);\n  font-size: 22px;\n  font-weight: 600;\n  line-height: 1.25;\n  letter-spacing: -.02em;\n}\n\n.pf-settings-form h3:first-child {\n  margin-top: 4px;\n  padding-right: 30px;\n}\n\n.pf-settings-field {\n  padding: 20px 0;\n  border-bottom: 1px solid var(--hairline);\n}\n\n.pf-field-label {\n  color: var(--graphite);\n  font-size: 11px;\n  font-weight: 600;\n  letter-spacing: .08em;\n  text-transform: uppercase;\n}\n\n.pf-field-description {\n  margin: 6px 0 0;\n  color: var(--graphite);\n  font-size: 13px;\n}\n\n.pf-field-control {\n  margin-top: 10px;\n}\n\n.pf-segmented {\n  display: inline-flex;\n  flex-wrap: wrap;\n  align-items: center;\n  max-width: 100%;\n  gap: 3px;\n  padding: 3px;\n  border: 1px solid var(--hairline);\n  border-radius: 10px;\n  background: var(--canvas-soft);\n}\n\n.pf-segmented button {\n  min-height: 32px;\n  padding: 5px 12px;\n  border: 1px solid transparent;\n  border-radius: 6px;\n  background: transparent;\n  color: var(--graphite);\n}\n\n.pf-segmented button:hover {\n  color: var(--ink);\n}\n\n.pf-segmented button[aria-pressed="true"] {\n  border-color: var(--hairline);\n  background: var(--canvas);\n  box-shadow: var(--shadow-card);\n  color: var(--ink);\n}\n\n.pf-select-wrap {\n  position: relative;\n  width: min(100%, 320px);\n}\n\n.pf-select-wrap select {\n  width: 100%;\n  height: 40px;\n  appearance: none;\n  padding: 0 36px 0 12px;\n  border: 1px solid var(--hairline);\n  border-radius: 10px;\n  color: var(--ink);\n  background: var(--canvas);\n  cursor: pointer;\n}\n\n.pf-select-wrap > svg {\n  position: absolute;\n  top: 12px;\n  right: 12px;\n  color: var(--graphite);\n  pointer-events: none;\n}\n\n.pf-switch {\n  width: 42px;\n  height: 24px;\n  padding: 3px;\n  border: 1px solid var(--hairline-strong);\n  border-radius: 999px;\n  background: var(--hairline-strong);\n}\n\n.pf-switch[aria-checked="true"] {\n  background: var(--lime);\n  border-color: var(--lime);\n}\n\n.pf-switch span {\n  display: block;\n  width: 16px;\n  height: 16px;\n  border-radius: 50%;\n  background: var(--canvas);\n  transform: translateX(0);\n  transition: transform .15s ease;\n}\n\n.pf-switch[aria-checked="true"] span {\n  transform: translateX(18px);\n}\n\n.pf-settings-description {\n  margin-top: 16px;\n  color: var(--graphite);\n  font-size: 13px;\n}\n\n@media (max-width: 859px) {\n  .pf-sidebar {\n    position: absolute;\n    top: 64px;\n    bottom: 0;\n    left: 0;\n    z-index: 200;\n    height: auto;\n    box-shadow: var(--shadow-pop);\n  }\n\n  .pf-model-menu {\n    left: 0;\n    right: auto;\n  }\n\n  .pf-sidebar-header {\n    min-height: 56px;\n  }\n\n  .pf-sidebar-new-wrap {\n    padding-bottom: 12px;\n  }\n\n  .pf-sidebar-navigation {\n    padding-bottom: 10px;\n  }\n\n  .pf-sidebar-threads {\n    padding-top: 14px;\n  }\n\n  .pf-settings-overlay {\n    padding: 16px;\n  }\n\n  .pf-settings-dialog {\n    height: min(820px, calc(100dvh - 32px));\n  }\n\n  .pf-settings-nav {\n    width: 190px;\n    flex-basis: 190px;\n  }\n\n  .pf-settings-content {\n    padding: 32px 24px;\n  }\n}\n\n@media (max-width: 600px) {\n  .pf-settings-dialog {\n    flex-direction: column;\n  }\n\n  .pf-settings-nav {\n    flex: 0 0 auto;\n    width: 100%;\n    max-height: 250px;\n    padding: 18px 12px 12px;\n    border-right: 0;\n    border-bottom: 1px solid var(--hairline);\n  }\n\n  .pf-settings-nav h2 {\n    margin: 0 6px 12px;\n    padding-right: 42px;\n  }\n\n  .pf-settings-search {\n    margin: 0 4px 12px;\n  }\n\n  .pf-settings-nav-groups {\n    flex-shrink: 0;\n    display: flex;\n    gap: 16px;\n    padding: 3px 4px;\n    overflow-x: auto;\n  }\n\n  .pf-settings-nav-group {\n    flex-shrink: 0;\n    margin-bottom: 0;\n  }\n\n  .pf-settings-nav-group .pf-group-label {\n    padding: 0 4px 6px;\n  }\n\n  .pf-settings-nav-items {\n    flex-direction: row;\n    gap: 4px;\n  }\n\n  .pf-settings-nav-items button {\n    width: auto;\n    white-space: nowrap;\n  }\n\n  .pf-settings-api {\n    margin: 8px 4px 0;\n    padding: 8px 4px 0;\n  }\n\n  .pf-settings-content {\n    min-height: 0;\n    padding: 24px 20px;\n  }\n\n  .pf-settings-close {\n    top: 16px;\n    right: 12px;\n  }\n\n  .pf-model-effort {\n    max-width: 70px;\n    overflow: hidden;\n    text-overflow: ellipsis;\n  }\n}\n\n@media (max-width: 560px) {\n  .pf-model-effort { display: none; }\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .pf-discovery-spinner {\n    animation: none;\n  }\n\n  .pf-switch span {\n    transition: none;\n  }\n  .pf-reasoning *, .pf-reasoning *::after { animation: none; transition: none; }\n}\n';
 
 // src/client/app.tsx
-var import_jsx_runtime52 = __toESM(require_jsx_runtime(), 1);
-var ModelCatalogContext = (0, import_react37.createContext)({ models: [], discoveries: [] });
+var import_jsx_runtime54 = __toESM(require_jsx_runtime(), 1);
 var OTHER_MODELS = [
   {
     id: "gemini-3.5-flash-lite",
@@ -55458,858 +56200,95 @@ var OTHER_MODELS = [
     provider: "chatgpt-web"
   }
 ];
-function ModelDropdown({
-  selected,
-  onSelect
-}) {
-  const [open2, setOpen] = (0, import_react37.useState)(false);
-  const { models, discoveries } = (0, import_react37.useContext)(ModelCatalogContext);
-  const current = models.find((m) => m.id === selected) ?? models[0];
-  return /* @__PURE__ */ (0, import_jsx_runtime52.jsxs)("div", { style: { position: "relative" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime52.jsxs)(
-      "button",
-      {
-        type: "button",
-        onClick: () => setOpen(!open2),
-        style: {
-          display: "flex",
-          alignItems: "center",
-          gap: "6px",
-          background: "transparent",
-          border: "none",
-          padding: "4px 8px",
-          fontSize: "0.85rem",
-          color: "#4d4d4d",
-          cursor: "pointer",
-          borderRadius: "6px",
-          fontWeight: 500
-        },
-        children: [
-          /* @__PURE__ */ (0, import_jsx_runtime52.jsx)("span", { style: { color: "#111" }, children: current?.name ?? "Select model" }),
-          /* @__PURE__ */ (0, import_jsx_runtime52.jsx)("span", { style: { color: "#777", fontSize: "0.8rem" }, children: current?.effort }),
-          /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(ChevronDown, { size: 14, style: { opacity: 0.6 } })
-        ]
-      }
-    ),
-    open2 && /* @__PURE__ */ (0, import_jsx_runtime52.jsxs)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          bottom: "100%",
-          right: 0,
-          marginBottom: "8px",
-          background: "#ffffff",
-          border: "1px solid rgba(0, 0, 0, 0.12)",
-          borderRadius: "12px",
-          padding: "6px",
-          minWidth: "220px",
-          boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
-          maxHeight: "360px",
-          overflowY: "auto",
-          zIndex: 100
-        },
-        children: [
-          discoveries.map(({ name: name4, loading, error: error2 }) => /* @__PURE__ */ (0, import_jsx_runtime52.jsxs)(import_react37.default.Fragment, { children: [
-            loading && /* @__PURE__ */ (0, import_jsx_runtime52.jsxs)("div", { role: "status", style: { padding: "8px 12px" }, children: [
-              "Loading ",
-              name4,
-              " models\u2026"
+function ClaudeThread({ selectedModel, onSelectModel, isSidebarOpen, onToggleSidebar }) {
+  return /* @__PURE__ */ (0, import_jsx_runtime54.jsxs)(thread_exports.Root, { className: "pf-thread", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime54.jsxs)("header", { className: "pf-topbar", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime54.jsx)("button", { type: "button", className: `pf-icon-button pf-sidebar-toggle ${isSidebarOpen ? "pf-desktop-hidden" : ""}`, onClick: onToggleSidebar, title: isSidebarOpen ? "Close sidebar" : "Open sidebar", "aria-label": isSidebarOpen ? "Close sidebar" : "Open sidebar", "aria-expanded": isSidebarOpen, children: /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(PanelLeft, { size: 18 }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime54.jsxs)("div", { className: "pf-topbar-title", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime54.jsx)("span", { className: "pf-wordmark", children: "ULTRAROUTE" }),
+        /* @__PURE__ */ (0, import_jsx_runtime54.jsx)("span", { className: "pf-topbar-divider" }),
+        /* @__PURE__ */ (0, import_jsx_runtime54.jsx)("span", { className: "pf-label", children: "CHAT WORKSPACE" })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime54.jsxs)("div", { className: "pf-session-badge", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime54.jsx)("span", { className: "pf-status-dot" }),
+        "FREE SESSION"
+      ] })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(AuiIf, { condition: (s) => s.thread.isEmpty, children: /* @__PURE__ */ (0, import_jsx_runtime54.jsx)("div", { className: "pf-welcome-scroll", children: /* @__PURE__ */ (0, import_jsx_runtime54.jsxs)("div", { className: "pf-welcome", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime54.jsx)("div", { className: "pf-composer-heading", children: /* @__PURE__ */ (0, import_jsx_runtime54.jsx)("h2", { children: "What\u2019s on your mind?" }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(ClaudeComposer, { selectedModel, onSelectModel })
+    ] }) }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(AuiIf, { condition: (s) => !s.thread.isEmpty, children: /* @__PURE__ */ (0, import_jsx_runtime54.jsxs)(thread_exports.Viewport, { className: "pf-transcript", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime54.jsxs)("div", { className: "pf-messages", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(thread_exports.Messages, { components: {
+          UserMessage: () => /* @__PURE__ */ (0, import_jsx_runtime54.jsxs)(message_exports.Root, { className: "pf-user-message", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime54.jsx)("span", { className: "pf-message-label", children: "YOU" }),
+            /* @__PURE__ */ (0, import_jsx_runtime54.jsx)("div", { className: "pf-user-content", children: /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(message_exports.Parts, {}) })
+          ] }),
+          AssistantMessage: () => /* @__PURE__ */ (0, import_jsx_runtime54.jsxs)(message_exports.Root, { className: "pf-assistant-message", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime54.jsxs)("span", { className: "pf-message-label", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime54.jsx)("span", { className: "pf-mini-prism" }),
+              "ULTRAROUTE"
             ] }),
-            error2 && /* @__PURE__ */ (0, import_jsx_runtime52.jsxs)("div", { role: "alert", style: { padding: "8px 12px", color: "#b42318" }, children: [
-              name4,
-              ": ",
-              error2
+            /* @__PURE__ */ (0, import_jsx_runtime54.jsx)("div", { className: "pf-assistant-content", children: /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(message_exports.Parts, {}) }),
+            /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(message_exports.Error, { children: /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(error_exports.Root, { role: "alert", className: "pf-error", children: /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(error_exports.Message, {}) }) }),
+            /* @__PURE__ */ (0, import_jsx_runtime54.jsxs)("div", { className: "pf-message-actions", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime54.jsx)("button", { type: "button", className: "pf-icon-button", "aria-label": "Copy response", title: "Copy response", children: /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(Clipboard, { size: 15 }) }),
+              /* @__PURE__ */ (0, import_jsx_runtime54.jsx)("button", { type: "button", className: "pf-icon-button", "aria-label": "Good response", title: "Good response", children: /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(ThumbsUp, { size: 15 }) }),
+              /* @__PURE__ */ (0, import_jsx_runtime54.jsx)("button", { type: "button", className: "pf-icon-button", "aria-label": "Bad response", title: "Bad response", children: /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(ThumbsDown, { size: 15 }) })
             ] })
-          ] }, name4)),
-          models.map((m) => /* @__PURE__ */ (0, import_jsx_runtime52.jsxs)(
-            "button",
-            {
-              type: "button",
-              disabled: m.disabled,
-              onClick: () => {
-                onSelect(m.id);
-                setOpen(false);
-              },
-              style: {
-                padding: "8px 12px",
-                width: "100%",
-                border: "none",
-                textAlign: "left",
-                opacity: m.disabled ? 0.6 : 1,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                fontSize: "0.85rem",
-                color: "#111",
-                cursor: m.disabled ? "not-allowed" : "pointer",
-                borderRadius: "6px",
-                background: m.id === selected ? "rgba(0,0,0,0.05)" : "transparent"
-              },
-              children: [
-                /* @__PURE__ */ (0, import_jsx_runtime52.jsxs)("div", { style: { display: "flex", flexDirection: "column" }, children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime52.jsx)("span", { style: { fontWeight: 500 }, children: m.name }),
-                  /* @__PURE__ */ (0, import_jsx_runtime52.jsx)("span", { style: { fontSize: "0.75rem", color: "#666" }, children: m.availability ?? (m.effort ? `${m.effort} reasoning` : "Available") })
-                ] }),
-                m.id === selected && /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(Check, { size: 14, color: "#c96442" })
-              ]
-            },
-            m.id
-          ))
-        ]
-      }
-    )
+          ] })
+        } }),
+        /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(AuiIf, { condition: (s) => s.thread.isRunning, children: /* @__PURE__ */ (0, import_jsx_runtime54.jsxs)("div", { role: "status", className: "pf-running", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime54.jsx)("span", { className: "pf-status-dot" }),
+          "Working on your response\u2026"
+        ] }) })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime54.jsxs)(thread_exports.ViewportFooter, { className: "pf-transcript-footer", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(ClaudeComposer, { selectedModel, onSelectModel }),
+        /* @__PURE__ */ (0, import_jsx_runtime54.jsx)("p", { className: "pf-composer-note", children: "A fresh perspective, not the final word. Check important details." })
+      ] })
+    ] }) })
   ] });
 }
-function Sidebar({
-  isOpen,
-  onToggle,
-  threads,
-  activeThreadId,
-  onSelectThread,
-  onNewThread,
-  onDeleteThread
-}) {
-  if (!isOpen) return null;
-  return /* @__PURE__ */ (0, import_jsx_runtime52.jsxs)(
-    "aside",
-    {
-      style: {
-        width: "250px",
-        height: "100%",
-        background: "rgb(250, 250, 248)",
-        // Claude live light sidebar color
-        borderRight: "1px solid rgba(0, 0, 0, 0.08)",
-        display: "flex",
-        flexDirection: "column",
-        color: "#111",
-        flexShrink: 0,
-        fontSize: "0.88rem"
-      },
-      children: [
-        /* @__PURE__ */ (0, import_jsx_runtime52.jsxs)(
-          "div",
-          {
-            style: {
-              padding: "14px 16px 10px 16px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between"
-            },
-            children: [
-              /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(
-                "span",
-                {
-                  style: {
-                    fontFamily: "Charter, Georgia, serif",
-                    fontWeight: 700,
-                    fontSize: "1.25rem",
-                    color: "#111"
-                  },
-                  children: "UltraRoute"
-                }
-              ),
-              /* @__PURE__ */ (0, import_jsx_runtime52.jsx)("div", { style: { display: "flex", alignItems: "center", gap: "4px" }, children: /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(
-                "button",
-                {
-                  onClick: onToggle,
-                  title: "Collapse sidebar",
-                  style: {
-                    background: "transparent",
-                    border: "none",
-                    color: "#666",
-                    cursor: "pointer",
-                    padding: "6px",
-                    borderRadius: "6px",
-                    display: "flex",
-                    alignItems: "center"
-                  },
-                  children: /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(PanelLeftClose, { size: 18 })
-                }
-              ) })
-            ]
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime52.jsx)("div", { style: { padding: "0 12px 10px 12px" }, children: /* @__PURE__ */ (0, import_jsx_runtime52.jsxs)(
-          "button",
-          {
-            onClick: onNewThread,
-            style: {
-              width: "100%",
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-              background: "rgba(0, 0, 0, 0.04)",
-              border: "none",
-              color: "#111",
-              padding: "8px 12px",
-              borderRadius: "8px",
-              cursor: "pointer",
-              fontSize: "0.9rem",
-              fontWeight: 500
-            },
-            children: [
-              /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(Plus, { size: 16, color: "#c96442" }),
-              /* @__PURE__ */ (0, import_jsx_runtime52.jsx)("span", { children: "New" })
-            ]
-          }
-        ) }),
-        /* @__PURE__ */ (0, import_jsx_runtime52.jsxs)(
-          "div",
-          {
-            style: {
-              padding: "0 12px 12px 12px",
-              display: "flex",
-              flexDirection: "column",
-              gap: "2px",
-              borderBottom: "1px solid rgba(0, 0, 0, 0.06)"
-            },
-            children: [
-              /* @__PURE__ */ (0, import_jsx_runtime52.jsxs)(
-                "div",
-                {
-                  style: {
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                    padding: "6px 8px",
-                    borderRadius: "6px",
-                    color: "#444",
-                    cursor: "pointer"
-                  },
-                  children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(FolderOpen, { size: 16 }),
-                    /* @__PURE__ */ (0, import_jsx_runtime52.jsx)("span", { children: "Projects" })
-                  ]
-                }
-              ),
-              /* @__PURE__ */ (0, import_jsx_runtime52.jsxs)(
-                "div",
-                {
-                  style: {
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                    padding: "6px 8px",
-                    borderRadius: "6px",
-                    color: "#444",
-                    cursor: "pointer"
-                  },
-                  children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(LayoutGrid, { size: 16 }),
-                    /* @__PURE__ */ (0, import_jsx_runtime52.jsx)("span", { children: "Artifacts" })
-                  ]
-                }
-              ),
-              /* @__PURE__ */ (0, import_jsx_runtime52.jsxs)(
-                "div",
-                {
-                  style: {
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                    padding: "6px 8px",
-                    borderRadius: "6px",
-                    color: "#444",
-                    cursor: "pointer"
-                  },
-                  children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(CodeXml, { size: 16 }),
-                    /* @__PURE__ */ (0, import_jsx_runtime52.jsx)("span", { children: "Code" })
-                  ]
-                }
-              ),
-              /* @__PURE__ */ (0, import_jsx_runtime52.jsxs)(
-                "div",
-                {
-                  style: {
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                    padding: "6px 8px",
-                    borderRadius: "6px",
-                    color: "#444",
-                    cursor: "pointer"
-                  },
-                  children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(SlidersHorizontal, { size: 16 }),
-                    /* @__PURE__ */ (0, import_jsx_runtime52.jsx)("span", { children: "Customize" })
-                  ]
-                }
-              )
-            ]
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime52.jsxs)("div", { style: { flex: 1, overflowY: "auto", padding: "12px" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(
-            "div",
-            {
-              style: {
-                fontSize: "0.75rem",
-                color: "#888",
-                padding: "4px 8px",
-                fontWeight: 600
-              },
-              children: "Chats and tasks"
-            }
-          ),
-          threads.map((t) => {
-            const isActive = t.id === activeThreadId;
-            return /* @__PURE__ */ (0, import_jsx_runtime52.jsxs)(
-              "div",
-              {
-                onClick: () => onSelectThread(t.id),
-                style: {
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  padding: "7px 10px",
-                  borderRadius: "6px",
-                  cursor: "pointer",
-                  background: isActive ? "rgba(0, 0, 0, 0.06)" : "transparent",
-                  color: isActive ? "#111" : "#555",
-                  fontWeight: isActive ? 500 : 400,
-                  fontSize: "0.85rem",
-                  marginBottom: "2px"
-                },
-                children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(
-                    "span",
-                    {
-                      style: {
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        whiteSpace: "nowrap"
-                      },
-                      children: t.title
-                    }
-                  ),
-                  /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(
-                    "button",
-                    {
-                      onClick: (e) => {
-                        e.stopPropagation();
-                        onDeleteThread(t.id);
-                      },
-                      title: "Delete chat",
-                      style: {
-                        background: "transparent",
-                        border: "none",
-                        color: "#999",
-                        cursor: "pointer",
-                        padding: "2px"
-                      },
-                      children: /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(Trash, { size: 13 })
-                    }
-                  )
-                ]
-              },
-              t.id
-            );
-          })
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime52.jsxs)(
-          "div",
-          {
-            style: {
-              padding: "12px 16px",
-              borderTop: "1px solid rgba(0, 0, 0, 0.08)",
-              display: "flex",
-              alignItems: "center",
-              gap: "10px"
-            },
-            children: [
-              /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(
-                "div",
-                {
-                  style: {
-                    width: "26px",
-                    height: "26px",
-                    borderRadius: "50%",
-                    background: "#e5e0d6",
-                    color: "#5b5950",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontWeight: 600,
-                    fontSize: "0.75rem"
-                  },
-                  children: "AG"
-                }
-              ),
-              /* @__PURE__ */ (0, import_jsx_runtime52.jsxs)("div", { style: { flex: 1, overflow: "hidden" }, children: [
-                /* @__PURE__ */ (0, import_jsx_runtime52.jsx)("div", { style: { fontSize: "0.85rem", fontWeight: 500, color: "#111" }, children: "UltraRoute User" }),
-                /* @__PURE__ */ (0, import_jsx_runtime52.jsx)("div", { style: { fontSize: "0.75rem", color: "#888" }, children: "Free session" })
-              ] })
-            ]
-          }
-        )
-      ]
-    }
-  );
-}
-function ClaudeThread({
-  selectedModel,
-  onSelectModel,
-  isSidebarOpen,
-  onToggleSidebar
-}) {
-  return /* @__PURE__ */ (0, import_jsx_runtime52.jsxs)(
-    thread_exports.Root,
-    {
-      style: {
-        display: "flex",
-        height: "100%",
-        flexDirection: "column",
-        background: "rgb(252, 252, 251)",
-        // Claude live light background
-        color: "#111",
-        position: "relative"
-      },
-      children: [
-        /* @__PURE__ */ (0, import_jsx_runtime52.jsxs)(
-          "div",
-          {
-            style: {
-              padding: "12px 20px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between"
-            },
-            children: [
-              !isSidebarOpen && /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(
-                "button",
-                {
-                  onClick: onToggleSidebar,
-                  title: "Open sidebar",
-                  style: {
-                    background: "transparent",
-                    border: "none",
-                    color: "#666",
-                    cursor: "pointer",
-                    padding: "6px",
-                    borderRadius: "6px",
-                    display: "flex",
-                    alignItems: "center"
-                  },
-                  children: /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(PanelLeft, { size: 18 })
-                }
-              ),
-              /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(
-                "div",
-                {
-                  style: {
-                    marginLeft: "auto",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px"
-                  },
-                  children: /* @__PURE__ */ (0, import_jsx_runtime52.jsxs)(
-                    "span",
-                    {
-                      style: {
-                        fontSize: "0.8rem",
-                        color: "#666",
-                        background: "rgba(0,0,0,0.04)",
-                        padding: "3px 8px",
-                        borderRadius: "6px"
-                      },
-                      children: [
-                        "Free plan \xB7 ",
-                        /* @__PURE__ */ (0, import_jsx_runtime52.jsx)("strong", { style: { color: "#3b82f6" }, children: "UltraRoute" })
-                      ]
-                    }
-                  )
-                }
-              )
-            ]
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(AuiIf, { condition: (s) => s.thread.isEmpty, children: /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(
-          "div",
-          {
-            style: {
-              flex: 1,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              padding: "0 24px"
-            },
-            children: /* @__PURE__ */ (0, import_jsx_runtime52.jsxs)(
-              "div",
-              {
-                style: {
-                  width: "100%",
-                  maxWidth: "670px",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  gap: "28px"
-                },
-                children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime52.jsxs)(
-                    "p",
-                    {
-                      style: {
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        gap: "10px",
-                        fontSize: "2.4rem",
-                        color: "#111",
-                        fontFamily: "Charter, Georgia, serif"
-                      },
-                      children: [
-                        /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(Sparkle, { size: 30, color: "#c96442", fill: "#c96442" }),
-                        /* @__PURE__ */ (0, import_jsx_runtime52.jsx)("span", { children: "You're here!" })
-                      ]
-                    }
-                  ),
-                  /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(
-                    ClaudeComposer,
-                    {
-                      selectedModel,
-                      onSelectModel
-                    }
-                  )
-                ]
-              }
-            )
-          }
-        ) }),
-        /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(AuiIf, { condition: (s) => !s.thread.isEmpty, children: /* @__PURE__ */ (0, import_jsx_runtime52.jsxs)(
-          thread_exports.Viewport,
-          {
-            style: {
-              flex: 1,
-              overflowY: "auto",
-              display: "flex",
-              flexDirection: "column",
-              padding: "20px 16px 0 16px"
-            },
-            children: [
-              /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(
-                "div",
-                {
-                  style: {
-                    maxWidth: "670px",
-                    width: "100%",
-                    margin: "0 auto",
-                    flex: 1,
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "24px"
-                  },
-                  children: /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(
-                    thread_exports.Messages,
-                    {
-                      components: {
-                        UserMessage: () => /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(
-                          message_exports.Root,
-                          {
-                            style: {
-                              alignSelf: "flex-end",
-                              maxWidth: "80%",
-                              display: "flex",
-                              flexDirection: "column",
-                              gap: "4px"
-                            },
-                            children: /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(
-                              "div",
-                              {
-                                style: {
-                                  background: "rgb(238, 235, 227)",
-                                  color: "#111",
-                                  padding: "12px 18px",
-                                  borderRadius: "18px",
-                                  fontSize: "0.95rem",
-                                  lineHeight: "1.6",
-                                  wordBreak: "break-word"
-                                },
-                                children: /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(message_exports.Parts, {})
-                              }
-                            )
-                          }
-                        ),
-                        AssistantMessage: () => /* @__PURE__ */ (0, import_jsx_runtime52.jsxs)(
-                          message_exports.Root,
-                          {
-                            style: {
-                              alignSelf: "flex-start",
-                              width: "100%",
-                              display: "flex",
-                              flexDirection: "column",
-                              gap: "8px"
-                            },
-                            children: [
-                              /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(
-                                "div",
-                                {
-                                  style: {
-                                    color: "#111",
-                                    fontSize: "1rem",
-                                    lineHeight: "1.75",
-                                    wordBreak: "break-word"
-                                  },
-                                  children: /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(message_exports.Parts, {})
-                                }
-                              ),
-                              /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(message_exports.Error, { children: /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(
-                                error_exports.Root,
-                                {
-                                  role: "alert",
-                                  style: { color: "#b42318", fontSize: "0.9rem" },
-                                  children: /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(error_exports.Message, {})
-                                }
-                              ) }),
-                              /* @__PURE__ */ (0, import_jsx_runtime52.jsxs)("div", { style: { display: "flex", gap: "6px", opacity: 0.7 }, children: [
-                                /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(
-                                  "button",
-                                  {
-                                    style: {
-                                      background: "transparent",
-                                      border: "none",
-                                      color: "#666",
-                                      cursor: "pointer",
-                                      padding: "4px"
-                                    },
-                                    children: /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(Clipboard, { size: 15 })
-                                  }
-                                ),
-                                /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(
-                                  "button",
-                                  {
-                                    style: {
-                                      background: "transparent",
-                                      border: "none",
-                                      color: "#666",
-                                      cursor: "pointer",
-                                      padding: "4px"
-                                    },
-                                    children: /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(ThumbsUp, { size: 15 })
-                                  }
-                                ),
-                                /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(
-                                  "button",
-                                  {
-                                    style: {
-                                      background: "transparent",
-                                      border: "none",
-                                      color: "#666",
-                                      cursor: "pointer",
-                                      padding: "4px"
-                                    },
-                                    children: /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(ThumbsDown, { size: 15 })
-                                  }
-                                )
-                              ] })
-                            ]
-                          }
-                        )
-                      }
-                    }
-                  )
-                }
-              ),
-              /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(
-                thread_exports.ViewportFooter,
-                {
-                  style: {
-                    position: "sticky",
-                    bottom: 0,
-                    width: "100%",
-                    maxWidth: "670px",
-                    margin: "0 auto",
-                    padding: "16px 0 12px 0",
-                    background: "linear-gradient(to top, rgb(252, 252, 251) 80%, transparent)"
-                  },
-                  children: /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(
-                    ClaudeComposer,
-                    {
-                      selectedModel,
-                      onSelectModel
-                    }
-                  )
-                }
-              )
-            ]
-          }
-        ) })
-      ]
-    }
-  );
-}
-function ClaudeComposer({
-  selectedModel,
-  onSelectModel
-}) {
-  return /* @__PURE__ */ (0, import_jsx_runtime52.jsxs)(
-    composer_exports.Root,
-    {
-      style: {
-        display: "flex",
-        flexDirection: "column",
-        borderRadius: "20px",
-        border: "1px solid rgba(0, 0, 0, 0.12)",
-        background: "rgb(255, 255, 255)",
-        // White card surface
-        padding: "16px 18px 12px 18px",
-        gap: "12px",
-        width: "100%",
-        boxShadow: "0 4px 20px rgba(0, 0, 0, 0.06)"
-      },
-      children: [
-        /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(
-          composer_exports.Input,
-          {
-            placeholder: "How can I help you today?",
-            style: {
-              width: "100%",
-              background: "transparent",
-              border: "none",
-              color: "#111",
-              fontSize: "1rem",
-              fontFamily: "inherit",
-              outline: "none",
-              resize: "none",
-              height: 180
-            }
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime52.jsxs)(
-          "div",
-          {
-            style: {
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              paddingTop: "4px"
-            },
-            children: [
-              /* @__PURE__ */ (0, import_jsx_runtime52.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: "8px" }, children: [
-                /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(
-                  "button",
-                  {
-                    type: "button",
-                    title: "Attach file",
-                    style: {
-                      background: "transparent",
-                      border: "none",
-                      color: "#555",
-                      cursor: "pointer",
-                      padding: "4px 6px",
-                      borderRadius: "6px",
-                      display: "flex",
-                      alignItems: "center"
-                    },
-                    children: /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(Plus, { size: 16 })
-                  }
-                ),
-                /* @__PURE__ */ (0, import_jsx_runtime52.jsxs)(
-                  "div",
-                  {
-                    style: {
-                      display: "flex",
-                      background: "rgba(0, 0, 0, 0.05)",
-                      borderRadius: "8px",
-                      padding: "2px"
-                    },
-                    children: [
-                      /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(
-                        "span",
-                        {
-                          style: {
-                            fontSize: "0.8rem",
-                            padding: "3px 8px",
-                            borderRadius: "6px",
-                            background: "#fff",
-                            fontWeight: 600,
-                            color: "#111",
-                            boxShadow: "0 1px 2px rgba(0,0,0,0.06)"
-                          },
-                          children: "Chat"
-                        }
-                      ),
-                      /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(
-                        "span",
-                        {
-                          style: { fontSize: "0.8rem", padding: "3px 8px", color: "#666" },
-                          children: "Cowork"
-                        }
-                      )
-                    ]
-                  }
-                )
-              ] }),
-              /* @__PURE__ */ (0, import_jsx_runtime52.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: "8px" }, children: [
-                /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(ModelDropdown, { selected: selectedModel, onSelect: onSelectModel }),
-                /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(
-                  "button",
-                  {
-                    style: {
-                      background: "transparent",
-                      border: "none",
-                      color: "#666",
-                      cursor: "pointer",
-                      padding: "4px"
-                    },
-                    children: /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(Mic, { size: 16 })
-                  }
-                ),
-                /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(
-                  "button",
-                  {
-                    style: {
-                      background: "transparent",
-                      border: "none",
-                      color: "#666",
-                      cursor: "pointer",
-                      padding: "4px"
-                    },
-                    children: /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(AudioWaveform, { size: 16 })
-                  }
-                ),
-                /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(
-                  composer_exports.Send,
-                  {
-                    style: {
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      width: "30px",
-                      height: "30px",
-                      borderRadius: "50%",
-                      background: "#c96442",
-                      border: "none",
-                      color: "#fff",
-                      cursor: "pointer",
-                      marginLeft: "4px"
-                    },
-                    children: /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(ArrowUp, { size: 15 })
-                  }
-                )
-              ] })
-            ]
-          }
-        )
-      ]
-    }
-  );
+function ClaudeComposer({ selectedModel, onSelectModel }) {
+  return /* @__PURE__ */ (0, import_jsx_runtime54.jsxs)(composer_exports.Root, { className: "pf-composer", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(composer_exports.Input, { className: "pf-composer-input", "aria-label": "Message", placeholder: "Ask a question, explore an idea, or make something\u2026" }),
+    /* @__PURE__ */ (0, import_jsx_runtime54.jsxs)("div", { className: "pf-composer-toolbar", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime54.jsxs)("div", { className: "pf-composer-tools", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime54.jsx)("button", { type: "button", className: "pf-icon-button", title: "Attach file", "aria-label": "Attach file", children: /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(Plus, { size: 18 }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime54.jsxs)("div", { className: "pf-mode-tabs", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime54.jsxs)("span", { className: "pf-mode-active", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(MessageSquare, { size: 13 }),
+            "Chat"
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime54.jsx)("span", { children: "Cowork" })
+        ] })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime54.jsxs)("div", { className: "pf-composer-controls", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(ModelDropdown, { selected: selectedModel, onSelect: onSelectModel }),
+        /* @__PURE__ */ (0, import_jsx_runtime54.jsx)("button", { type: "button", className: "pf-icon-button pf-voice-button", "aria-label": "Voice input", title: "Voice input", children: /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(Mic, { size: 17 }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime54.jsx)("button", { type: "button", className: "pf-icon-button pf-voice-button", "aria-label": "Voice mode", title: "Voice mode", children: /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(AudioWaveform, { size: 17 }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(composer_exports.Send, { className: "pf-send", "aria-label": "Send message", title: "Send message", children: /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(ArrowUp, { size: 18 }) })
+      ] })
+    ] })
+  ] });
 }
 function App() {
-  const [selectedModel, setSelectedModel] = (0, import_react37.useState)("gemini-3.5-flash-lite");
-  const [isSidebarOpen, setIsSidebarOpen] = (0, import_react37.useState)(true);
-  const [threads, setThreads] = (0, import_react37.useState)([]);
-  const [activeThreadId, setActiveThreadId] = (0, import_react37.useState)("");
-  const [chatKey, setChatKey] = (0, import_react37.useState)(0);
-  const [runtimeError, setRuntimeError] = (0, import_react37.useState)(null);
-  const [claudeDiscovery, setClaudeDiscovery] = (0, import_react37.useState)({
+  const [settingsOpen, setSettingsOpen] = (0, import_react39.useState)(false);
+  const [selectedModel, setSelectedModel] = (0, import_react39.useState)("gemini-3.5-flash-lite");
+  const [reasoningByModel, setReasoningByModel] = (0, import_react39.useState)({});
+  const [isSidebarOpen, setIsSidebarOpen] = (0, import_react39.useState)(() => window.innerWidth >= 860);
+  const [threads, setThreads] = (0, import_react39.useState)([]);
+  const [activeThreadId, setActiveThreadId] = (0, import_react39.useState)("");
+  const [chatKey, setChatKey] = (0, import_react39.useState)(0);
+  const [runtimeError, setRuntimeError] = (0, import_react39.useState)(null);
+  const [claudeDiscovery, setClaudeDiscovery] = (0, import_react39.useState)({
     models: [],
     loading: true,
     error: null
   });
-  const [geminiDiscovery, setGeminiDiscovery] = (0, import_react37.useState)({
+  const [geminiDiscovery, setGeminiDiscovery] = (0, import_react39.useState)({
     models: [],
     loading: true,
     error: null
@@ -56319,7 +56298,7 @@ function App() {
     ...claudeDiscovery.models,
     ...geminiDiscovery.models
   ];
-  (0, import_react37.useEffect)(() => {
+  (0, import_react39.useEffect)(() => {
     const abort = new AbortController();
     async function loadClaudeModels() {
       try {
@@ -56422,11 +56401,13 @@ function App() {
       setChatKey((k) => k + 1);
     }
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime54.jsxs)(
     ModelCatalogContext.Provider,
     {
       value: {
         models,
+        reasoningByModel,
+        onReasoningChange: (model, value) => setReasoningByModel((previous) => ({ ...previous, [model]: value })),
         discoveries: [
           {
             name: "Claude",
@@ -56440,66 +56421,54 @@ function App() {
           }
         ]
       },
-      children: /* @__PURE__ */ (0, import_jsx_runtime52.jsxs)(
-        "div",
-        {
-          style: {
-            height: "100vh",
-            display: "flex",
-            overflow: "hidden",
-            fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
-          },
-          children: [
-            /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(
-              Sidebar,
+      children: [
+        /* @__PURE__ */ (0, import_jsx_runtime54.jsx)("style", { children: app_default + panels_default }),
+        /* @__PURE__ */ (0, import_jsx_runtime54.jsx)("div", { className: "pf-stage", children: /* @__PURE__ */ (0, import_jsx_runtime54.jsxs)("div", { className: "pf-canvas", children: [
+          isSidebarOpen && /* @__PURE__ */ (0, import_jsx_runtime54.jsx)("button", { type: "button", className: "pf-drawer-backdrop", "aria-label": "Close navigation", onClick: () => setIsSidebarOpen(false) }),
+          /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(
+            Sidebar,
+            {
+              onSettings: () => setSettingsOpen(true),
+              isOpen: isSidebarOpen,
+              onToggle: () => setIsSidebarOpen(false),
+              threads,
+              activeThreadId,
+              onSelectThread: (id) => {
+                setActiveThreadId(id);
+                setChatKey((k) => k + 1);
+                if (window.innerWidth < 860) setIsSidebarOpen(false);
+              },
+              onNewThread: () => {
+                handleNewThread();
+                if (window.innerWidth < 860) setIsSidebarOpen(false);
+              },
+              onDeleteThread: handleDeleteThread
+            }
+          ),
+          /* @__PURE__ */ (0, import_jsx_runtime54.jsx)("main", { className: "pf-main", children: /* @__PURE__ */ (0, import_jsx_runtime54.jsxs)(AssistantRuntimeProvider, { runtime, children: [
+            runtimeError && /* @__PURE__ */ (0, import_jsx_runtime54.jsx)("div", { role: "alert", className: "pf-runtime-error", children: runtimeError }),
+            /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(
+              ClaudeThread,
               {
-                isOpen: isSidebarOpen,
-                onToggle: () => setIsSidebarOpen(false),
-                threads,
-                activeThreadId,
-                onSelectThread: (id) => {
-                  setActiveThreadId(id);
-                  setChatKey((k) => k + 1);
+                selectedModel,
+                onSelectModel: (model) => {
+                  setRuntimeError(null);
+                  setSelectedModel(model);
                 },
-                onNewThread: handleNewThread,
-                onDeleteThread: handleDeleteThread
+                isSidebarOpen,
+                onToggleSidebar: () => setIsSidebarOpen((open2) => !open2)
               }
-            ),
-            /* @__PURE__ */ (0, import_jsx_runtime52.jsx)("main", { style: { flex: 1, overflow: "hidden" }, children: /* @__PURE__ */ (0, import_jsx_runtime52.jsxs)(AssistantRuntimeProvider, { runtime, children: [
-              runtimeError && /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(
-                "div",
-                {
-                  role: "alert",
-                  style: {
-                    color: "#b42318",
-                    background: "#fff4f2",
-                    padding: "12px 20px"
-                  },
-                  children: runtimeError
-                }
-              ),
-              /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(
-                ClaudeThread,
-                {
-                  selectedModel,
-                  onSelectModel: (model) => {
-                    setRuntimeError(null);
-                    setSelectedModel(model);
-                  },
-                  isSidebarOpen,
-                  onToggleSidebar: () => setIsSidebarOpen(true)
-                }
-              )
-            ] }) })
-          ]
-        }
-      )
+            )
+          ] }) })
+        ] }) }),
+        settingsOpen && /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(ClaudeSettings, { onClose: () => setSettingsOpen(false) })
+      ]
     }
   );
 }
 var container = document.getElementById("root");
 if (container) {
-  (0, import_client16.createRoot)(container).render(/* @__PURE__ */ (0, import_jsx_runtime52.jsx)(App, {}));
+  (0, import_client16.createRoot)(container).render(/* @__PURE__ */ (0, import_jsx_runtime54.jsx)(App, {}));
 }
 /*! Bundled license information:
 
@@ -56570,23 +56539,36 @@ lucide-react/dist/esm/shared/src/utils/hasA11yProp.mjs:
 lucide-react/dist/esm/context.mjs:
 lucide-react/dist/esm/Icon.mjs:
 lucide-react/dist/esm/createLucideIcon.mjs:
+lucide-react/dist/esm/icons/arrow-up-right.mjs:
 lucide-react/dist/esm/icons/arrow-up.mjs:
 lucide-react/dist/esm/icons/audio-waveform.mjs:
 lucide-react/dist/esm/icons/check.mjs:
 lucide-react/dist/esm/icons/chevron-down.mjs:
+lucide-react/dist/esm/icons/chevron-right.mjs:
+lucide-react/dist/esm/icons/circle-question-mark.mjs:
 lucide-react/dist/esm/icons/clipboard.mjs:
 lucide-react/dist/esm/icons/code-xml.mjs:
+lucide-react/dist/esm/icons/download.mjs:
 lucide-react/dist/esm/icons/folder-open.mjs:
+lucide-react/dist/esm/icons/globe.mjs:
+lucide-react/dist/esm/icons/info.mjs:
+lucide-react/dist/esm/icons/key-round.mjs:
 lucide-react/dist/esm/icons/layout-grid.mjs:
+lucide-react/dist/esm/icons/loader-circle.mjs:
+lucide-react/dist/esm/icons/log-out.mjs:
+lucide-react/dist/esm/icons/message-square.mjs:
 lucide-react/dist/esm/icons/mic.mjs:
 lucide-react/dist/esm/icons/panel-left-close.mjs:
 lucide-react/dist/esm/icons/panel-left.mjs:
 lucide-react/dist/esm/icons/plus.mjs:
+lucide-react/dist/esm/icons/search.mjs:
+lucide-react/dist/esm/icons/settings.mjs:
 lucide-react/dist/esm/icons/sliders-horizontal.mjs:
-lucide-react/dist/esm/icons/sparkle.mjs:
 lucide-react/dist/esm/icons/thumbs-down.mjs:
 lucide-react/dist/esm/icons/thumbs-up.mjs:
 lucide-react/dist/esm/icons/trash.mjs:
+lucide-react/dist/esm/icons/x.mjs:
+lucide-react/dist/esm/icons/zap.mjs:
 lucide-react/dist/esm/lucide-react.mjs:
   (**
    * @license lucide-react v1.49.0 - ISC

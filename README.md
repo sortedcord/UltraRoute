@@ -48,6 +48,23 @@ GEMINI_COOKIE="__Secure-1PSID=...; SAPISID=..." \
 npm run test:integration
 ```
 
+### Chat workspace
+
+```bash
+npm run build:client
+npm run server
+# Open http://localhost:3000
+```
+
+The frontend follows `prismfield-studio/DESIGN.md`: a white canvas inside a chromatic frame, Space Grotesk headings, Inter controls, VT323 wordmarks, pixel mosaics, hairline borders, and lime primary actions. Below 860px, navigation becomes a dismissible drawer; settings and model menus adapt to narrow screens. Reduced-motion preferences disable decorative animation.
+
+UI source is split between `src/client/app.tsx` / `app.css` (workspace, transcript, composer) and `src/client/panels.tsx` / `panels.css` (navigation, account/language menus, model discovery, settings). CSS is bundled as text and embedded by React, so the existing server needs no extra static route. The three fonts load from Google Fonts with local fallback stacks; no external assistant-ui stylesheet is required.
+
+Provider discovery and chat still use the existing authenticated APIs. Settings choices remain session-local controls, and the existing project/artifact/code, attachment, voice, cowork, response-feedback, and account-link placeholders are not new backend features.
+
+The model selector's reasoning slider is a compact full-width footer below the provider rail and model list. It is UI-only: selection is retained per model in `App.reasoningByModel`, not sent to a provider. Configure each `ModelOption` with `reasoningLevels: [{ value: "fast", label: "Fast" }, { value: "deep", label: "Deep" }]` and `defaultReasoningLevel: "fast"`. The slider derives its stops from that array (two, five, or any count); an empty array hides it. Omitted configuration uses `DEFAULT_REASONING_LEVELS` in `src/client/reasoning.tsx`. Only the current level appears beside the slider; animation uses lime fill, spring-like snapping, and reduced-motion support.
+The highest stop in any multi-level configuration uses a canvas pixel field (`src/client/prismField.ts`): a soft one-second right-to-left reveal, neutral fading at the left edge, and moving clusters of highlights through saturated Prismfield accent colors. Below the highest tier, Medium uses lime, High uses prism cyan/blue, and Extra high (`xhigh`) uses prism violet, with a 300ms color transition. Other configured values default to lime. The canvas renders at roughly 30fps, adapts to track size, stops while the page is hidden, and cleans up on dropdown close. Reduced-motion mode draws a static frame and disables color transitions. Palette indices wrap safely so long-running color drift cannot stop the renderer.
+
 ---
 
 ## 2. Architecture & Shared Abstractions

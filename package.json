@@ -1,0 +1,49 @@
+{
+  "name": "ultraroute",
+  "version": "1.0.0",
+  "description": "Production-quality web-session-backed AI provider adapters for ChatGPT Web, Claude Web, and Gemini Web",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "server": "node --experimental-strip-types src/server/app.ts",
+    "chatgpt:session": "node --experimental-strip-types src/server/chatgptSession.ts",
+    "test": "node --experimental-strip-types --test tests/unit/**/*.test.ts",
+    "test:integration": "node --experimental-strip-types --test tests/integration/**/*.test.ts",
+    "typecheck": "tsc --noEmit",
+    "format:check": "prettier --check src/providers/chatgpt/*.ts src/server/*.ts src/client/app.tsx tests/unit/chatgpt*.test.ts tests/unit/server*.test.ts tests/integration/*.test.ts",
+    "build:client": "esbuild src/client/app.tsx --bundle --outfile=public/bundle.js --format=esm --jsx=automatic --loader:.css=text --define:process.env.NODE_ENV=\\\"production\\\""
+  },
+  "keywords": [
+    "ai",
+    "provider",
+    "chatgpt-web",
+    "claude-web",
+    "gemini-web",
+    "ultraroute"
+  ],
+  "author": "sortedcord",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^22.20.4",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "esbuild": "^0.28.2",
+    "prettier": "^3.9.9",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@ai-sdk/google": "^4.0.87",
+    "@ai-sdk/react": "^4.0.129",
+    "@assistant-ui/ai-sdk": "^0.0.8",
+    "@assistant-ui/react": "^0.15.22",
+    "@assistant-ui/react-markdown": "^0.14.17",
+    "@assistant-ui/react-ui": "^0.1.8",
+    "ai": "^7.0.126",
+    "lucide-react": "^1.49.0",
+    "playwright": "^1.63.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  }
+}
