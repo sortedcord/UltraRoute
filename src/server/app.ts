@@ -3,6 +3,21 @@ import type { IncomingMessage, ServerResponse } from "node:http";
 import { readFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { extractChromiumCredentials } from "./autoAuth.ts";
+
+// Load environment variables from .env.local and .env
+for (const envFile of [".env.local", ".env"]) {
+  if (existsSync(envFile)) {
+    for (const line of readFileSync(envFile, "utf-8").split("\n")) {
+      const match = line.match(/^\s*([\w.-]+)\s*=\s*(.*)?\s*$/);
+      if (match) {
+        const key = match[1];
+        let val = match[2]?.trim() || "";
+        if (val.startsWith('"') && val.endsWith('"')) val = val.slice(1, -1);
+        if (!process.env[key]) process.env[key] = val;
+      }
+    }
+  }
+}
 import {
   globalProviderRegistry,
   globalModelRegistry,
@@ -11,6 +26,7 @@ import {
   ClaudeWebAdapter,
   GeminiWebAdapter,
   CHATGPT_WEB_CONSTANTS,
+  FileCookieSource,
 } from "../index.ts";
 import { createChatGptBrowserSession } from "../providers/chatgpt/browser.ts";
 import {
@@ -45,7 +61,10 @@ const liveClaude = new ClaudeWebAdapter();
 globalProviderRegistry.register(liveClaude);
 
 // Gemini Web
-const liveGemini = new GeminiWebAdapter();
+const geminiCookieSource = process.env.GEMINI_COOKIE_FILE
+  ? new FileCookieSource(process.env.GEMINI_COOKIE_FILE)
+  : undefined;
+const liveGemini = new GeminiWebAdapter({ cookieSource: geminiCookieSource });
 globalProviderRegistry.register(liveGemini);
 
 // ── HTTP Server ─────────────────────────────────────────────────────
@@ -114,7 +133,9 @@ const server = createServer(
 
     if (req.method === "GET" && url.pathname === "/api/providers/gemini-web/models") {
       try {
-        const credentials = getCredentialsForProvider("gemini-web", extractChromiumCredentials());
+        const credentials = geminiCookieSource
+          ? await geminiCookieSource.getCookie()
+          : getCredentialsForProvider("gemini-web", extractChromiumCredentials());
         const catalog = await liveGemini.discoverModels(credentials, AbortSignal.timeout(60_000));
         res.writeHead(200, { "Content-Type": "application/json", "Cache-Control": "no-store" });
         res.end(JSON.stringify(catalog));
@@ -229,10 +250,13 @@ const server = createServer(
           if (!provider)
             throw new InvalidRequestError("Provider is unavailable");
           // Refresh browser credentials on every request so sign-in/session changes take effect.
-          const credentials = getCredentialsForProvider(
-            route.providerId,
-            extractChromiumCredentials(),
-          );
+          const credentials =
+            route.providerId === "gemini-web" && geminiCookieSource
+              ? await geminiCookieSource.getCookie()
+              : getCredentialsForProvider(
+                  route.providerId,
+                  extractChromiumCredentials(),
+                );
           if (!credentials)
             throw new CredentialError("Provider credentials missing");
           const request: ChatCompletionRequest = {

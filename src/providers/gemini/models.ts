@@ -45,7 +45,9 @@ export async function discoverGeminiModels(cookieHeader: string, signal?: AbortS
     await context.addCookies(cookieHeader.split(";").flatMap(part => {
       const index = part.indexOf("=");
       if (index <= 0) return [];
-      return [{ name: part.slice(0, index).trim(), value: part.slice(index + 1).trim(), url: "https://gemini.google.com", secure: true }];
+      const name = part.slice(0, index).trim();
+      const value = part.slice(index + 1).trim();
+      return [{ name, value, domain: ".google.com", path: "/", secure: true }];
     }));
     const page = await context.newPage();
     const responsePromise = page.waitForResponse(response => response.url().includes("/batchexecute") && new URL(response.url()).searchParams.get("rpcids")?.split(",").includes("otAQ7b") === true, { timeout: 30_000 });

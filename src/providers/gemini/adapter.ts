@@ -4,6 +4,7 @@ import {
   type ChatCompletionChunk,
   type ChatCompletionRequest,
   type ChatCompletionResponse,
+  type CitationSource,
   type WebProviderCapabilities,
 } from "../../shared/index.ts";
 import {
@@ -40,14 +41,14 @@ export interface IGeminiWebTransport {
 
 export class MockGeminiWebTransport implements IGeminiWebTransport {
   private readonly responseHandler?: (payload: unknown) => Promise<string>;
-  private readonly catalogHandler?: () => Promise<GeminiModelCatalog>;
-  constructor(responseHandler?: (payload: unknown) => Promise<string>, catalogHandler?: () => Promise<GeminiModelCatalog>) {
+  private readonly catalogHandler?: (cookieHeader?: string) => Promise<GeminiModelCatalog>;
+  constructor(responseHandler?: (payload: unknown) => Promise<string>, catalogHandler?: (cookieHeader?: string) => Promise<GeminiModelCatalog>) {
     this.responseHandler = responseHandler;
     this.catalogHandler = catalogHandler;
   }
-  async discoverModels(): Promise<GeminiModelCatalog> {
+  async discoverModels(cookieHeader?: string): Promise<GeminiModelCatalog> {
     if (!this.catalogHandler) throw new WebProviderError("Mock Gemini catalog handler missing", "UPSTREAM_DRIFT", 502);
-    return this.catalogHandler();
+    return this.catalogHandler(cookieHeader);
   }
   async postStreamGenerate(payload: unknown, _cookieHeader: string, _sapisidHash?: string, _modelId?: string, _signal?: AbortSignal): Promise<string> {
     if (this.responseHandler) return this.responseHandler(payload);
@@ -113,7 +114,10 @@ export class GeminiWebAdapter extends BaseWebProviderAdapter {
   }
 
   async discoverModels(credentials: unknown, signal?: AbortSignal): Promise<GeminiModelCatalog> {
-    const cookie = typeof credentials === "string" ? credentials : await this.defaultCookieSource?.getCookie();
+    let cookie = typeof credentials === "string" && credentials.trim() ? credentials.trim() : undefined;
+    if (!cookie && this.defaultCookieSource) {
+      cookie = await this.defaultCookieSource.getCookie();
+    }
     if (!cookie) throw new CredentialError("Missing Gemini Web session cookie");
     const creds = parseGeminiCookie(cookie);
     return this.transport.discoverModels(creds.rawCookie, signal);
@@ -124,11 +128,9 @@ export class GeminiWebAdapter extends BaseWebProviderAdapter {
     credentials: unknown,
     signal?: AbortSignal
   ): Promise<ChatCompletionResponse | AsyncIterable<ChatCompletionChunk>> {
-    // 1. Resolve cookie
-    let cookieStr: string | undefined;
-    if (typeof credentials === "string" && credentials.trim()) {
-      cookieStr = credentials.trim();
-    } else if (this.defaultCookieSource) {
+    // 1. Resolve cookie: prefer explicit non-empty credentials, fallback to configured cookieSource
+    let cookieStr = typeof credentials === "string" && credentials.trim() ? credentials.trim() : undefined;
+    if (!cookieStr && this.defaultCookieSource) {
       cookieStr = await this.defaultCookieSource.getCookie();
     }
     if (!cookieStr) {
@@ -217,12 +219,16 @@ export class GeminiWebAdapter extends BaseWebProviderAdapter {
     const decoder = new GeminiRpcDecoder();
     let aggregatedText = "";
     let capturedContinuation: GeminiContinuationToken | undefined;
+    let capturedCitations: CitationSource[] | undefined;
 
     for (const chunk of decoder.feed(rawResponse)) {
       if (chunk.text && chunk.text.length > aggregatedText.length) {
         aggregatedText = chunk.text;
       }
       if (chunk.continuation) capturedContinuation = chunk.continuation;
+      if (chunk.citations && chunk.citations.length > 0) {
+        capturedCitations = chunk.citations;
+      }
     }
 
     // 8. Commit continuation state if captured
@@ -250,7 +256,11 @@ export class GeminiWebAdapter extends BaseWebProviderAdapter {
           choices: [
             {
               index: 0,
-              delta: { role: "assistant", content: aggregatedText },
+              delta: {
+                role: "assistant",
+                content: aggregatedText,
+                citations: capturedCitations,
+              },
               finish_reason: "stop",
             },
           ],
@@ -269,6 +279,7 @@ export class GeminiWebAdapter extends BaseWebProviderAdapter {
           message: {
             role: "assistant",
             content: aggregatedText,
+            citations: capturedCitations,
           },
           finish_reason: "stop",
         },

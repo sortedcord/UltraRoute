@@ -177,6 +177,8 @@ Ported first-party/attachment/topic code retains OmniRoute's MIT copyright/licen
   - Accepts `__Secure-1PSID` and `SAPISID` cookies. Automatically generates required `SAPISIDHASH` authorization headers.
   - Integrates with the **AuthoCookie sidecar pattern**: `FileCookieSource` checks file `mtime` and reloads updated cookies atomically upon rotation.
   - Discovery requires Chromium: set `GEMINI_CHROMIUM_PATH`, use `/usr/bin/chromium`, or install a Playwright browser (`npx playwright install chromium`). It opens an authenticated Gemini page using the supplied cookies; operators must resolve authentication or security challenges themselves.
+  - Automatic Chromium extraction includes the full Google authentication-cookie family, restricted to applicable Google/Gemini hosts and unexpired root-path cookies. The four-cookie PSID/SAPISID subset is insufficient for some authenticated bootstrap pages.
+  - Generation accepts either `SNlM0e` or the newer `thykhd` bootstrap token and forwards the page's `FdrFJe` as `f.sid`. Missing token/build values still fail closed; no guest or canned-answer fallback is used.
 - **Upstream Model Discovery**:
   - Gemini Web reads authenticated upstream `GetUserStatus` RPC `otAQ7b` and the actual first-party model picker to obtain account-specific names and availability, rather than assuming every model is enabled from RPC metadata alone.
   - `GET /api/providers/gemini-web/models` returns the current catalog with `Cache-Control: no-store`. UltraRoute loads Gemini Web and Claude catalogs independently on page mount: each has its own loading/error message, and one discovery failure does not remove the other's successful catalog. Disabled Gemini models remain visible with upstream availability text but cannot be selected; reload after changing account or plan.
@@ -184,6 +186,7 @@ Ported first-party/attachment/topic code retains OmniRoute's MIT copyright/licen
 - **RPC Protocol (`GeminiRpcDecoder`)**:
   - Decodes Google's length-prefixed `wrb.fr` RPC envelopes and strips `)]}'\n` anti-XSSI prefixes.
   - Extracts generated assistant text, continuation tokens (`conversationId`, `responseId`, `choiceId`), and model category routing.
+  - Grounding sources retain their raw Markdown ranges through source-url metadata. The frontend annotates the Markdown AST, highlights the cited words using alternating Prismfield accents, and adds clickable numbered citations at each range end. Bold, italic, links, and decoded entities remain formatted. Sources without usable ranges remain ordinary source chips instead of being hidden.
 - **Streaming vs. Continuation Preservation**:
   - Stateless generation streams incrementally, while stateful continuation paths buffer the complete upstream response before returning. UltraRoute preserves this distinction and does not falsely advertise token streaming on buffered stateful paths.
 

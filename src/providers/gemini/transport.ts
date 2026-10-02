@@ -4,6 +4,20 @@ import { discoverGeminiModels } from "./models.ts";
 import { GEMINI_WEB_CONSTANTS } from "./constants.ts";
 import { classifyHttpError, UpstreamDriftError } from "../../shared/errors.ts";
 
+export function parseGeminiBootstrap(html: string) {
+  const field = (name: string): string | undefined => {
+    const encoded = html.match(new RegExp(`"${name}"\\s*:\\s*("(?:[^"\\\\]|\\\\.)*")`))?.[1];
+    if (!encoded) return undefined;
+    const value: unknown = JSON.parse(encoded);
+    return typeof value === "string" && value ? value : undefined;
+  };
+  const at = field("SNlM0e") ?? field("thykhd");
+  const build = field("cfb2h");
+  const sessionId = field("FdrFJe");
+  if (!at || !build) throw new UpstreamDriftError("Gemini bootstrap token or build ID missing");
+  return { at, build, sessionId };
+}
+
 export class LiveGeminiWebTransport implements IGeminiWebTransport {
   discoverModels = discoverGeminiModels;
 
@@ -25,12 +39,10 @@ export class LiveGeminiWebTransport implements IGeminiWebTransport {
       req.on("error", reject);
       req.end();
     });
-    const at = html.match(/"SNlM0e":"([^"\\]*(?:\\.[^"\\]*)*)"/)?.[1];
-    const build = html.match(/"cfb2h":"([^"\\]*(?:\\.[^"\\]*)*)"/)?.[1];
-    if (!at || !build) throw new UpstreamDriftError("Gemini bootstrap token or build ID missing");
-    const params = new URLSearchParams({ "f.req": JSON.stringify([null, JSON.stringify(payload)]), at: JSON.parse(`"${at}"`) });
+    const { at, build, sessionId } = parseGeminiBootstrap(html);
+    const params = new URLSearchParams({ "f.req": JSON.stringify([null, JSON.stringify(payload)]), at });
     const url = new URL(GEMINI_WEB_CONSTANTS.STREAM_GENERATE_RPC, GEMINI_WEB_CONSTANTS.BASE_URL);
-    url.search = new URLSearchParams({ bl: JSON.parse(`"${build}"`), _reqid: "12345", rt: "c" }).toString();
+    url.search = new URLSearchParams({ bl: build, ...(sessionId ? { "f.sid": sessionId } : {}), _reqid: "12345", rt: "c" }).toString();
     // The upstream picker sends the opaque model ID in this protobuf JSON header.
     const modelHeader = [1, null, null, null, modelId];
     const res = await fetch(url, {

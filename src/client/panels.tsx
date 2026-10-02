@@ -271,7 +271,7 @@ export function ModelDropdown({ selected, onSelect }: { selected: string; onSele
             {discovery?.error && <div className="pf-model-discovery pf-model-error" role="alert"><Info size={15} aria-hidden="true" /><span>{discovery.name}: {discovery.error}</span></div>}
             <div role="menu" aria-label={`${group.name} models`}>
               {visibleModels.map(model => (
-                <button key={model.id} className="pf-model-option" type="button" role="menuitemradio" aria-checked={model.id === selected} disabled={model.disabled} onClick={() => { onSelect(model.id); setOpen(false); triggerRef.current?.focus(); }}>
+                <button key={model.id} className="pf-model-option" type="button" role="menuitemradio" aria-checked={model.id === selected} disabled={model.disabled} onClick={() => { onSelect(model.id); }}>
                   <span className="pf-model-option-copy">
                     <span className="pf-model-option-name">{model.name}</span>
                     <span className="pf-model-option-detail">{model.provider === "google" ? "API · " : ""}{model.availability ?? (model.effort ? `${model.effort} reasoning` : "Available")}</span>
