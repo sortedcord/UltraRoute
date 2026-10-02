@@ -497,6 +497,189 @@ var require_react = __commonJS({
   }
 });
 
+// node_modules/react-dom/cjs/react-dom.production.js
+var require_react_dom_production = __commonJS({
+  "node_modules/react-dom/cjs/react-dom.production.js"(exports) {
+    "use strict";
+    var React17 = require_react();
+    function formatProdErrorMessage(code2) {
+      var url = "https://react.dev/errors/" + code2;
+      if (1 < arguments.length) {
+        url += "?args[]=" + encodeURIComponent(arguments[1]);
+        for (var i = 2; i < arguments.length; i++)
+          url += "&args[]=" + encodeURIComponent(arguments[i]);
+      }
+      return "Minified React error #" + code2 + "; visit " + url + " for the full message or use the non-minified dev environment for full errors and additional helpful warnings.";
+    }
+    function noop5() {
+    }
+    var Internals = {
+      d: {
+        f: noop5,
+        r: function() {
+          throw Error(formatProdErrorMessage(522));
+        },
+        D: noop5,
+        C: noop5,
+        L: noop5,
+        m: noop5,
+        X: noop5,
+        S: noop5,
+        M: noop5
+      },
+      p: 0,
+      findDOMNode: null
+    };
+    var REACT_PORTAL_TYPE = /* @__PURE__ */ Symbol.for("react.portal");
+    var REACT_RECOVERABLE_TYPE = /* @__PURE__ */ Symbol.for("react.recoverable");
+    var REACT_OPTIMISTIC_KEY = /* @__PURE__ */ Symbol.for("react.optimistic_key");
+    function createPortal$1(children, containerInfo, implementation) {
+      var key = 3 < arguments.length && void 0 !== arguments[3] ? arguments[3] : null;
+      return {
+        $$typeof: REACT_PORTAL_TYPE,
+        key: null == key ? null : key === REACT_OPTIMISTIC_KEY ? REACT_OPTIMISTIC_KEY : "" + key,
+        children,
+        containerInfo,
+        implementation
+      };
+    }
+    var ReactSharedInternals = React17.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
+    function getCrossOriginStringAs(as, input) {
+      if ("font" === as) return "";
+      if ("string" === typeof input)
+        return "use-credentials" === input ? input : "";
+    }
+    exports.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE = Internals;
+    exports.browser = function(reason) {
+      return { $$typeof: REACT_RECOVERABLE_TYPE, _reason: reason };
+    };
+    exports.createPortal = function(children, container2) {
+      var key = 2 < arguments.length && void 0 !== arguments[2] ? arguments[2] : null;
+      if (!container2 || 1 !== container2.nodeType && 9 !== container2.nodeType && 11 !== container2.nodeType)
+        throw Error(formatProdErrorMessage(299));
+      return createPortal$1(children, container2, null, key);
+    };
+    exports.flushSync = function(fn) {
+      var previousTransition = ReactSharedInternals.T, previousUpdatePriority = Internals.p;
+      try {
+        if (ReactSharedInternals.T = null, Internals.p = 2, fn) return fn();
+      } finally {
+        ReactSharedInternals.T = previousTransition, Internals.p = previousUpdatePriority, Internals.d.f();
+      }
+    };
+    exports.preconnect = function(href, options) {
+      "string" === typeof href && (options ? (options = options.crossOrigin, options = "string" === typeof options ? "use-credentials" === options ? options : "" : void 0) : options = null, Internals.d.C(href, options));
+    };
+    exports.prefetchDNS = function(href) {
+      "string" === typeof href && Internals.d.D(href);
+    };
+    exports.preinit = function(href, options) {
+      if ("string" === typeof href && options && "string" === typeof options.as) {
+        var as = options.as, crossOrigin = getCrossOriginStringAs(as, options.crossOrigin), integrity = "string" === typeof options.integrity ? options.integrity : void 0, fetchPriority = "string" === typeof options.fetchPriority ? options.fetchPriority : void 0;
+        "style" === as ? Internals.d.S(
+          href,
+          "string" === typeof options.precedence ? options.precedence : void 0,
+          {
+            crossOrigin,
+            integrity,
+            fetchPriority
+          }
+        ) : "script" === as && Internals.d.X(href, {
+          crossOrigin,
+          integrity,
+          fetchPriority,
+          nonce: "string" === typeof options.nonce ? options.nonce : void 0
+        });
+      }
+    };
+    exports.preinitModule = function(href, options) {
+      if ("string" === typeof href)
+        if ("object" === typeof options && null !== options) {
+          if (null == options.as || "script" === options.as) {
+            var crossOrigin = getCrossOriginStringAs(
+              options.as,
+              options.crossOrigin
+            );
+            Internals.d.M(href, {
+              crossOrigin,
+              integrity: "string" === typeof options.integrity ? options.integrity : void 0,
+              nonce: "string" === typeof options.nonce ? options.nonce : void 0,
+              fetchPriority: "string" === typeof options.fetchPriority ? options.fetchPriority : void 0
+            });
+          }
+        } else null == options && Internals.d.M(href);
+    };
+    exports.preload = function(href, options) {
+      if ("string" === typeof href && "object" === typeof options && null !== options && "string" === typeof options.as) {
+        var as = options.as, crossOrigin = getCrossOriginStringAs(as, options.crossOrigin);
+        Internals.d.L(href, as, {
+          crossOrigin,
+          integrity: "string" === typeof options.integrity ? options.integrity : void 0,
+          nonce: "string" === typeof options.nonce ? options.nonce : void 0,
+          type: "string" === typeof options.type ? options.type : void 0,
+          fetchPriority: "string" === typeof options.fetchPriority ? options.fetchPriority : void 0,
+          referrerPolicy: "string" === typeof options.referrerPolicy ? options.referrerPolicy : void 0,
+          imageSrcSet: "string" === typeof options.imageSrcSet ? options.imageSrcSet : void 0,
+          imageSizes: "string" === typeof options.imageSizes ? options.imageSizes : void 0,
+          media: "string" === typeof options.media ? options.media : void 0
+        });
+      }
+    };
+    exports.preloadModule = function(href, options) {
+      if ("string" === typeof href)
+        if (options) {
+          var crossOrigin = getCrossOriginStringAs(options.as, options.crossOrigin);
+          Internals.d.m(href, {
+            as: "string" === typeof options.as && "script" !== options.as ? options.as : void 0,
+            crossOrigin,
+            integrity: "string" === typeof options.integrity ? options.integrity : void 0,
+            nonce: "string" === typeof options.nonce ? options.nonce : void 0,
+            fetchPriority: "string" === typeof options.fetchPriority ? options.fetchPriority : void 0
+          });
+        } else Internals.d.m(href);
+    };
+    exports.requestFormReset = function(form) {
+      Internals.d.r(form);
+    };
+    exports.unstable_batchedUpdates = function(fn, a) {
+      return fn(a);
+    };
+    exports.useFormState = function(action, initialState, permalink) {
+      return ReactSharedInternals.H.useFormState(action, initialState, permalink);
+    };
+    exports.useFormStatus = function() {
+      return ReactSharedInternals.H.useHostTransitionStatus();
+    };
+    exports.version = "19.3.0";
+  }
+});
+
+// node_modules/react-dom/index.js
+var require_react_dom = __commonJS({
+  "node_modules/react-dom/index.js"(exports, module) {
+    "use strict";
+    function checkDCE() {
+      if (typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ === "undefined" || typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.checkDCE !== "function") {
+        return;
+      }
+      if (false) {
+        throw new Error("^_^");
+      }
+      try {
+        __REACT_DEVTOOLS_GLOBAL_HOOK__.checkDCE(checkDCE);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    if (true) {
+      checkDCE();
+      module.exports = require_react_dom_production();
+    } else {
+      module.exports = null;
+    }
+  }
+});
+
 // node_modules/scheduler/cjs/scheduler.production.js
 var require_scheduler_production = __commonJS({
   "node_modules/scheduler/cjs/scheduler.production.js"(exports) {
@@ -776,189 +959,6 @@ var require_scheduler = __commonJS({
     "use strict";
     if (true) {
       module.exports = require_scheduler_production();
-    } else {
-      module.exports = null;
-    }
-  }
-});
-
-// node_modules/react-dom/cjs/react-dom.production.js
-var require_react_dom_production = __commonJS({
-  "node_modules/react-dom/cjs/react-dom.production.js"(exports) {
-    "use strict";
-    var React17 = require_react();
-    function formatProdErrorMessage(code2) {
-      var url = "https://react.dev/errors/" + code2;
-      if (1 < arguments.length) {
-        url += "?args[]=" + encodeURIComponent(arguments[1]);
-        for (var i = 2; i < arguments.length; i++)
-          url += "&args[]=" + encodeURIComponent(arguments[i]);
-      }
-      return "Minified React error #" + code2 + "; visit " + url + " for the full message or use the non-minified dev environment for full errors and additional helpful warnings.";
-    }
-    function noop5() {
-    }
-    var Internals = {
-      d: {
-        f: noop5,
-        r: function() {
-          throw Error(formatProdErrorMessage(522));
-        },
-        D: noop5,
-        C: noop5,
-        L: noop5,
-        m: noop5,
-        X: noop5,
-        S: noop5,
-        M: noop5
-      },
-      p: 0,
-      findDOMNode: null
-    };
-    var REACT_PORTAL_TYPE = /* @__PURE__ */ Symbol.for("react.portal");
-    var REACT_RECOVERABLE_TYPE = /* @__PURE__ */ Symbol.for("react.recoverable");
-    var REACT_OPTIMISTIC_KEY = /* @__PURE__ */ Symbol.for("react.optimistic_key");
-    function createPortal$1(children, containerInfo, implementation) {
-      var key = 3 < arguments.length && void 0 !== arguments[3] ? arguments[3] : null;
-      return {
-        $$typeof: REACT_PORTAL_TYPE,
-        key: null == key ? null : key === REACT_OPTIMISTIC_KEY ? REACT_OPTIMISTIC_KEY : "" + key,
-        children,
-        containerInfo,
-        implementation
-      };
-    }
-    var ReactSharedInternals = React17.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
-    function getCrossOriginStringAs(as, input) {
-      if ("font" === as) return "";
-      if ("string" === typeof input)
-        return "use-credentials" === input ? input : "";
-    }
-    exports.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE = Internals;
-    exports.browser = function(reason) {
-      return { $$typeof: REACT_RECOVERABLE_TYPE, _reason: reason };
-    };
-    exports.createPortal = function(children, container2) {
-      var key = 2 < arguments.length && void 0 !== arguments[2] ? arguments[2] : null;
-      if (!container2 || 1 !== container2.nodeType && 9 !== container2.nodeType && 11 !== container2.nodeType)
-        throw Error(formatProdErrorMessage(299));
-      return createPortal$1(children, container2, null, key);
-    };
-    exports.flushSync = function(fn) {
-      var previousTransition = ReactSharedInternals.T, previousUpdatePriority = Internals.p;
-      try {
-        if (ReactSharedInternals.T = null, Internals.p = 2, fn) return fn();
-      } finally {
-        ReactSharedInternals.T = previousTransition, Internals.p = previousUpdatePriority, Internals.d.f();
-      }
-    };
-    exports.preconnect = function(href, options) {
-      "string" === typeof href && (options ? (options = options.crossOrigin, options = "string" === typeof options ? "use-credentials" === options ? options : "" : void 0) : options = null, Internals.d.C(href, options));
-    };
-    exports.prefetchDNS = function(href) {
-      "string" === typeof href && Internals.d.D(href);
-    };
-    exports.preinit = function(href, options) {
-      if ("string" === typeof href && options && "string" === typeof options.as) {
-        var as = options.as, crossOrigin = getCrossOriginStringAs(as, options.crossOrigin), integrity = "string" === typeof options.integrity ? options.integrity : void 0, fetchPriority = "string" === typeof options.fetchPriority ? options.fetchPriority : void 0;
-        "style" === as ? Internals.d.S(
-          href,
-          "string" === typeof options.precedence ? options.precedence : void 0,
-          {
-            crossOrigin,
-            integrity,
-            fetchPriority
-          }
-        ) : "script" === as && Internals.d.X(href, {
-          crossOrigin,
-          integrity,
-          fetchPriority,
-          nonce: "string" === typeof options.nonce ? options.nonce : void 0
-        });
-      }
-    };
-    exports.preinitModule = function(href, options) {
-      if ("string" === typeof href)
-        if ("object" === typeof options && null !== options) {
-          if (null == options.as || "script" === options.as) {
-            var crossOrigin = getCrossOriginStringAs(
-              options.as,
-              options.crossOrigin
-            );
-            Internals.d.M(href, {
-              crossOrigin,
-              integrity: "string" === typeof options.integrity ? options.integrity : void 0,
-              nonce: "string" === typeof options.nonce ? options.nonce : void 0,
-              fetchPriority: "string" === typeof options.fetchPriority ? options.fetchPriority : void 0
-            });
-          }
-        } else null == options && Internals.d.M(href);
-    };
-    exports.preload = function(href, options) {
-      if ("string" === typeof href && "object" === typeof options && null !== options && "string" === typeof options.as) {
-        var as = options.as, crossOrigin = getCrossOriginStringAs(as, options.crossOrigin);
-        Internals.d.L(href, as, {
-          crossOrigin,
-          integrity: "string" === typeof options.integrity ? options.integrity : void 0,
-          nonce: "string" === typeof options.nonce ? options.nonce : void 0,
-          type: "string" === typeof options.type ? options.type : void 0,
-          fetchPriority: "string" === typeof options.fetchPriority ? options.fetchPriority : void 0,
-          referrerPolicy: "string" === typeof options.referrerPolicy ? options.referrerPolicy : void 0,
-          imageSrcSet: "string" === typeof options.imageSrcSet ? options.imageSrcSet : void 0,
-          imageSizes: "string" === typeof options.imageSizes ? options.imageSizes : void 0,
-          media: "string" === typeof options.media ? options.media : void 0
-        });
-      }
-    };
-    exports.preloadModule = function(href, options) {
-      if ("string" === typeof href)
-        if (options) {
-          var crossOrigin = getCrossOriginStringAs(options.as, options.crossOrigin);
-          Internals.d.m(href, {
-            as: "string" === typeof options.as && "script" !== options.as ? options.as : void 0,
-            crossOrigin,
-            integrity: "string" === typeof options.integrity ? options.integrity : void 0,
-            nonce: "string" === typeof options.nonce ? options.nonce : void 0,
-            fetchPriority: "string" === typeof options.fetchPriority ? options.fetchPriority : void 0
-          });
-        } else Internals.d.m(href);
-    };
-    exports.requestFormReset = function(form) {
-      Internals.d.r(form);
-    };
-    exports.unstable_batchedUpdates = function(fn, a) {
-      return fn(a);
-    };
-    exports.useFormState = function(action, initialState, permalink) {
-      return ReactSharedInternals.H.useFormState(action, initialState, permalink);
-    };
-    exports.useFormStatus = function() {
-      return ReactSharedInternals.H.useHostTransitionStatus();
-    };
-    exports.version = "19.3.0";
-  }
-});
-
-// node_modules/react-dom/index.js
-var require_react_dom = __commonJS({
-  "node_modules/react-dom/index.js"(exports, module) {
-    "use strict";
-    function checkDCE() {
-      if (typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ === "undefined" || typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.checkDCE !== "function") {
-        return;
-      }
-      if (false) {
-        throw new Error("^_^");
-      }
-      try {
-        __REACT_DEVTOOLS_GLOBAL_HOOK__.checkDCE(checkDCE);
-      } catch (err) {
-        console.error(err);
-      }
-    }
-    if (true) {
-      checkDCE();
-      module.exports = require_react_dom_production();
     } else {
       module.exports = null;
     }
@@ -15101,6 +15101,7 @@ var require_extend = __commonJS({
 
 // src/client/app.tsx
 var import_react57 = __toESM(require_react(), 1);
+var import_react_dom = __toESM(require_react_dom(), 1);
 var import_client16 = __toESM(require_client(), 1);
 
 // node_modules/@assistant-ui/tap/dist/core/helpers/execution-context.js
@@ -56796,35 +56797,119 @@ var __iconData3 = {
 __iconData3.node;
 var AudioWaveform = createLucideIcon(__iconData3);
 
-// node_modules/lucide-react/dist/esm/icons/check.mjs
+// node_modules/lucide-react/dist/esm/icons/blocks.mjs
 var __iconData4 = {
+  name: "blocks",
+  size: 24,
+  node: [
+    [
+      "path",
+      {
+        d: "M10 22V7a1 1 0 0 0-1-1H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5a1 1 0 0 0-1-1H2",
+        key: "1ah6g2"
+      }
+    ],
+    ["rect", { x: "14", y: "2", width: "8", height: "8", rx: "1", key: "88lufb" }]
+  ]
+};
+__iconData4.node;
+var Blocks = createLucideIcon(__iconData4);
+
+// node_modules/lucide-react/dist/esm/icons/book-open-check.mjs
+var __iconData5 = {
+  name: "book-open-check",
+  size: 24,
+  node: [
+    ["path", { d: "M12 5v16", key: "1f6ucr" }],
+    ["path", { d: "m16 12 2 2 4-4", key: "mdajum" }],
+    [
+      "path",
+      {
+        d: "M22 6V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2h4.001A2 2 0 0022 17v-1.344",
+        key: "144kbk"
+      }
+    ]
+  ]
+};
+__iconData5.node;
+var BookOpenCheck = createLucideIcon(__iconData5);
+
+// node_modules/lucide-react/dist/esm/icons/brain-circuit.mjs
+var __iconData6 = {
+  name: "brain-circuit",
+  size: 24,
+  node: [
+    [
+      "path",
+      {
+        d: "M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z",
+        key: "l5xja"
+      }
+    ],
+    ["path", { d: "M9 13a4.5 4.5 0 0 0 3-4", key: "10igwf" }],
+    ["path", { d: "M6.003 5.125A3 3 0 0 0 6.401 6.5", key: "105sqy" }],
+    ["path", { d: "M3.477 10.896a4 4 0 0 1 .585-.396", key: "ql3yin" }],
+    ["path", { d: "M6 18a4 4 0 0 1-1.967-.516", key: "2e4loj" }],
+    ["path", { d: "M12 13h4", key: "1ku699" }],
+    ["path", { d: "M12 18h6a2 2 0 0 1 2 2v1", key: "105ag5" }],
+    ["path", { d: "M12 8h8", key: "1lhi5i" }],
+    ["path", { d: "M16 8V5a2 2 0 0 1 2-2", key: "u6izg6" }],
+    ["circle", { cx: "16", cy: "13", r: ".5", key: "ry7gng" }],
+    ["circle", { cx: "18", cy: "3", r: ".5", key: "1aiba7" }],
+    ["circle", { cx: "20", cy: "21", r: ".5", key: "yhc1fs" }],
+    ["circle", { cx: "20", cy: "8", r: ".5", key: "1e43v0" }]
+  ]
+};
+__iconData6.node;
+var BrainCircuit = createLucideIcon(__iconData6);
+
+// node_modules/lucide-react/dist/esm/icons/camera.mjs
+var __iconData7 = {
+  name: "camera",
+  size: 24,
+  node: [
+    [
+      "path",
+      {
+        d: "M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z",
+        key: "18u6gg"
+      }
+    ],
+    ["circle", { cx: "12", cy: "13", r: "3", key: "1vg3eu" }]
+  ]
+};
+__iconData7.node;
+var Camera = createLucideIcon(__iconData7);
+
+// node_modules/lucide-react/dist/esm/icons/check.mjs
+var __iconData8 = {
   name: "check",
   size: 24,
   node: [["path", { d: "M20 6 9 17l-5-5", key: "1gmf2c" }]]
 };
-__iconData4.node;
-var Check = createLucideIcon(__iconData4);
+__iconData8.node;
+var Check = createLucideIcon(__iconData8);
 
 // node_modules/lucide-react/dist/esm/icons/chevron-down.mjs
-var __iconData5 = {
+var __iconData9 = {
   name: "chevron-down",
   size: 24,
   node: [["path", { d: "m6 9 6 6 6-6", key: "qrunsl" }]]
 };
-__iconData5.node;
-var ChevronDown = createLucideIcon(__iconData5);
+__iconData9.node;
+var ChevronDown = createLucideIcon(__iconData9);
 
 // node_modules/lucide-react/dist/esm/icons/chevron-right.mjs
-var __iconData6 = {
+var __iconData10 = {
   name: "chevron-right",
   size: 24,
   node: [["path", { d: "m9 18 6-6-6-6", key: "mthhwq" }]]
 };
-__iconData6.node;
-var ChevronRight = createLucideIcon(__iconData6);
+__iconData10.node;
+var ChevronRight = createLucideIcon(__iconData10);
 
 // node_modules/lucide-react/dist/esm/icons/circle-question-mark.mjs
-var __iconData7 = {
+var __iconData11 = {
   name: "circle-question-mark",
   size: 24,
   node: [
@@ -56834,11 +56919,11 @@ var __iconData7 = {
   ],
   aliases: ["help-circle", "circle-help"]
 };
-__iconData7.node;
-var CircleQuestionMark = createLucideIcon(__iconData7);
+__iconData11.node;
+var CircleQuestionMark = createLucideIcon(__iconData11);
 
 // node_modules/lucide-react/dist/esm/icons/clipboard.mjs
-var __iconData8 = {
+var __iconData12 = {
   name: "clipboard",
   size: 24,
   node: [
@@ -56852,11 +56937,11 @@ var __iconData8 = {
     ]
   ]
 };
-__iconData8.node;
-var Clipboard = createLucideIcon(__iconData8);
+__iconData12.node;
+var Clipboard = createLucideIcon(__iconData12);
 
 // node_modules/lucide-react/dist/esm/icons/code-xml.mjs
-var __iconData9 = {
+var __iconData13 = {
   name: "code-xml",
   size: 24,
   node: [
@@ -56866,11 +56951,11 @@ var __iconData9 = {
   ],
   aliases: ["code-2"]
 };
-__iconData9.node;
-var CodeXml = createLucideIcon(__iconData9);
+__iconData13.node;
+var CodeXml = createLucideIcon(__iconData13);
 
 // node_modules/lucide-react/dist/esm/icons/download.mjs
-var __iconData10 = {
+var __iconData14 = {
   name: "download",
   size: 24,
   node: [
@@ -56879,11 +56964,25 @@ var __iconData10 = {
     ["path", { d: "m7 10 5 5 5-5", key: "brsn70" }]
   ]
 };
-__iconData10.node;
-var Download = createLucideIcon(__iconData10);
+__iconData14.node;
+var Download = createLucideIcon(__iconData14);
+
+// node_modules/lucide-react/dist/esm/icons/ellipsis.mjs
+var __iconData15 = {
+  name: "ellipsis",
+  size: 24,
+  node: [
+    ["circle", { cx: "12", cy: "12", r: "1", key: "41hilf" }],
+    ["circle", { cx: "19", cy: "12", r: "1", key: "1wjl8i" }],
+    ["circle", { cx: "5", cy: "12", r: "1", key: "1pcz8c" }]
+  ],
+  aliases: ["more-horizontal"]
+};
+__iconData15.node;
+var Ellipsis = createLucideIcon(__iconData15);
 
 // node_modules/lucide-react/dist/esm/icons/folder-open.mjs
-var __iconData11 = {
+var __iconData16 = {
   name: "folder-open",
   size: 24,
   node: [
@@ -56896,11 +56995,24 @@ var __iconData11 = {
     ]
   ]
 };
-__iconData11.node;
-var FolderOpen = createLucideIcon(__iconData11);
+__iconData16.node;
+var FolderOpen = createLucideIcon(__iconData16);
+
+// node_modules/lucide-react/dist/esm/icons/git-branch.mjs
+var __iconData17 = {
+  name: "git-branch",
+  size: 24,
+  node: [
+    ["path", { d: "M15 6a9 9 0 0 0-9 9V3", key: "1cii5b" }],
+    ["circle", { cx: "18", cy: "6", r: "3", key: "1h7g24" }],
+    ["circle", { cx: "6", cy: "18", r: "3", key: "fqmcym" }]
+  ]
+};
+__iconData17.node;
+var GitBranch = createLucideIcon(__iconData17);
 
 // node_modules/lucide-react/dist/esm/icons/globe.mjs
-var __iconData12 = {
+var __iconData18 = {
   name: "globe",
   size: 24,
   node: [
@@ -56909,11 +57021,41 @@ var __iconData12 = {
     ["path", { d: "M2 12h20", key: "9i4pu4" }]
   ]
 };
-__iconData12.node;
-var Globe = createLucideIcon(__iconData12);
+__iconData18.node;
+var Globe = createLucideIcon(__iconData18);
+
+// node_modules/lucide-react/dist/esm/icons/hard-drive-upload.mjs
+var __iconData19 = {
+  name: "hard-drive-upload",
+  size: 24,
+  node: [
+    ["path", { d: "m16 6-4-4-4 4", key: "13yo43" }],
+    ["path", { d: "M12 2v8", key: "1q4o3n" }],
+    ["rect", { width: "20", height: "8", x: "2", y: "14", rx: "2", key: "w68u3i" }],
+    ["path", { d: "M6 18h.01", key: "uhywen" }],
+    ["path", { d: "M10 18h.01", key: "h775k" }]
+  ]
+};
+__iconData19.node;
+var HardDriveUpload = createLucideIcon(__iconData19);
+
+// node_modules/lucide-react/dist/esm/icons/image-plus.mjs
+var __iconData20 = {
+  name: "image-plus",
+  size: 24,
+  node: [
+    ["path", { d: "M16 5h6", key: "1vod17" }],
+    ["path", { d: "M19 2v6", key: "4bpg5p" }],
+    ["path", { d: "M21 11.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7.5", key: "1ue2ih" }],
+    ["path", { d: "m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21", key: "1xmnt7" }],
+    ["circle", { cx: "9", cy: "9", r: "2", key: "af1f0g" }]
+  ]
+};
+__iconData20.node;
+var ImagePlus = createLucideIcon(__iconData20);
 
 // node_modules/lucide-react/dist/esm/icons/info.mjs
-var __iconData13 = {
+var __iconData21 = {
   name: "info",
   size: 24,
   node: [
@@ -56922,11 +57064,11 @@ var __iconData13 = {
     ["path", { d: "M12 8h.01", key: "e9boi3" }]
   ]
 };
-__iconData13.node;
-var Info = createLucideIcon(__iconData13);
+__iconData21.node;
+var Info = createLucideIcon(__iconData21);
 
 // node_modules/lucide-react/dist/esm/icons/key-round.mjs
-var __iconData14 = {
+var __iconData22 = {
   name: "key-round",
   size: 24,
   node: [
@@ -56940,11 +57082,11 @@ var __iconData14 = {
     ["circle", { cx: "16.5", cy: "7.5", r: ".5", fill: "currentColor", key: "w0ekpg" }]
   ]
 };
-__iconData14.node;
-var KeyRound = createLucideIcon(__iconData14);
+__iconData22.node;
+var KeyRound = createLucideIcon(__iconData22);
 
 // node_modules/lucide-react/dist/esm/icons/layout-grid.mjs
-var __iconData15 = {
+var __iconData23 = {
   name: "layout-grid",
   size: 24,
   node: [
@@ -56954,21 +57096,21 @@ var __iconData15 = {
     ["rect", { width: "7", height: "7", x: "3", y: "14", rx: "1", key: "1bb6yr" }]
   ]
 };
-__iconData15.node;
-var LayoutGrid = createLucideIcon(__iconData15);
+__iconData23.node;
+var LayoutGrid = createLucideIcon(__iconData23);
 
 // node_modules/lucide-react/dist/esm/icons/loader-circle.mjs
-var __iconData16 = {
+var __iconData24 = {
   name: "loader-circle",
   size: 24,
   node: [["path", { d: "M21 12a9 9 0 1 1-6.219-8.56", key: "13zald" }]],
   aliases: ["loader-2"]
 };
-__iconData16.node;
-var LoaderCircle = createLucideIcon(__iconData16);
+__iconData24.node;
+var LoaderCircle = createLucideIcon(__iconData24);
 
 // node_modules/lucide-react/dist/esm/icons/log-out.mjs
-var __iconData17 = {
+var __iconData25 = {
   name: "log-out",
   size: 24,
   node: [
@@ -56977,11 +57119,11 @@ var __iconData17 = {
     ["path", { d: "M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4", key: "1uf3rs" }]
   ]
 };
-__iconData17.node;
-var LogOut = createLucideIcon(__iconData17);
+__iconData25.node;
+var LogOut = createLucideIcon(__iconData25);
 
 // node_modules/lucide-react/dist/esm/icons/mic.mjs
-var __iconData18 = {
+var __iconData26 = {
   name: "mic",
   size: 24,
   node: [
@@ -56990,11 +57132,44 @@ var __iconData18 = {
     ["rect", { x: "9", y: "2", width: "6", height: "13", rx: "3", key: "s6n7sd" }]
   ]
 };
-__iconData18.node;
-var Mic = createLucideIcon(__iconData18);
+__iconData26.node;
+var Mic = createLucideIcon(__iconData26);
+
+// node_modules/lucide-react/dist/esm/icons/music-2.mjs
+var __iconData27 = {
+  name: "music-2",
+  size: 24,
+  node: [
+    ["circle", { cx: "8", cy: "18", r: "4", key: "1fc0mg" }],
+    ["path", { d: "M12 18V2l7 4", key: "g04rme" }]
+  ]
+};
+__iconData27.node;
+var Music2 = createLucideIcon(__iconData27);
+
+// node_modules/lucide-react/dist/esm/icons/palette.mjs
+var __iconData28 = {
+  name: "palette",
+  size: 24,
+  node: [
+    [
+      "path",
+      {
+        d: "M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z",
+        key: "e79jfc"
+      }
+    ],
+    ["circle", { cx: "13.5", cy: "6.5", r: ".5", fill: "currentColor", key: "1okk4w" }],
+    ["circle", { cx: "17.5", cy: "10.5", r: ".5", fill: "currentColor", key: "f64h9f" }],
+    ["circle", { cx: "6.5", cy: "12.5", r: ".5", fill: "currentColor", key: "qy21gx" }],
+    ["circle", { cx: "8.5", cy: "7.5", r: ".5", fill: "currentColor", key: "fotxhn" }]
+  ]
+};
+__iconData28.node;
+var Palette = createLucideIcon(__iconData28);
 
 // node_modules/lucide-react/dist/esm/icons/panel-left-close.mjs
-var __iconData19 = {
+var __iconData29 = {
   name: "panel-left-close",
   size: 24,
   node: [
@@ -57004,11 +57179,11 @@ var __iconData19 = {
   ],
   aliases: ["sidebar-close"]
 };
-__iconData19.node;
-var PanelLeftClose = createLucideIcon(__iconData19);
+__iconData29.node;
+var PanelLeftClose = createLucideIcon(__iconData29);
 
 // node_modules/lucide-react/dist/esm/icons/panel-left.mjs
-var __iconData20 = {
+var __iconData30 = {
   name: "panel-left",
   size: 24,
   node: [
@@ -57017,11 +57192,42 @@ var __iconData20 = {
   ],
   aliases: ["sidebar"]
 };
-__iconData20.node;
-var PanelLeft = createLucideIcon(__iconData20);
+__iconData30.node;
+var PanelLeft = createLucideIcon(__iconData30);
+
+// node_modules/lucide-react/dist/esm/icons/panels-top-left.mjs
+var __iconData31 = {
+  name: "panels-top-left",
+  size: 24,
+  node: [
+    ["rect", { width: "18", height: "18", x: "3", y: "3", rx: "2", key: "afitv7" }],
+    ["path", { d: "M3 9h18", key: "1pudct" }],
+    ["path", { d: "M9 21V9", key: "1oto5p" }]
+  ],
+  aliases: ["layout"]
+};
+__iconData31.node;
+var PanelsTopLeft = createLucideIcon(__iconData31);
+
+// node_modules/lucide-react/dist/esm/icons/paperclip.mjs
+var __iconData32 = {
+  name: "paperclip",
+  size: 24,
+  node: [
+    [
+      "path",
+      {
+        d: "m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551",
+        key: "1miecu"
+      }
+    ]
+  ]
+};
+__iconData32.node;
+var Paperclip = createLucideIcon(__iconData32);
 
 // node_modules/lucide-react/dist/esm/icons/plus.mjs
-var __iconData21 = {
+var __iconData33 = {
   name: "plus",
   size: 24,
   node: [
@@ -57029,11 +57235,11 @@ var __iconData21 = {
     ["path", { d: "M12 5v14", key: "s699le" }]
   ]
 };
-__iconData21.node;
-var Plus = createLucideIcon(__iconData21);
+__iconData33.node;
+var Plus = createLucideIcon(__iconData33);
 
 // node_modules/lucide-react/dist/esm/icons/search.mjs
-var __iconData22 = {
+var __iconData34 = {
   name: "search",
   size: 24,
   node: [
@@ -57041,11 +57247,11 @@ var __iconData22 = {
     ["circle", { cx: "11", cy: "11", r: "8", key: "4ej97u" }]
   ]
 };
-__iconData22.node;
-var Search = createLucideIcon(__iconData22);
+__iconData34.node;
+var Search = createLucideIcon(__iconData34);
 
 // node_modules/lucide-react/dist/esm/icons/settings.mjs
-var __iconData23 = {
+var __iconData35 = {
   name: "settings",
   size: 24,
   node: [
@@ -57059,11 +57265,11 @@ var __iconData23 = {
     ["circle", { cx: "12", cy: "12", r: "3", key: "1v7zrd" }]
   ]
 };
-__iconData23.node;
-var Settings = createLucideIcon(__iconData23);
+__iconData35.node;
+var Settings = createLucideIcon(__iconData35);
 
 // node_modules/lucide-react/dist/esm/icons/sliders-horizontal.mjs
-var __iconData24 = {
+var __iconData36 = {
   name: "sliders-horizontal",
   size: 24,
   node: [
@@ -57078,11 +57284,32 @@ var __iconData24 = {
     ["path", { d: "M8 12H3", key: "a7s4jb" }]
   ]
 };
-__iconData24.node;
-var SlidersHorizontal = createLucideIcon(__iconData24);
+__iconData36.node;
+var SlidersHorizontal = createLucideIcon(__iconData36);
+
+// node_modules/lucide-react/dist/esm/icons/sparkles.mjs
+var __iconData37 = {
+  name: "sparkles",
+  size: 24,
+  node: [
+    [
+      "path",
+      {
+        d: "M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z",
+        key: "1s2grr"
+      }
+    ],
+    ["path", { d: "M20 2v4", key: "1rf3ol" }],
+    ["path", { d: "M22 4h-4", key: "gwowj6" }],
+    ["circle", { cx: "4", cy: "20", r: "2", key: "6kqj1y" }]
+  ],
+  aliases: ["stars"]
+};
+__iconData37.node;
+var Sparkles = createLucideIcon(__iconData37);
 
 // node_modules/lucide-react/dist/esm/icons/thumbs-down.mjs
-var __iconData25 = {
+var __iconData38 = {
   name: "thumbs-down",
   size: 24,
   node: [
@@ -57096,11 +57323,11 @@ var __iconData25 = {
     ["path", { d: "M17 14V2", key: "8ymqnk" }]
   ]
 };
-__iconData25.node;
-var ThumbsDown = createLucideIcon(__iconData25);
+__iconData38.node;
+var ThumbsDown = createLucideIcon(__iconData38);
 
 // node_modules/lucide-react/dist/esm/icons/thumbs-up.mjs
-var __iconData26 = {
+var __iconData39 = {
   name: "thumbs-up",
   size: 24,
   node: [
@@ -57114,11 +57341,11 @@ var __iconData26 = {
     ["path", { d: "M7 10v12", key: "1qc93n" }]
   ]
 };
-__iconData26.node;
-var ThumbsUp = createLucideIcon(__iconData26);
+__iconData39.node;
+var ThumbsUp = createLucideIcon(__iconData39);
 
 // node_modules/lucide-react/dist/esm/icons/trash.mjs
-var __iconData27 = {
+var __iconData40 = {
   name: "trash",
   size: 24,
   node: [
@@ -57130,11 +57357,29 @@ var __iconData27 = {
   ],
   aliases: ["trash-2"]
 };
-__iconData27.node;
-var Trash = createLucideIcon(__iconData27);
+__iconData40.node;
+var Trash = createLucideIcon(__iconData40);
+
+// node_modules/lucide-react/dist/esm/icons/video.mjs
+var __iconData41 = {
+  name: "video",
+  size: 24,
+  node: [
+    [
+      "path",
+      {
+        d: "m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5",
+        key: "ftymec"
+      }
+    ],
+    ["rect", { x: "2", y: "6", width: "14", height: "12", rx: "2", key: "158x01" }]
+  ]
+};
+__iconData41.node;
+var Video = createLucideIcon(__iconData41);
 
 // node_modules/lucide-react/dist/esm/icons/x.mjs
-var __iconData28 = {
+var __iconData42 = {
   name: "x",
   size: 24,
   node: [
@@ -57142,11 +57387,11 @@ var __iconData28 = {
     ["path", { d: "m6 6 12 12", key: "d8bk6v" }]
   ]
 };
-__iconData28.node;
-var X = createLucideIcon(__iconData28);
+__iconData42.node;
+var X = createLucideIcon(__iconData42);
 
 // node_modules/lucide-react/dist/esm/icons/zap.mjs
-var __iconData29 = {
+var __iconData43 = {
   name: "zap",
   size: 24,
   node: [
@@ -57159,8 +57404,8 @@ var __iconData29 = {
     ]
   ]
 };
-__iconData29.node;
-var Zap = createLucideIcon(__iconData29);
+__iconData43.node;
+var Zap = createLucideIcon(__iconData43);
 
 // src/client/panels.tsx
 var import_react47 = __toESM(require_react(), 1);
@@ -57724,7 +57969,7 @@ function Sidebar({
 }
 
 // src/client/app.css
-var app_default = '@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=VT323&display=swap");\n.pf-drawer-backdrop { display: none; }\n@media (max-width: 859px) {\n  .pf-drawer-backdrop { display: block; position: absolute; inset: 64px 0 0; background: rgb(11 11 15 / 25%); z-index: 190; border: 0; border-radius: 0; }\n}\n\n:root {\n  --paper: #f2efe8;\n  --canvas: #ffffff;\n  --canvas-soft: #faf9f6;\n  --ink: #0b0b0f;\n  --graphite: #5a5a66;\n  --mute: #8b8b95;\n  --hairline: #e4e2dd;\n  --hairline-strong: #d4d2cc;\n  --lime: #7ce25b;\n  --lime-ink: #0b1a05;\n  --danger: #e44b4b;\n  --prism-ribbon: linear-gradient(90deg, #e8429b, #9b5be8 22%, #3fc7e8 48%, #b8f25f 72%, #f5b946);\n  --prism-frame: conic-gradient(from 200deg at 50% 50%, #e8429b, #f5b946 19.4%, #b8f25f 38.9%, #3fc7e8 58.3%, #9b5be8 77.8%, #e8429b);\n  --font-display: "Space Grotesk", system-ui, sans-serif;\n  --font-body: "Inter", system-ui, sans-serif;\n  --font-pixel: "VT323", monospace;\n  --shadow-card: 0 1px 0 rgb(11 11 15 / 2%), 0 8px 24px -16px rgb(11 11 15 / 18%);\n  --shadow-pop: 0 12px 32px -16px rgb(11 11 15 / 28%);\n  --shadow-focus: 0 0 0 3px rgb(63 199 232 / 32%);\n}\n\n*, *::before, *::after { box-sizing: border-box; }\nbody { margin: 0; background: var(--paper); color: var(--ink); font: 14px/1.5 var(--font-body); -webkit-font-smoothing: antialiased; }\nbutton, input, textarea, select { font: inherit; }\nbutton { transition: background 120ms ease, border-color 120ms ease; }\nbutton:disabled { cursor: not-allowed; }\nbutton:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focus-visible { outline: 2px solid #3fc7e8; outline-offset: 2px; box-shadow: var(--shadow-focus); }\n::selection { background: #b8f25f; color: var(--ink); }\nh1, h2, h3, p { margin: 0; }\n.pf-stage { height: 100dvh; padding: 22px; background: radial-gradient(circle, rgb(255 255 255 / 22%) .7px, transparent .7px) 0 0 / 5px 5px, var(--prism-frame); }\n.pf-canvas { position: relative; display: flex; height: 100%; border: 1px solid var(--hairline); border-radius: 14px; overflow: hidden; background: var(--canvas); box-shadow: var(--shadow-card); }\n.pf-main { flex: 1; min-width: 0; display: flex; flex-direction: column; overflow: hidden; }\n.pf-thread { flex: 1; min-height: 0; display: flex; flex-direction: column; background: var(--canvas); }\n.pf-topbar { min-height: 64px; height: 64px; flex-shrink: 0; border-bottom: 1px solid var(--hairline); display: flex; align-items: center; gap: 12px; padding: 0 24px; }\n.pf-topbar-title { display: flex; align-items: center; gap: 14px; min-width: 0; }\n.pf-wordmark { font: 20px/1 var(--font-pixel); letter-spacing: .16em; }\n.pf-topbar-divider { width: 1px; height: 12px; background: var(--hairline); }\n.pf-label { font-size: 11px; font-weight: 600; letter-spacing: .08em; color: var(--graphite); }\n.pf-session-badge { margin-left: auto; display: flex; gap: 7px; align-items: center; padding: 4px 8px; border: 1px solid var(--hairline); border-radius: 4px; font-size: 10px; letter-spacing: .08em; white-space: nowrap; }\n.pf-status-dot { display: inline-block; width: 6px; height: 6px; flex-shrink: 0; border-radius: 50%; background: var(--lime); }\n.pf-icon-button { width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid transparent; border-radius: 6px; background: transparent; color: var(--graphite); cursor: pointer; }\n.pf-icon-button:hover { background: var(--canvas-soft); border-color: var(--hairline); color: var(--ink); }\n.pf-desktop-hidden { display: none; }\n.pf-welcome-scroll { flex: 1; min-height: 0; overflow-y: auto; padding: 40px 32px; display: flex; }\n.pf-welcome { width: 100%; max-width: 760px; margin: auto; }\n.pf-composer-heading { display: flex; justify-content: center; margin: 28px 0 12px; text-align: center; }\n.pf-composer-heading h2 { font: 600 22px/1.25 var(--font-display); letter-spacing: -.02em; }\n.pf-composer { width: 100%; padding: 18px 16px 12px; display: flex; flex-direction: column; gap: 16px; border: 1px solid var(--hairline); border-radius: 10px; background: var(--canvas); box-shadow: var(--shadow-card); }\n.pf-composer:focus-within { border-color: transparent; background: linear-gradient(white, white) padding-box, var(--prism-ribbon) border-box; }\n.pf-composer-input { width: 100%; min-height: 76px; max-height: 200px; resize: none; border: 0; outline: 0; background: transparent; color: var(--ink); font: 14px/1.6 var(--font-body); }\n.pf-composer-input::placeholder { color: var(--mute); }\n.pf-composer-toolbar, .pf-composer-tools, .pf-composer-controls { display: flex; align-items: center; gap: 8px; min-width: 0; }\n.pf-composer-toolbar { justify-content: space-between; padding-top: 10px; border-top: 1px solid var(--hairline); flex-wrap: wrap; }\n.pf-composer-controls { margin-left: auto; }\n.pf-send { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border: 1px solid transparent; border-radius: 10px; color: var(--lime-ink); background: var(--lime); cursor: pointer; box-shadow: 0 8px 18px -8px rgb(124 226 91 / 55%); flex-shrink: 0; }\n.pf-send:hover:not(:disabled) { background: #92ea73; }\n.pf-send:disabled { background: var(--canvas-soft); border-color: var(--hairline); color: var(--mute); box-shadow: none; }\n.pf-transcript { flex: 1; min-height: 0; overflow-y: auto; padding: 32px 24px 0; display: flex; flex-direction: column; }\n.pf-messages { flex: 1; display: flex; flex-direction: column; gap: 28px; width: 100%; max-width: 800px; margin: 0 auto; }\n.pf-user-message { align-self: flex-end; max-width: 85%; display: flex; flex-direction: column; gap: 8px; }\n.pf-message-label { display: flex; align-items: center; gap: 7px; font-size: 11px; font-weight: 600; letter-spacing: .08em; color: var(--graphite); }\n.pf-user-message > .pf-message-label { justify-content: flex-end; }\n.pf-user-content { padding: 14px 18px; border: 1px solid var(--hairline); border-radius: 10px; background: var(--canvas-soft); font-size: 14px; line-height: 1.65; overflow-wrap: anywhere; }\n.pf-assistant-message { width: 100%; display: flex; flex-direction: column; gap: 12px; }\n.pf-mini-prism { display: inline-block; width: 12px; height: 12px; background: var(--prism-ribbon); border-radius: 2px; }\n.pf-assistant-content { font-size: 15px; line-height: 1.75; overflow-wrap: anywhere; }\n.pf-assistant-content pre { max-width: 100%; overflow: auto; background: var(--canvas-soft); border: 1px solid var(--hairline); padding: 14px 16px; border-radius: 6px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 13px; line-height: 1.5; margin: 12px 0; }\n.pf-assistant-content code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.9em; background: var(--canvas-soft); border: 1px solid var(--hairline); padding: 2px 5px; border-radius: 4px; }\n.pf-assistant-content pre code { background: transparent; border: 0; padding: 0; font-size: inherit; }\n.pf-assistant-content a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }\n.pf-assistant-content p { margin: 0 0 12px 0; }\n.pf-assistant-content p:last-child { margin-bottom: 0; }\n.pf-assistant-content ul, .pf-assistant-content ol { margin: 8px 0 12px 20px; padding: 0; }\n.pf-assistant-content li { margin-bottom: 4px; }\n.pf-assistant-content blockquote { margin: 12px 0; padding: 8px 16px; border-left: 3px solid var(--lime); background: var(--canvas-soft); color: var(--graphite); border-radius: 0 6px 6px 0; }\n.pf-assistant-content h1, .pf-assistant-content h2, .pf-assistant-content h3, .pf-assistant-content h4 { font-family: var(--font-display); font-weight: 600; margin: 18px 0 8px 0; color: var(--ink); }\n.pf-assistant-content h1 { font-size: 1.5rem; }\n.pf-assistant-content h2 { font-size: 1.3rem; }\n.pf-assistant-content h3 { font-size: 1.15rem; }\n.pf-assistant-content table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 14px; }\n.pf-assistant-content th, .pf-assistant-content td { border: 1px solid var(--hairline); padding: 8px 12px; text-align: left; }\n.pf-assistant-content th { background: var(--canvas-soft); font-weight: 600; }\n.pf-markdown { width: 100%; }\n.pf-markdown > *:first-child { margin-top: 0; }\n.pf-markdown > *:last-child { margin-bottom: 0; }\n.pf-citation-tone-0 { --citation-color: #e8429b; --citation-tint: rgb(232 66 155 / 14%); }\n.pf-citation-tone-1 { --citation-color: #9b5be8; --citation-tint: rgb(155 91 232 / 14%); }\n.pf-citation-tone-2 { --citation-color: #3fc7e8; --citation-tint: rgb(63 199 232 / 18%); }\n.pf-citation-tone-3 { --citation-color: #b8f25f; --citation-tint: rgb(184 242 95 / 24%); }\n.pf-citation-tone-4 { --citation-color: #f5b946; --citation-tint: rgb(245 185 70 / 19%); }\n.pf-citation-highlight {\n  background: transparent;\n  border-bottom: 1px dotted transparent;\n  transition: background-color 150ms ease, border-color 150ms ease;\n  box-decoration-break: clone;\n  -webkit-box-decoration-break: clone;\n}\n.pf-citation-highlight.is-active {\n  background: var(--citation-tint);\n  border-bottom: 1px solid var(--citation-color);\n}\n.pf-citation-marker {\n  display: inline-flex;\n  align-items: center;\n  margin: 0 4px;\n  vertical-align: middle;\n}\n.pf-assistant-content .pf-citation-link {\n  display: inline-flex;\n  align-items: center;\n  gap: 4px;\n  padding: 1px 6px;\n  border: 1px solid var(--hairline);\n  border-radius: 4px;\n  background: var(--canvas-soft);\n  color: var(--graphite);\n  font-size: 11px;\n  font-weight: 500;\n  line-height: 1.4;\n  text-decoration: none;\n  vertical-align: middle;\n  transition: border-color 140ms ease, background-color 140ms ease, color 140ms ease;\n}\n.pf-assistant-content .pf-citation-link:hover {\n  border-color: var(--citation-color);\n  background: var(--citation-tint);\n  color: var(--ink);\n  text-decoration: none;\n}\n.pf-citation-link:focus-visible {\n  outline: 2px solid var(--ink);\n  outline-offset: 2px;\n}\n.pf-citation-favicon {\n  width: 12px;\n  height: 12px;\n  border-radius: 2px;\n  flex-shrink: 0;\n  display: inline-block;\n}\n.pf-source-chip {\n  display: inline-flex;\n  align-items: center;\n  gap: 6px;\n  margin: 4px 6px 4px 0;\n  padding: 3px 9px;\n  background: var(--canvas-soft);\n  border: 1px solid var(--hairline);\n  border-radius: 6px;\n  color: var(--ink);\n  font-size: 12px;\n  font-weight: 500;\n  text-decoration: none;\n  vertical-align: middle;\n  transition: border-color 140ms ease, background-color 140ms ease;\n}\n.pf-source-chip:hover {\n  border-color: var(--hairline-strong);\n  background: #f0eee8;\n  text-decoration: none;\n}\n.pf-source-favicon {\n  width: 14px;\n  height: 14px;\n  border-radius: 3px;\n  flex-shrink: 0;\n}\n.pf-source-icon {\n  color: var(--graphite);\n  flex-shrink: 0;\n}\n.pf-source-title {\n  max-width: 220px;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n.pf-source-number {\n  color: var(--graphite);\n  font-size: 11px;\n  font-weight: 600;\n}\n.pf-message-actions { display: flex; gap: 4px; }\n.pf-error, .pf-runtime-error { border: 1px solid var(--danger); border-radius: 6px; padding: 12px 16px; color: #a22c2c; background: var(--canvas); font-size: 13px; overflow-wrap: anywhere; }\n.pf-runtime-error { margin: 12px 24px 0; flex-shrink: 0; }\n.pf-running { display: flex; gap: 8px; align-items: center; font-size: 13px; color: var(--graphite); }\n.pf-running .pf-status-dot { animation: pf-pulse 1.2s ease-in-out infinite; }\n.pf-running-inline { display: inline-flex; gap: 8px; align-items: center; font-size: 13px; color: var(--graphite); margin-left: 2px; }\n.pf-running-inline .pf-status-dot { animation: pf-pulse 1.2s ease-in-out infinite; }\n.pf-transcript-footer { position: sticky; bottom: 0; width: 100%; max-width: 800px; margin: 0 auto; padding: 24px 0 12px; background: var(--canvas); }\n.pf-composer-note { font-size: 13px; color: var(--graphite); margin-top: 12px; }\n@keyframes pf-pulse { 50% { opacity: .35; } }\n@media (max-width: 859px) {\n  .pf-stage { padding: 14px; }\n  .pf-desktop-hidden { display: inline-flex; }\n  .pf-topbar { padding: 0 16px; }\n  .pf-welcome-scroll { padding: 24px 16px; }\n  .pf-topbar-title { gap: 10px; }\n  .pf-topbar-title .pf-label, .pf-topbar-divider { display: none; }\n  .pf-workspace-note { flex-direction: column; gap: 4px; }\n  .pf-transcript { padding: 24px 16px 0; }\n  .pf-runtime-error { margin: 12px 16px 0; }\n}\n@media (max-width: 560px) {\n  .pf-topbar { gap: 8px; }\n  .pf-wordmark { font-size: 18px; letter-spacing: .1em; }\n  .pf-session-badge { font-size: 9px; padding: 4px 6px; }\n  .pf-composer-heading { margin-top: 24px; }\n  .pf-composer-heading h2 { font-size: 20px; }\n  .pf-composer-heading .pf-label { display: none; }\n  .pf-composer { padding: 14px 12px 10px; }\n  .pf-composer-toolbar { gap: 8px; }\n  .pf-composer-controls { flex: 1 1 100%; justify-content: flex-end; }\n  .pf-composer-controls > :first-child { margin-right: auto; min-width: 0; }\n  .pf-voice-button { width: 28px; }\n  .pf-composer-note { font-size: 13px; }\n}\n@media (prefers-reduced-motion: reduce) {\n  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }\n}\n';
+var app_default = '@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=VT323&display=swap");\n.pf-drawer-backdrop { display: none; }\n@media (max-width: 859px) {\n  .pf-drawer-backdrop { display: block; position: absolute; inset: 64px 0 0; background: rgb(11 11 15 / 25%); z-index: 190; border: 0; border-radius: 0; }\n}\n\n:root {\n  --paper: #f2efe8;\n  --canvas: #ffffff;\n  --canvas-soft: #faf9f6;\n  --ink: #0b0b0f;\n  --graphite: #5a5a66;\n  --mute: #8b8b95;\n  --hairline: #e4e2dd;\n  --hairline-strong: #d4d2cc;\n  --lime: #7ce25b;\n  --lime-ink: #0b1a05;\n  --danger: #e44b4b;\n  --prism-ribbon: linear-gradient(90deg, #e8429b, #9b5be8 22%, #3fc7e8 48%, #b8f25f 72%, #f5b946);\n  --prism-frame: conic-gradient(from 200deg at 50% 50%, #e8429b, #f5b946 19.4%, #b8f25f 38.9%, #3fc7e8 58.3%, #9b5be8 77.8%, #e8429b);\n  --font-display: "Space Grotesk", system-ui, sans-serif;\n  --font-body: "Inter", system-ui, sans-serif;\n  --font-pixel: "VT323", monospace;\n  --shadow-card: 0 1px 0 rgb(11 11 15 / 2%), 0 8px 24px -16px rgb(11 11 15 / 18%);\n  --shadow-pop: 0 12px 32px -16px rgb(11 11 15 / 28%);\n  --shadow-focus: 0 0 0 3px rgb(63 199 232 / 32%);\n}\n\n*, *::before, *::after { box-sizing: border-box; }\nbody { margin: 0; background: var(--paper); color: var(--ink); font: 14px/1.5 var(--font-body); -webkit-font-smoothing: antialiased; }\nbutton, input, textarea, select { font: inherit; }\nbutton { transition: background 120ms ease, border-color 120ms ease; }\nbutton:disabled { cursor: not-allowed; }\nbutton:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focus-visible { outline: 2px solid #3fc7e8; outline-offset: 2px; box-shadow: var(--shadow-focus); }\n::selection { background: #b8f25f; color: var(--ink); }\nh1, h2, h3, p { margin: 0; }\n.pf-stage { height: 100dvh; padding: 14px; background: radial-gradient(circle, rgb(255 255 255 / 22%) .7px, transparent .7px) 0 0 / 5px 5px, var(--prism-frame); }\n.pf-canvas { position: relative; display: flex; height: 100%; border: 1px solid var(--hairline); border-radius: 14px; overflow: hidden; background: var(--canvas); box-shadow: var(--shadow-card); }\n.pf-main { flex: 1; min-width: 0; display: flex; flex-direction: column; overflow: hidden; }\n.pf-thread { flex: 1; min-height: 0; display: flex; flex-direction: column; background: var(--canvas); }\n.pf-topbar { min-height: 64px; height: 64px; flex-shrink: 0; border-bottom: 1px solid var(--hairline); display: flex; align-items: center; gap: 12px; padding: 0 24px; }\n.pf-topbar-title { display: flex; align-items: center; gap: 14px; min-width: 0; }\n.pf-wordmark { font: 20px/1 var(--font-pixel); letter-spacing: .16em; }\n.pf-topbar-divider { width: 1px; height: 12px; background: var(--hairline); }\n.pf-label { font-size: 11px; font-weight: 600; letter-spacing: .08em; color: var(--graphite); }\n.pf-session-badge { margin-left: auto; display: flex; gap: 7px; align-items: center; padding: 4px 8px; border: 1px solid var(--hairline); border-radius: 4px; font-size: 10px; letter-spacing: .08em; white-space: nowrap; }\n.pf-status-dot { display: inline-block; width: 6px; height: 6px; flex-shrink: 0; border-radius: 50%; background: var(--lime); }\n.pf-icon-button { width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid transparent; border-radius: 6px; background: transparent; color: var(--graphite); cursor: pointer; }\n.pf-icon-button:hover { background: var(--canvas-soft); border-color: var(--hairline); color: var(--ink); }\n.pf-desktop-hidden { display: none; }\n.pf-welcome-scroll { flex: 1; min-height: 0; overflow-y: auto; padding: 40px 32px; display: flex; }\n.pf-welcome { width: 100%; max-width: 760px; margin: auto; }\n.pf-composer-heading { display: flex; justify-content: center; margin: 28px 0 12px; text-align: center; }\n.pf-composer-heading h2 { font: 600 22px/1.25 var(--font-display); letter-spacing: -.02em; }\n.pf-composer { width: 100%; padding: 18px 16px 12px; display: flex; flex-direction: column; gap: 16px; border: 1px solid var(--hairline); border-radius: 10px; background: var(--canvas); box-shadow: var(--shadow-card); }\n.pf-composer:focus-within { border-color: transparent; background: linear-gradient(white, white) padding-box, var(--prism-ribbon) border-box; }\n.pf-composer-input { width: 100%; min-height: 76px; max-height: 200px; resize: none; border: 0; outline: 0; background: transparent; color: var(--ink); font: 14px/1.6 var(--font-body); }\n.pf-composer-input::placeholder { color: var(--mute); }\n.pf-composer-toolbar, .pf-composer-tools, .pf-composer-controls { display: flex; align-items: center; gap: 8px; min-width: 0; }\n.pf-composer-toolbar { justify-content: space-between; padding-top: 10px; border-top: 1px solid var(--hairline); flex-wrap: wrap; }\n.pf-composer-controls { margin-left: auto; }\n\n.pf-plus-menu-wrap { position: relative; }\n.pf-plus-trigger[aria-expanded="true"] { background: var(--canvas-soft); border-color: var(--hairline); color: var(--ink); }\n.pf-plus-menu {\n  position: absolute;\n  z-index: 180;\n  left: 0;\n  bottom: calc(100% + 8px);\n  width: min(300px, calc(100vw - 44px));\n  max-height: min(560px, calc(100dvh - 190px));\n  overflow-y: auto;\n  overscroll-behavior: contain;\n  padding: 5px;\n  border: 1px solid var(--hairline);\n  border-radius: 10px;\n  background: var(--canvas);\n  box-shadow: var(--shadow-pop);\n}\n\n.pf-plus-sections { display: flex; flex-direction: column; }\n.pf-plus-section + .pf-plus-section { border-top: 1px solid var(--hairline); padding-top: 4px; margin-top: 3px; }\n.pf-plus-menu-down .pf-plus-sections { flex-direction: column-reverse; }\n.pf-plus-group-label { padding: 6px 8px 2px; color: var(--graphite); font-size: 9px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }\n.pf-plus-item {\n  display: flex;\n  width: 100%;\n  min-height: 32px;\n  align-items: center;\n  gap: 7px;\n  padding: 5px 7px;\n  border: 1px solid transparent;\n  border-radius: 6px;\n  background: transparent;\n  color: var(--ink);\n  text-align: left;\n  font-size: 13px;\n  cursor: pointer;\n}\n.pf-plus-item > span { min-width: 0; flex: 1; }\n.pf-plus-item svg { flex-shrink: 0; color: var(--graphite); }\n.pf-plus-item:hover:not(:disabled), .pf-plus-item[aria-expanded="true"] { border-color: var(--hairline); background: var(--canvas-soft); }\n.pf-plus-item:disabled { color: var(--mute); cursor: not-allowed; }\n.pf-plus-item:disabled svg { color: var(--mute); }\n.pf-plus-item small { display: block; color: var(--graphite); font-size: 11px; }\n.pf-plus-item kbd { margin-left: auto; color: var(--graphite); font: 12px/1 var(--font-body); }\n.pf-plus-expand > svg:last-child { margin-left: auto; }\n.pf-plus-divider { height: 1px; margin: 3px 2px; background: var(--hairline); }\n.pf-plus-create-pills { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; padding: 2px 6px 5px; }\n.pf-plus-pill { display: inline-flex; align-items: center; gap: 5px; min-height: 26px; padding: 4px 7px; border: 1px solid var(--hairline); border-radius: 999px; background: var(--canvas); color: var(--graphite); font-size: 11px; line-height: 1.2; cursor: not-allowed; }\n.pf-plus-pill:disabled { opacity: .76; }\n.pf-plus-flyout { position: fixed; z-index: 300; width: 260px; max-height: min(240px, calc(100dvh - 24px)); overflow-y: auto; overscroll-behavior: contain; padding: 6px; border: 1px solid var(--hairline); border-radius: 10px; background: var(--canvas); box-shadow: var(--shadow-pop); }\n@media (max-width: 620px) {\n  .pf-plus-flyout { position: fixed; left: 12px !important; right: 12px; top: auto !important; bottom: 120px; width: auto; max-height: min(240px, calc(100dvh - 150px)); }\n}\n.pf-send { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border: 1px solid transparent; border-radius: 10px; color: var(--lime-ink); background: var(--lime); cursor: pointer; box-shadow: 0 8px 18px -8px rgb(124 226 91 / 55%); flex-shrink: 0; }\n.pf-send:hover:not(:disabled) { background: #92ea73; }\n.pf-send:disabled { background: var(--canvas-soft); border-color: var(--hairline); color: var(--mute); box-shadow: none; }\n.pf-transcript { flex: 1; min-height: 0; overflow-y: auto; padding: 32px 24px 0; display: flex; flex-direction: column; }\n.pf-messages { flex: 1; display: flex; flex-direction: column; gap: 28px; width: 100%; max-width: 800px; margin: 0 auto; }\n.pf-user-message { align-self: flex-end; max-width: 85%; display: flex; flex-direction: column; gap: 8px; }\n.pf-message-label { display: flex; align-items: center; gap: 7px; font-size: 11px; font-weight: 600; letter-spacing: .08em; color: var(--graphite); }\n.pf-user-message > .pf-message-label { justify-content: flex-end; }\n.pf-user-content { padding: 14px 18px; border: 1px solid var(--hairline); border-radius: 10px; background: var(--canvas-soft); font-size: 14px; line-height: 1.65; overflow-wrap: anywhere; }\n.pf-assistant-message { width: 100%; display: flex; flex-direction: column; gap: 12px; }\n.pf-mini-prism { display: inline-block; width: 12px; height: 12px; background: var(--prism-ribbon); border-radius: 2px; }\n.pf-assistant-content { font-size: 15px; line-height: 1.75; overflow-wrap: anywhere; }\n.pf-assistant-content pre { max-width: 100%; overflow: auto; background: var(--canvas-soft); border: 1px solid var(--hairline); padding: 14px 16px; border-radius: 6px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 13px; line-height: 1.5; margin: 12px 0; }\n.pf-assistant-content code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.9em; background: var(--canvas-soft); border: 1px solid var(--hairline); padding: 2px 5px; border-radius: 4px; }\n.pf-assistant-content pre code { background: transparent; border: 0; padding: 0; font-size: inherit; }\n.pf-assistant-content a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }\n.pf-assistant-content p { margin: 0 0 12px 0; }\n.pf-assistant-content p:last-child { margin-bottom: 0; }\n.pf-assistant-content ul, .pf-assistant-content ol { margin: 8px 0 12px 20px; padding: 0; }\n.pf-assistant-content li { margin-bottom: 4px; }\n.pf-assistant-content blockquote { margin: 12px 0; padding: 8px 16px; border-left: 3px solid var(--lime); background: var(--canvas-soft); color: var(--graphite); border-radius: 0 6px 6px 0; }\n.pf-assistant-content h1, .pf-assistant-content h2, .pf-assistant-content h3, .pf-assistant-content h4 { font-family: var(--font-display); font-weight: 600; margin: 18px 0 8px 0; color: var(--ink); }\n.pf-assistant-content h1 { font-size: 1.5rem; }\n.pf-assistant-content h2 { font-size: 1.3rem; }\n.pf-assistant-content h3 { font-size: 1.15rem; }\n.pf-assistant-content table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 14px; }\n.pf-assistant-content th, .pf-assistant-content td { border: 1px solid var(--hairline); padding: 8px 12px; text-align: left; }\n.pf-assistant-content th { background: var(--canvas-soft); font-weight: 600; }\n.pf-markdown { width: 100%; }\n.pf-markdown > *:first-child { margin-top: 0; }\n.pf-markdown > *:last-child { margin-bottom: 0; }\n.pf-citation-tone-0 { --citation-color: #e8429b; --citation-tint: rgb(232 66 155 / 14%); }\n.pf-citation-tone-1 { --citation-color: #9b5be8; --citation-tint: rgb(155 91 232 / 14%); }\n.pf-citation-tone-2 { --citation-color: #3fc7e8; --citation-tint: rgb(63 199 232 / 18%); }\n.pf-citation-tone-3 { --citation-color: #b8f25f; --citation-tint: rgb(184 242 95 / 24%); }\n.pf-citation-tone-4 { --citation-color: #f5b946; --citation-tint: rgb(245 185 70 / 19%); }\n.pf-citation-highlight {\n  background: transparent;\n  border-bottom: 1px dotted transparent;\n  transition: background-color 150ms ease, border-color 150ms ease;\n  box-decoration-break: clone;\n  -webkit-box-decoration-break: clone;\n}\n.pf-citation-highlight.is-active {\n  background: var(--citation-tint);\n  border-bottom: 1px solid var(--citation-color);\n}\n.pf-citation-marker {\n  display: inline-flex;\n  align-items: center;\n  margin: 0 4px;\n  vertical-align: middle;\n}\n.pf-assistant-content .pf-citation-link {\n  display: inline-flex;\n  align-items: center;\n  gap: 4px;\n  padding: 1px 6px;\n  border: 1px solid var(--hairline);\n  border-radius: 4px;\n  background: var(--canvas-soft);\n  color: var(--graphite);\n  font-size: 11px;\n  font-weight: 500;\n  line-height: 1.4;\n  text-decoration: none;\n  vertical-align: middle;\n  transition: border-color 140ms ease, background-color 140ms ease, color 140ms ease;\n}\n.pf-assistant-content .pf-citation-link:hover {\n  border-color: var(--citation-color);\n  background: var(--citation-tint);\n  color: var(--ink);\n  text-decoration: none;\n}\n.pf-citation-link:focus-visible {\n  outline: 2px solid var(--ink);\n  outline-offset: 2px;\n}\n.pf-citation-favicon {\n  width: 12px;\n  height: 12px;\n  border-radius: 2px;\n  flex-shrink: 0;\n  display: inline-block;\n}\n.pf-source-chip {\n  display: inline-flex;\n  align-items: center;\n  gap: 6px;\n  margin: 4px 6px 4px 0;\n  padding: 3px 9px;\n  background: var(--canvas-soft);\n  border: 1px solid var(--hairline);\n  border-radius: 6px;\n  color: var(--ink);\n  font-size: 12px;\n  font-weight: 500;\n  text-decoration: none;\n  vertical-align: middle;\n  transition: border-color 140ms ease, background-color 140ms ease;\n}\n.pf-source-chip:hover {\n  border-color: var(--hairline-strong);\n  background: #f0eee8;\n  text-decoration: none;\n}\n.pf-source-favicon {\n  width: 14px;\n  height: 14px;\n  border-radius: 3px;\n  flex-shrink: 0;\n}\n.pf-source-icon {\n  color: var(--graphite);\n  flex-shrink: 0;\n}\n.pf-source-title {\n  max-width: 220px;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n.pf-source-number {\n  color: var(--graphite);\n  font-size: 11px;\n  font-weight: 600;\n}\n.pf-message-actions { display: flex; gap: 4px; }\n.pf-error, .pf-runtime-error { border: 1px solid var(--danger); border-radius: 6px; padding: 12px 16px; color: #a22c2c; background: var(--canvas); font-size: 13px; overflow-wrap: anywhere; }\n.pf-runtime-error { margin: 12px 24px 0; flex-shrink: 0; }\n.pf-running { display: flex; gap: 8px; align-items: center; font-size: 13px; color: var(--graphite); }\n.pf-running .pf-status-dot { animation: pf-pulse 1.2s ease-in-out infinite; }\n.pf-running-inline { display: inline-flex; gap: 8px; align-items: center; font-size: 13px; color: var(--graphite); margin-left: 2px; }\n.pf-running-inline .pf-status-dot { animation: pf-pulse 1.2s ease-in-out infinite; }\n.pf-transcript-footer { position: sticky; bottom: 0; width: 100%; max-width: 800px; margin: 0 auto; padding: 24px 0 12px; background: var(--canvas); }\n.pf-composer-note { font-size: 13px; color: var(--graphite); margin-top: 12px; }\n@keyframes pf-pulse { 50% { opacity: .35; } }\n@media (max-width: 859px) {\n  .pf-stage { padding: 14px; }\n  .pf-desktop-hidden { display: inline-flex; }\n  .pf-topbar { padding: 0 16px; }\n  .pf-welcome-scroll { padding: 24px 16px; }\n  .pf-topbar-title { gap: 10px; }\n  .pf-topbar-title .pf-label, .pf-topbar-divider { display: none; }\n  .pf-workspace-note { flex-direction: column; gap: 4px; }\n  .pf-transcript { padding: 24px 16px 0; }\n  .pf-runtime-error { margin: 12px 16px 0; }\n}\n@media (max-width: 560px) {\n  .pf-topbar { gap: 8px; }\n  .pf-wordmark { font-size: 18px; letter-spacing: .1em; }\n  .pf-session-badge { font-size: 9px; padding: 4px 6px; }\n  .pf-composer-heading { margin-top: 24px; }\n  .pf-composer-heading h2 { font-size: 20px; }\n  .pf-composer-heading .pf-label { display: none; }\n  .pf-composer { padding: 14px 12px 10px; }\n  .pf-composer-toolbar { gap: 8px; }\n  .pf-composer-controls { flex: 1 1 100%; justify-content: flex-end; }\n  .pf-composer-controls > :first-child { margin-right: auto; min-width: 0; }\n  .pf-voice-button { width: 28px; }\n  .pf-composer-note { font-size: 13px; }\n}\n@media (prefers-reduced-motion: reduce) {\n  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }\n}\n';
 
 // src/client/panels.css
 var panels_default = '/* Secondary surfaces share the canvas tokens without styling the chat workspace. */\n.pf-sidebar,\n.pf-settings-dialog,\n.pf-model-selector {\n  color: var(--ink);\n  font-family: var(--font-body);\n  font-size: 13px;\n  line-height: 1.5;\n}\n\n.pf-sidebar *,\n.pf-settings-dialog *,\n.pf-model-selector * {\n  box-sizing: border-box;\n}\n\n.pf-sidebar button,\n.pf-settings-dialog button,\n.pf-settings-dialog input,\n.pf-settings-dialog select,\n.pf-model-selector button {\n  font-family: inherit;\n  font-size: inherit;\n  line-height: inherit;\n}\n\n.pf-sidebar button,\n.pf-settings-dialog button,\n.pf-model-selector button {\n  cursor: pointer;\n}\n\n.pf-sidebar button:focus-visible,\n.pf-settings-dialog button:focus-visible,\n.pf-settings-dialog input:focus-visible,\n.pf-settings-dialog select:focus-visible,\n.pf-model-selector button:focus-visible {\n  outline: 2px solid #3fc7e8;\n  outline-offset: 2px;\n  box-shadow: var(--shadow-focus);\n}\n\n.pf-sidebar svg,\n.pf-settings-dialog svg,\n.pf-model-selector svg {\n  flex-shrink: 0;\n}\n\n.pf-panel-icon-button {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  width: 30px;\n  height: 30px;\n  flex-shrink: 0;\n  padding: 0;\n  border: 1px solid transparent;\n  border-radius: 6px;\n  color: var(--graphite);\n  background: transparent;\n}\n\n.pf-panel-icon-button:hover {\n  color: var(--ink);\n  border-color: var(--hairline);\n  background: var(--canvas-soft);\n}\n\n.pf-sidebar {\n  display: flex;\n  flex-direction: column;\n  flex: 0 0 220px;\n  width: 220px;\n  height: 100%;\n  min-height: 0;\n  background: var(--canvas);\n  border-right: 1px solid var(--hairline);\n}\n\n.pf-sidebar-header {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  flex-shrink: 0;\n  min-height: 64px;\n  padding: 12px 12px 12px 18px;\n  gap: 6px;\n}\n\n.pf-sidebar-wordmark {\n  display: inline-flex;\n  align-items: center;\n  gap: 8px;\n  color: var(--ink);\n  font-family: var(--font-pixel);\n  font-size: 23px;\n  letter-spacing: .02em;\n  line-height: 1;\n}\n\n.pf-brand-prism {\n  width: 15px;\n  height: 15px;\n  flex-shrink: 0;\n  border-radius: 3px;\n  background: var(--prism-ribbon);\n}\n\n.pf-sidebar-new-wrap {\n  padding: 8px 16px 20px;\n}\n\n.pf-sidebar-new {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  width: 100%;\n  height: 38px;\n  padding: 0 12px;\n  border: 1px solid var(--hairline-strong);\n  border-radius: 10px;\n  background: var(--canvas);\n  color: var(--ink);\n  font-weight: 500;\n}\n\n.pf-sidebar-new:hover {\n  border-color: var(--ink);\n  background: var(--canvas-soft);\n}\n\n.pf-sidebar-navigation {\n  flex-shrink: 0;\n  padding: 0 16px 16px;\n  border-bottom: 1px solid var(--hairline);\n}\n\n.pf-group-label,\n.pf-menu-heading {\n  padding: 0 10px 9px;\n  color: var(--graphite);\n  font-size: 11px;\n  font-weight: 600;\n  letter-spacing: .08em;\n  text-transform: uppercase;\n}\n\n.pf-sidebar .pf-group-label {\n  font-family: var(--font-pixel);\n  font-size: 15px;\n  font-weight: 400;\n}\n\n.pf-sidebar-nav-item {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  min-height: 38px;\n  padding: 8px 10px;\n  color: var(--graphite);\n  font-weight: 500;\n  border: 1px solid transparent;\n  border-radius: 6px;\n}\n\n.pf-sidebar-threads {\n  flex: 1;\n  min-height: 0;\n  overflow-y: auto;\n  overscroll-behavior: contain;\n  padding: 20px 16px 12px;\n}\n\n.pf-thread-row {\n  position: relative;\n  display: flex;\n  align-items: center;\n  min-width: 0;\n  margin-bottom: 3px;\n  border: 1px solid transparent;\n  border-radius: 6px;\n  color: var(--graphite);\n}\n\n.pf-thread-row:hover {\n  background: var(--canvas-soft);\n}\n\n.pf-thread-row-active {\n  color: var(--ink);\n  border-color: var(--hairline);\n  background: var(--canvas-soft);\n}\n\n.pf-thread-row-active::before,\n.pf-settings-nav-items button[aria-current="page"]::before {\n  content: "";\n  position: absolute;\n  top: 7px;\n  bottom: 7px;\n  left: -1px;\n  width: 3px;\n  border-radius: 2px;\n  background: var(--prism-ribbon);\n}\n\n.pf-thread-select {\n  display: flex;\n  align-items: center;\n  flex: 1;\n  min-width: 0;\n  min-height: 38px;\n  padding: 8px 4px 8px 10px;\n  border: 0;\n  border-radius: 6px;\n  background: transparent;\n  color: inherit;\n  text-align: left;\n}\n\n.pf-thread-select span {\n  min-width: 0;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n\n.pf-thread-select[aria-current="page"] {\n  font-weight: 500;\n}\n\n.pf-thread-delete {\n  width: 26px;\n  height: 28px;\n  margin-right: 3px;\n  color: var(--mute);\n}\n\n.pf-profile {\n  position: relative;\n  flex-shrink: 0;\n  padding: 12px;\n  border-top: 1px solid var(--hairline);\n}\n\n.pf-profile-trigger {\n  display: flex;\n  align-items: center;\n  gap: 9px;\n  width: 100%;\n  padding: 6px;\n  border: 1px solid transparent;\n  border-radius: 6px;\n  color: var(--graphite);\n  background: transparent;\n  text-align: left;\n}\n\n.pf-profile-trigger:hover,\n.pf-profile-trigger[aria-expanded="true"] {\n  background: var(--canvas-soft);\n  border-color: var(--hairline);\n}\n\n.pf-profile-avatar {\n  display: grid;\n  place-items: center;\n  width: 30px;\n  height: 30px;\n  flex-shrink: 0;\n  border: 1px solid var(--hairline);\n  border-radius: 50%;\n  background: var(--canvas-soft);\n  color: var(--ink);\n  font-family: var(--font-pixel);\n  font-size: 19px;\n}\n\n.pf-profile-copy {\n  flex: 1;\n  min-width: 0;\n}\n\n.pf-profile-name,\n.pf-profile-plan {\n  display: block;\n}\n\n.pf-profile-name {\n  color: var(--ink);\n  font-size: 13px;\n  font-weight: 500;\n}\n\n.pf-profile-plan {\n  color: var(--graphite);\n  font-size: 13px;\n}\n\n.pf-account-menu {\n  position: absolute;\n  left: 8px;\n  right: 8px;\n  bottom: calc(100% + 8px);\n  z-index: 150;\n  max-height: min(580px, calc(100dvh - 130px));\n  overflow-y: auto;\n  overscroll-behavior: contain;\n  padding: 6px;\n  border: 1px solid var(--hairline);\n  border-radius: 10px;\n  background: var(--canvas);\n  box-shadow: var(--shadow-pop);\n}\n\n.pf-account-item,\n.pf-account-address {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  width: 100%;\n  min-height: 36px;\n  padding: 8px;\n  border: 0;\n  border-radius: 6px;\n  color: var(--ink);\n  background: transparent;\n  text-align: left;\n}\n\n.pf-account-item:hover,\n.pf-account-address:hover,\n.pf-account-item[aria-checked="true"],\n.pf-account-item[aria-expanded="true"] {\n  background: var(--canvas-soft);\n}\n\n.pf-account-item > span {\n  min-width: 0;\n  overflow-wrap: anywhere;\n}\n\n.pf-account-item small {\n  display: block;\n  color: var(--graphite);\n  font-size: 13px;\n}\n\n.pf-account-address {\n  color: var(--graphite);\n  overflow-wrap: anywhere;\n  font-size: 13px;\n}\n\n.pf-account-shortcut {\n  margin-left: auto;\n  color: var(--graphite);\n  font-size: 11px;\n  white-space: nowrap;\n}\n\n.pf-account-chevron {\n  margin-left: auto;\n  color: var(--graphite);\n}\n\n.pf-menu-divider {\n  height: 1px;\n  margin: 5px 3px;\n  background: var(--hairline);\n}\n\n/* Inline nesting keeps every language option inside the sidebar/mobile canvas. */\n.pf-language-menu {\n  margin: 3px 0 6px;\n  padding: 4px;\n  border: 1px solid var(--hairline);\n  border-radius: 6px;\n  background: var(--canvas);\n}\n\n.pf-language-menu .pf-account-item {\n  padding-left: 28px;\n}\n\n.pf-model-selector {\n  position: relative;\n  min-width: 0;\n  max-width: 100%;\n  flex: 0 1 280px;\n}\n\n.pf-model-trigger {\n  display: flex;\n  align-items: center;\n  gap: 6px;\n  width: 280px;\n  max-width: 100%;\n  min-height: 30px;\n  padding: 4px 8px;\n  border: 1px solid transparent;\n  border-radius: 6px;\n  background: transparent;\n  color: var(--graphite);\n}\n\n.pf-model-trigger:hover,\n.pf-model-trigger[aria-expanded="true"] {\n  border-color: var(--hairline);\n  background: var(--canvas-soft);\n}\n\n.pf-model-name {\n  min-width: 0;\n  overflow: hidden;\n  color: var(--ink);\n  font-weight: 500;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  flex: 1;\n}\n\n.pf-model-effort {\n  color: var(--graphite);\n  font-size: 13px;\n  white-space: nowrap;\n}\n\n.pf-model-menu {\n  position: absolute;\n  right: 0;\n  bottom: calc(100% + 8px);\n  z-index: 100;\n  display: flex;\n  flex-direction: column;\n  width: 360px;\n  max-width: calc(100vw - 88px);\n  min-height: 0;\n  max-height: min(380px, calc(100dvh - 180px));\n  overflow: hidden;\n  border: 1px solid var(--hairline);\n  border-radius: 10px;\n  background: var(--canvas);\n  box-shadow: var(--shadow-pop);\n}\n\n.pf-model-menu-body { display: flex; flex: 1; min-height: 0; overflow: hidden; }\n\n.pf-model-provider-rail {\n  display: flex;\n  flex-direction: column;\n  gap: 8px;\n  flex: 0 0 56px;\n  padding: 10px 7px;\n  border-right: 1px solid var(--hairline);\n  background: var(--canvas-soft);\n}\n\n.pf-model-provider-tab {\n  position: relative;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 40px;\n  height: 40px;\n  flex-shrink: 0;\n  padding: 8px;\n  border: 1px solid transparent;\n  border-radius: 6px;\n  color: var(--graphite);\n  background: transparent;\n}\n\n.pf-model-provider-tab img { display: block; opacity: .65; }\n.pf-model-provider-tab:hover { border-color: var(--hairline-strong); }\n.pf-model-provider-tab[aria-selected="true"] { border-color: var(--hairline); background: var(--canvas); color: var(--ink); }\n.pf-model-provider-tab[aria-selected="true"] img { opacity: 1; }\n.pf-model-provider-tab[aria-selected="true"]::before { content: ""; position: absolute; left: -8px; top: 8px; bottom: 8px; width: 3px; background: var(--prism-ribbon); }\n.pf-model-provider-content { flex: 1; min-width: 0; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }\n.pf-model-provider-list { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 6px; }\n.pf-model-provider-content .pf-menu-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; }\n.pf-model-group-count { font: 18px/1 var(--font-pixel); }\n\n.pf-reasoning { display: flex; align-items: center; gap: 12px; flex-shrink: 0; padding: 6px 14px; border-top: 1px solid var(--hairline); background: var(--canvas); }\n.pf-reasoning-value { flex: 0 0 68px; font: 18px/1 var(--font-pixel); color: var(--ink); animation: pf-reasoning-label-in 200ms ease-out; }\n.pf-reasoning-slider { position: relative; flex: 1; min-width: 0; height: 38px; }\n.pf-reasoning-track { --reasoning-position: calc(10px + (100% - 20px) * var(--reasoning-progress)); position: absolute; left: 14px; right: 14px; top: 8px; height: 22px; border-radius: 6px; background: var(--canvas-soft); border: 1px solid var(--hairline); }\n.pf-reasoning-fill { position: absolute; left: 0; top: 0; bottom: 0; width: var(--reasoning-position); border-radius: 5px; background-color: var(--reasoning-accent, var(--lime)); transition: width 380ms cubic-bezier(.22, 1.35, .36, 1), background-color 300ms ease, opacity 200ms ease; overflow: hidden; }\n.pf-reasoning-tick { position: absolute; top: 50%; width: 4px; height: 4px; transform: translate(-50%, -50%); background: var(--hairline-strong); border-radius: 1px; transition: background 180ms ease; }\n.pf-reasoning-tick.is-filled { background: var(--lime-ink); }\n.pf-reasoning-knob { position: absolute; top: 0; left: var(--reasoning-position); transform: translateX(-50%); width: 20px; height: 100%; display: grid; place-items: center; border: 1px solid var(--hairline-strong); border-radius: 5px; color: var(--lime-ink); background: var(--canvas); transition: left 300ms cubic-bezier(.2, 0, 0, 1); }\n.pf-reasoning-input { position: absolute; inset: 0 15px; width: calc(100% - 30px); height: 38px; margin: 0; padding: 0; border: 0; appearance: none; background: transparent; opacity: 0; cursor: grab; touch-action: pan-y; }\n.pf-reasoning-input::-webkit-slider-thumb { appearance: none; width: 20px; height: 20px; border: 0; background: transparent; }\n.pf-reasoning-input::-moz-range-thumb { width: 20px; height: 20px; border: 0; background: transparent; }\n.pf-reasoning-input:active { cursor: grabbing; }\n.pf-reasoning-input:disabled { cursor: default; }\n.pf-reasoning-slider:has(.pf-reasoning-input:focus-visible) .pf-reasoning-track { outline: 1px solid var(--ink); outline-offset: 3px; }\n.pf-reasoning-slider.is-highest .pf-reasoning-fill { opacity: 0; }\n.pf-reasoning-slider.is-highest .pf-reasoning-tick { opacity: 0; }\n.pf-reasoning-slider.is-highest .pf-reasoning-track { background: #e8e6e2; }\n.pf-reasoning-prism { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 5px; pointer-events: none; }\n@keyframes pf-reasoning-label-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }\n\n.pf-menu-heading {\n  padding: 8px 10px;\n  margin-bottom: 3px;\n  border-bottom: 1px solid var(--hairline);\n}\n\n.pf-model-option {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 10px;\n  width: 100%;\n  min-height: 58px;\n  padding: 8px 10px;\n  border: 1px solid transparent;\n  border-radius: 6px;\n  background: transparent;\n  color: var(--ink);\n  text-align: left;\n}\n\n.pf-model-option:hover:not(:disabled),\n.pf-model-option[aria-checked="true"] {\n  border-color: var(--hairline);\n  background: var(--canvas-soft);\n}\n\n.pf-model-option:disabled {\n  color: var(--graphite);\n  opacity: .6;\n  cursor: not-allowed;\n}\n\n.pf-model-option-copy {\n  display: flex;\n  flex-direction: column;\n  min-width: 0;\n  overflow-wrap: anywhere;\n}\n\n.pf-model-option-name {\n  font-weight: 500;\n}\n\n.pf-model-option-detail {\n  color: var(--graphite);\n  font-size: 13px;\n}\n\n.pf-model-selected {\n  display: grid;\n  place-items: center;\n  flex-shrink: 0;\n  width: 19px;\n  height: 19px;\n  border-radius: 50%;\n  background: var(--lime);\n  color: var(--lime-ink);\n}\n\n.pf-model-discovery {\n  display: flex;\n  align-items: flex-start;\n  gap: 8px;\n  padding: 9px 10px;\n  color: var(--graphite);\n  overflow-wrap: anywhere;\n}\n\n.pf-model-discovery svg {\n  margin-top: 3px;\n}\n\n.pf-model-discovery span {\n  min-width: 0;\n}\n\n.pf-model-error {\n  color: #a82d2d;\n}\n\n.pf-discovery-spinner {\n  animation: pf-discovery-spin 1s linear infinite;\n}\n\n@keyframes pf-discovery-spin {\n  to { transform: rotate(360deg); }\n}\n\n.pf-settings-overlay {\n  position: fixed;\n  inset: 0;\n  z-index: 500;\n  display: grid;\n  place-items: center;\n  padding: 24px;\n  background: rgba(11, 11, 15, .48);\n}\n\n.pf-settings-dialog {\n  position: relative;\n  display: flex;\n  width: min(1000px, 100%);\n  height: min(820px, calc(100dvh - 48px));\n  overflow: hidden;\n  border: 1px solid var(--hairline);\n  border-radius: 14px;\n  background: var(--canvas);\n  box-shadow: var(--shadow-pop);\n}\n\n.pf-settings-dialog::before {\n  content: "";\n  position: absolute;\n  inset: 0 0 auto;\n  z-index: 2;\n  height: 3px;\n  background: var(--prism-ribbon);\n}\n\n.pf-settings-close {\n  position: absolute;\n  top: 16px;\n  right: 16px;\n  z-index: 3;\n  width: 34px;\n  height: 34px;\n  background: var(--canvas);\n}\n\n.pf-settings-nav {\n  display: flex;\n  flex-direction: column;\n  width: 220px;\n  flex: 0 0 220px;\n  overflow-y: auto;\n  padding: 24px 12px 16px;\n  border-right: 1px solid var(--hairline);\n}\n\n.pf-settings-nav h2 {\n  margin: 0 10px 20px;\n  font-family: var(--font-display);\n  font-size: 22px;\n  font-weight: 600;\n  letter-spacing: -.02em;\n}\n\n.pf-settings-search {\n  position: relative;\n  margin: 0 4px 24px;\n}\n\n.pf-settings-search > svg {\n  position: absolute;\n  top: 12px;\n  left: 12px;\n  color: var(--graphite);\n  pointer-events: none;\n}\n\n.pf-settings-search input {\n  width: 100%;\n  height: 40px;\n  padding: 0 12px 0 36px;\n  border: 1px solid var(--hairline);\n  border-radius: 10px;\n  background: var(--canvas);\n  color: var(--ink);\n}\n\n.pf-settings-search input::placeholder {\n  color: var(--graphite);\n}\n\n.pf-settings-search input:hover,\n.pf-select-wrap select:hover {\n  border-color: var(--ink);\n}\n\n.pf-settings-search input:focus-visible,\n.pf-select-wrap select:focus-visible {\n  border-color: transparent;\n  background: linear-gradient(var(--canvas), var(--canvas)) padding-box, var(--prism-ribbon) border-box;\n}\n\n.pf-settings-nav-group {\n  margin-bottom: 20px;\n}\n\n.pf-settings-nav-items {\n  display: flex;\n  flex-direction: column;\n  gap: 2px;\n}\n\n.pf-settings-nav-items button {\n  position: relative;\n  min-height: 38px;\n  width: 100%;\n  padding: 8px 10px;\n  border: 1px solid transparent;\n  border-radius: 6px;\n  background: transparent;\n  color: var(--graphite);\n  text-align: left;\n  font-weight: 500;\n}\n\n.pf-settings-nav-items button:hover {\n  color: var(--ink);\n  background: var(--canvas-soft);\n}\n\n.pf-settings-nav-items button[aria-current="page"] {\n  border-color: var(--hairline);\n  background: var(--canvas-soft);\n  color: var(--ink);\n}\n\n.pf-settings-api {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  margin-top: auto;\n  padding: 16px 10px 4px;\n  border-top: 1px solid var(--hairline);\n  color: var(--graphite);\n}\n\n.pf-settings-content {\n  flex: 1;\n  min-width: 0;\n  overflow-y: auto;\n  overscroll-behavior: contain;\n  padding: 32px 40px 40px;\n}\n\n.pf-settings-form {\n  width: 100%;\n  max-width: 560px;\n}\n\n.pf-settings-form h3 {\n  margin: 32px 0 4px;\n  color: var(--ink);\n  font-family: var(--font-display);\n  font-size: 22px;\n  font-weight: 600;\n  line-height: 1.25;\n  letter-spacing: -.02em;\n}\n\n.pf-settings-form h3:first-child {\n  margin-top: 4px;\n  padding-right: 30px;\n}\n\n.pf-settings-field {\n  padding: 20px 0;\n  border-bottom: 1px solid var(--hairline);\n}\n\n.pf-field-label {\n  color: var(--graphite);\n  font-size: 11px;\n  font-weight: 600;\n  letter-spacing: .08em;\n  text-transform: uppercase;\n}\n\n.pf-field-description {\n  margin: 6px 0 0;\n  color: var(--graphite);\n  font-size: 13px;\n}\n\n.pf-field-control {\n  margin-top: 10px;\n}\n\n.pf-segmented {\n  display: inline-flex;\n  flex-wrap: wrap;\n  align-items: center;\n  max-width: 100%;\n  gap: 3px;\n  padding: 3px;\n  border: 1px solid var(--hairline);\n  border-radius: 10px;\n  background: var(--canvas-soft);\n}\n\n.pf-segmented button {\n  min-height: 32px;\n  padding: 5px 12px;\n  border: 1px solid transparent;\n  border-radius: 6px;\n  background: transparent;\n  color: var(--graphite);\n}\n\n.pf-segmented button:hover {\n  color: var(--ink);\n}\n\n.pf-segmented button[aria-pressed="true"] {\n  border-color: var(--hairline);\n  background: var(--canvas);\n  box-shadow: var(--shadow-card);\n  color: var(--ink);\n}\n\n.pf-select-wrap {\n  position: relative;\n  width: min(100%, 320px);\n}\n\n.pf-select-wrap select {\n  width: 100%;\n  height: 40px;\n  appearance: none;\n  padding: 0 36px 0 12px;\n  border: 1px solid var(--hairline);\n  border-radius: 10px;\n  color: var(--ink);\n  background: var(--canvas);\n  cursor: pointer;\n}\n\n.pf-select-wrap > svg {\n  position: absolute;\n  top: 12px;\n  right: 12px;\n  color: var(--graphite);\n  pointer-events: none;\n}\n\n.pf-switch {\n  width: 42px;\n  height: 24px;\n  padding: 3px;\n  border: 1px solid var(--hairline-strong);\n  border-radius: 999px;\n  background: var(--hairline-strong);\n}\n\n.pf-switch[aria-checked="true"] {\n  background: var(--lime);\n  border-color: var(--lime);\n}\n\n.pf-switch span {\n  display: block;\n  width: 16px;\n  height: 16px;\n  border-radius: 50%;\n  background: var(--canvas);\n  transform: translateX(0);\n  transition: transform .15s ease;\n}\n\n.pf-switch[aria-checked="true"] span {\n  transform: translateX(18px);\n}\n\n.pf-settings-description {\n  margin-top: 16px;\n  color: var(--graphite);\n  font-size: 13px;\n}\n\n@media (max-width: 859px) {\n  .pf-sidebar {\n    position: absolute;\n    top: 64px;\n    bottom: 0;\n    left: 0;\n    z-index: 200;\n    height: auto;\n    box-shadow: var(--shadow-pop);\n  }\n\n  .pf-model-menu {\n    left: 0;\n    right: auto;\n  }\n\n  .pf-sidebar-header {\n    min-height: 56px;\n  }\n\n  .pf-sidebar-new-wrap {\n    padding-bottom: 12px;\n  }\n\n  .pf-sidebar-navigation {\n    padding-bottom: 10px;\n  }\n\n  .pf-sidebar-threads {\n    padding-top: 14px;\n  }\n\n  .pf-settings-overlay {\n    padding: 16px;\n  }\n\n  .pf-settings-dialog {\n    height: min(820px, calc(100dvh - 32px));\n  }\n\n  .pf-settings-nav {\n    width: 190px;\n    flex-basis: 190px;\n  }\n\n  .pf-settings-content {\n    padding: 32px 24px;\n  }\n}\n\n@media (max-width: 600px) {\n  .pf-settings-dialog {\n    flex-direction: column;\n  }\n\n  .pf-settings-nav {\n    flex: 0 0 auto;\n    width: 100%;\n    max-height: 250px;\n    padding: 18px 12px 12px;\n    border-right: 0;\n    border-bottom: 1px solid var(--hairline);\n  }\n\n  .pf-settings-nav h2 {\n    margin: 0 6px 12px;\n    padding-right: 42px;\n  }\n\n  .pf-settings-search {\n    margin: 0 4px 12px;\n  }\n\n  .pf-settings-nav-groups {\n    flex-shrink: 0;\n    display: flex;\n    gap: 16px;\n    padding: 3px 4px;\n    overflow-x: auto;\n  }\n\n  .pf-settings-nav-group {\n    flex-shrink: 0;\n    margin-bottom: 0;\n  }\n\n  .pf-settings-nav-group .pf-group-label {\n    padding: 0 4px 6px;\n  }\n\n  .pf-settings-nav-items {\n    flex-direction: row;\n    gap: 4px;\n  }\n\n  .pf-settings-nav-items button {\n    width: auto;\n    white-space: nowrap;\n  }\n\n  .pf-settings-api {\n    margin: 8px 4px 0;\n    padding: 8px 4px 0;\n  }\n\n  .pf-settings-content {\n    min-height: 0;\n    padding: 24px 20px;\n  }\n\n  .pf-settings-close {\n    top: 16px;\n    right: 12px;\n  }\n\n  .pf-model-effort {\n    max-width: 70px;\n    overflow: hidden;\n    text-overflow: ellipsis;\n  }\n}\n\n@media (max-width: 560px) {\n  .pf-model-effort { display: none; }\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .pf-discovery-spinner {\n    animation: none;\n  }\n\n  .pf-switch span {\n    transition: none;\n  }\n  .pf-reasoning *, .pf-reasoning *::after { animation: none; transition: none; }\n}\n';
@@ -67974,6 +68219,179 @@ var OTHER_MODELS = [
     provider: "chatgpt-web"
   }
 ];
+var unavailableTitle = "This action is not available in UltraRoute yet";
+function ComposerPlusMenu() {
+  const [open2, setOpen] = (0, import_react57.useState)(false);
+  const [expanded, setExpanded] = (0, import_react57.useState)(null);
+  const [submenuPosition, setSubmenuPosition] = (0, import_react57.useState)(null);
+  const menuRef = (0, import_react57.useRef)(null);
+  const submenuRef = (0, import_react57.useRef)(null);
+  const triggerRef = (0, import_react57.useRef)(null);
+  const [opensUp, setOpensUp] = (0, import_react57.useState)(true);
+  const menuPanelRef = (0, import_react57.useRef)(null);
+  (0, import_react57.useEffect)(() => {
+    if (!open2) return;
+    const onPointerDown = (event) => {
+      if (event.target instanceof Node && !menuRef.current?.contains(event.target) && !submenuRef.current?.contains(event.target)) {
+        setOpen(false);
+        setExpanded(null);
+      }
+    };
+    const onKeyDown = (event) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setOpen(false);
+        setExpanded(null);
+        triggerRef.current?.focus();
+      }
+    };
+    document.addEventListener("pointerdown", onPointerDown, true);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown, true);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [open2]);
+  (0, import_react57.useLayoutEffect)(() => {
+    if (!open2) return;
+    const trigger = triggerRef.current;
+    const menu = menuPanelRef.current;
+    if (!trigger || !menu) return;
+    const rect = trigger.getBoundingClientRect();
+    const availableAbove = rect.top - 8;
+    const availableBelow = window.innerHeight - rect.bottom - 8;
+    setOpensUp(availableAbove >= menu.scrollHeight || availableAbove >= availableBelow);
+  }, [open2]);
+  (0, import_react57.useEffect)(() => {
+    if (!expanded) {
+      setSubmenuPosition(null);
+      return;
+    }
+    const trigger = menuRef.current?.querySelector(`[data-plus-group="${expanded}"]`);
+    if (!trigger) return;
+    const rect = trigger.getBoundingClientRect();
+    const menuWidth = 260;
+    const menuHeight = expanded === "uploads" ? 184 : 104;
+    const gutter = 12;
+    const left = Math.min(window.innerWidth - menuWidth - gutter, rect.right + 8);
+    const top = Math.max(gutter, Math.min(rect.top, window.innerHeight - menuHeight - gutter));
+    setSubmenuPosition({ left, top });
+  }, [expanded, open2]);
+  return /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)("div", { ref: menuRef, className: "pf-plus-menu-wrap", children: [
+    open2 && /* @__PURE__ */ (0, import_jsx_runtime70.jsx)("div", { ref: menuPanelRef, className: `pf-plus-menu ${opensUp ? "pf-plus-menu-up" : "pf-plus-menu-down"}`, role: "menu", "aria-label": "Add to chat", children: /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)("div", { className: "pf-plus-sections", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)("section", { className: "pf-plus-section pf-plus-section-add", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime70.jsx)("div", { className: "pf-plus-group-label", children: "Add to chat" }),
+        /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(composer_exports.AddAttachment, { asChild: true, children: /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)("button", { type: "button", role: "menuitem", className: "pf-plus-item", onClick: () => setOpen(false), children: [
+          /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(Paperclip, { size: 17, "aria-hidden": "true" }),
+          /* @__PURE__ */ (0, import_jsx_runtime70.jsx)("span", { children: "Add files or photos" }),
+          /* @__PURE__ */ (0, import_jsx_runtime70.jsx)("kbd", { children: "Ctrl+U" })
+        ] }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)("button", { type: "button", role: "menuitem", className: "pf-plus-item", disabled: true, title: unavailableTitle, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(Camera, { size: 17, "aria-hidden": "true" }),
+          /* @__PURE__ */ (0, import_jsx_runtime70.jsx)("span", { children: "Take a screenshot" })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)("button", { type: "button", role: "menuitem", className: "pf-plus-item pf-plus-expand", "data-plus-group": "uploads", "aria-expanded": expanded === "uploads", onMouseEnter: () => setExpanded("uploads"), onFocus: () => setExpanded("uploads"), onClick: () => setExpanded("uploads"), children: [
+          /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(Ellipsis, { size: 17, "aria-hidden": "true" }),
+          /* @__PURE__ */ (0, import_jsx_runtime70.jsx)("span", { children: "More uploads" }),
+          /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(ChevronRight, { size: 15, "aria-hidden": "true" })
+        ] })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)("section", { className: "pf-plus-section pf-plus-section-create", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime70.jsx)("div", { className: "pf-plus-group-label", children: "Create and research" }),
+        /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)("button", { type: "button", role: "menuitem", className: "pf-plus-item", disabled: true, title: unavailableTitle, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(Search, { size: 17, "aria-hidden": "true" }),
+          /* @__PURE__ */ (0, import_jsx_runtime70.jsx)("span", { children: "Web search" })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)("div", { className: "pf-plus-create-pills", role: "group", "aria-label": "Create", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)("button", { type: "button", className: "pf-plus-pill", disabled: true, title: unavailableTitle, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(ImagePlus, { size: 15, "aria-hidden": "true" }),
+            /* @__PURE__ */ (0, import_jsx_runtime70.jsx)("span", { children: "Create image" })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)("button", { type: "button", className: "pf-plus-pill", disabled: true, title: unavailableTitle, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(Video, { size: 15, "aria-hidden": "true" }),
+            /* @__PURE__ */ (0, import_jsx_runtime70.jsx)("span", { children: "Create video" })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)("button", { type: "button", className: "pf-plus-pill", disabled: true, title: unavailableTitle, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(Music2, { size: 15, "aria-hidden": "true" }),
+            /* @__PURE__ */ (0, import_jsx_runtime70.jsx)("span", { children: "Create music" })
+          ] })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)("button", { type: "button", role: "menuitem", className: "pf-plus-item", disabled: true, title: unavailableTitle, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(BrainCircuit, { size: 17, "aria-hidden": "true" }),
+          /* @__PURE__ */ (0, import_jsx_runtime70.jsx)("span", { children: "Deep research" })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)("button", { type: "button", role: "menuitem", className: "pf-plus-item pf-plus-expand", "data-plus-group": "tools", "aria-expanded": expanded === "tools", onMouseEnter: () => setExpanded("tools"), onFocus: () => setExpanded("tools"), onClick: () => setExpanded("tools"), children: [
+          /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(Ellipsis, { size: 17, "aria-hidden": "true" }),
+          /* @__PURE__ */ (0, import_jsx_runtime70.jsx)("span", { children: "More tools" }),
+          /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(ChevronRight, { size: 15, "aria-hidden": "true" })
+        ] })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)("section", { className: "pf-plus-section pf-plus-section-workspace", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime70.jsx)("div", { className: "pf-plus-group-label", children: "Workspace" }),
+        /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)("button", { type: "button", role: "menuitem", className: "pf-plus-item", disabled: true, title: unavailableTitle, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(PanelsTopLeft, { size: 17, "aria-hidden": "true" }),
+          /* @__PURE__ */ (0, import_jsx_runtime70.jsx)("span", { children: "Skills" }),
+          /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(ChevronRight, { size: 15, "aria-hidden": "true" })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)("button", { type: "button", role: "menuitem", className: "pf-plus-item", disabled: true, title: unavailableTitle, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(Blocks, { size: 17, "aria-hidden": "true" }),
+          /* @__PURE__ */ (0, import_jsx_runtime70.jsx)("span", { children: "Add connector" }),
+          /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(ChevronRight, { size: 15, "aria-hidden": "true" })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)("button", { type: "button", role: "menuitem", className: "pf-plus-item", disabled: true, title: unavailableTitle, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(Palette, { size: 17, "aria-hidden": "true" }),
+          /* @__PURE__ */ (0, import_jsx_runtime70.jsx)("span", { children: "Design system" }),
+          /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(ChevronRight, { size: 15, "aria-hidden": "true" })
+        ] })
+      ] })
+    ] }) }),
+    open2 && expanded && submenuPosition && (0, import_react_dom.createPortal)(
+      /* @__PURE__ */ (0, import_jsx_runtime70.jsx)("div", { ref: submenuRef, className: "pf-plus-flyout", style: { left: submenuPosition.left, top: submenuPosition.top }, role: "group", "aria-label": expanded === "uploads" ? "More uploads" : "More tools", children: expanded === "uploads" ? /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)(import_jsx_runtime70.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)("button", { type: "button", role: "menuitem", className: "pf-plus-item", disabled: true, title: unavailableTitle, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(ImagePlus, { size: 16, "aria-hidden": "true" }),
+          /* @__PURE__ */ (0, import_jsx_runtime70.jsx)("span", { children: "Google Photos" })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)("button", { type: "button", role: "menuitem", className: "pf-plus-item", disabled: true, title: unavailableTitle, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(GitBranch, { size: 16, "aria-hidden": "true" }),
+          /* @__PURE__ */ (0, import_jsx_runtime70.jsx)("span", { children: "Add from GitHub" })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)("button", { type: "button", role: "menuitem", className: "pf-plus-item", disabled: true, title: unavailableTitle, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(HardDriveUpload, { size: 16, "aria-hidden": "true" }),
+          /* @__PURE__ */ (0, import_jsx_runtime70.jsx)("span", { children: "Add from Drive" })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)("button", { type: "button", role: "menuitem", className: "pf-plus-item", disabled: true, title: unavailableTitle, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(Sparkles, { size: 16, "aria-hidden": "true" }),
+          /* @__PURE__ */ (0, import_jsx_runtime70.jsx)("span", { children: "Avatar" })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)("button", { type: "button", role: "menuitem", className: "pf-plus-item", disabled: true, title: unavailableTitle, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(CodeXml, { size: 16, "aria-hidden": "true" }),
+          /* @__PURE__ */ (0, import_jsx_runtime70.jsx)("span", { children: "Import code" })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)("button", { type: "button", role: "menuitem", className: "pf-plus-item", disabled: true, title: unavailableTitle, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(BookOpenCheck, { size: 16, "aria-hidden": "true" }),
+          /* @__PURE__ */ (0, import_jsx_runtime70.jsx)("span", { children: "Notebooks" })
+        ] })
+      ] }) : /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)(import_jsx_runtime70.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)("button", { type: "button", role: "menuitem", className: "pf-plus-item", disabled: true, title: unavailableTitle, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(PanelsTopLeft, { size: 16, "aria-hidden": "true" }),
+          /* @__PURE__ */ (0, import_jsx_runtime70.jsx)("span", { children: "Canvas" })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)("button", { type: "button", role: "menuitem", className: "pf-plus-item", disabled: true, title: unavailableTitle, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(Sparkles, { size: 16, "aria-hidden": "true" }),
+          /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)("span", { children: [
+            "Personal Intelligence ",
+            /* @__PURE__ */ (0, import_jsx_runtime70.jsx)("small", { children: "Labs" })
+          ] })
+        ] })
+      ] }) }),
+      document.body
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime70.jsx)("button", { ref: triggerRef, type: "button", className: `pf-icon-button${open2 ? " pf-plus-trigger-open" : ""}`, "aria-label": open2 ? "Close add menu" : "Open add menu", "aria-haspopup": "menu", "aria-expanded": open2, title: open2 ? "Close add menu" : "Add to chat", onClick: () => {
+      setOpen((current) => !current);
+      setExpanded(null);
+    }, children: open2 ? /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(X, { size: 18, "aria-hidden": "true" }) : /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(Plus, { size: 18, "aria-hidden": "true" }) })
+  ] });
+}
 function ClaudeThread({ selectedModel, onSelectModel, isSidebarOpen, onToggleSidebar }) {
   return /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)(thread_exports.Root, { className: "pf-thread", children: [
     /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)("header", { className: "pf-topbar", children: [
@@ -68078,7 +68496,7 @@ function ClaudeComposer({ selectedModel, onSelectModel }) {
   return /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)(composer_exports.Root, { className: "pf-composer", children: [
     /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(composer_exports.Input, { className: "pf-composer-input", "aria-label": "Message", placeholder: "Ask a question, explore an idea, or make something\u2026" }),
     /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)("div", { className: "pf-composer-toolbar", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime70.jsx)("div", { className: "pf-composer-tools", children: /* @__PURE__ */ (0, import_jsx_runtime70.jsx)("button", { type: "button", className: "pf-icon-button", title: "Attach file", "aria-label": "Attach file", children: /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(Plus, { size: 18 }) }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime70.jsx)("div", { className: "pf-composer-tools", children: /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(ComposerPlusMenu, {}) }),
       /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)("div", { className: "pf-composer-controls", children: [
         /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(ModelDropdown, { selected: selectedModel, onSelect: onSelectModel }),
         /* @__PURE__ */ (0, import_jsx_runtime70.jsx)("button", { type: "button", className: "pf-icon-button pf-voice-button", "aria-label": "Voice input", title: "Voice input", children: /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(Mic, { size: 17 }) }),
@@ -68326,10 +68744,10 @@ react/cjs/react.production.js:
    * LICENSE file in the root directory of this source tree.
    *)
 
-scheduler/cjs/scheduler.production.js:
+react-dom/cjs/react-dom.production.js:
   (**
    * @license React
-   * scheduler.production.js
+   * react-dom.production.js
    *
    * Copyright (c) Meta Platforms, Inc. and affiliates.
    *
@@ -68337,10 +68755,10 @@ scheduler/cjs/scheduler.production.js:
    * LICENSE file in the root directory of this source tree.
    *)
 
-react-dom/cjs/react-dom.production.js:
+scheduler/cjs/scheduler.production.js:
   (**
    * @license React
-   * react-dom.production.js
+   * scheduler.production.js
    *
    * Copyright (c) Meta Platforms, Inc. and affiliates.
    *
@@ -68392,6 +68810,10 @@ lucide-react/dist/esm/createLucideIcon.mjs:
 lucide-react/dist/esm/icons/arrow-up-right.mjs:
 lucide-react/dist/esm/icons/arrow-up.mjs:
 lucide-react/dist/esm/icons/audio-waveform.mjs:
+lucide-react/dist/esm/icons/blocks.mjs:
+lucide-react/dist/esm/icons/book-open-check.mjs:
+lucide-react/dist/esm/icons/brain-circuit.mjs:
+lucide-react/dist/esm/icons/camera.mjs:
 lucide-react/dist/esm/icons/check.mjs:
 lucide-react/dist/esm/icons/chevron-down.mjs:
 lucide-react/dist/esm/icons/chevron-right.mjs:
@@ -68399,23 +68821,33 @@ lucide-react/dist/esm/icons/circle-question-mark.mjs:
 lucide-react/dist/esm/icons/clipboard.mjs:
 lucide-react/dist/esm/icons/code-xml.mjs:
 lucide-react/dist/esm/icons/download.mjs:
+lucide-react/dist/esm/icons/ellipsis.mjs:
 lucide-react/dist/esm/icons/folder-open.mjs:
+lucide-react/dist/esm/icons/git-branch.mjs:
 lucide-react/dist/esm/icons/globe.mjs:
+lucide-react/dist/esm/icons/hard-drive-upload.mjs:
+lucide-react/dist/esm/icons/image-plus.mjs:
 lucide-react/dist/esm/icons/info.mjs:
 lucide-react/dist/esm/icons/key-round.mjs:
 lucide-react/dist/esm/icons/layout-grid.mjs:
 lucide-react/dist/esm/icons/loader-circle.mjs:
 lucide-react/dist/esm/icons/log-out.mjs:
 lucide-react/dist/esm/icons/mic.mjs:
+lucide-react/dist/esm/icons/music-2.mjs:
+lucide-react/dist/esm/icons/palette.mjs:
 lucide-react/dist/esm/icons/panel-left-close.mjs:
 lucide-react/dist/esm/icons/panel-left.mjs:
+lucide-react/dist/esm/icons/panels-top-left.mjs:
+lucide-react/dist/esm/icons/paperclip.mjs:
 lucide-react/dist/esm/icons/plus.mjs:
 lucide-react/dist/esm/icons/search.mjs:
 lucide-react/dist/esm/icons/settings.mjs:
 lucide-react/dist/esm/icons/sliders-horizontal.mjs:
+lucide-react/dist/esm/icons/sparkles.mjs:
 lucide-react/dist/esm/icons/thumbs-down.mjs:
 lucide-react/dist/esm/icons/thumbs-up.mjs:
 lucide-react/dist/esm/icons/trash.mjs:
+lucide-react/dist/esm/icons/video.mjs:
 lucide-react/dist/esm/icons/x.mjs:
 lucide-react/dist/esm/icons/zap.mjs:
 lucide-react/dist/esm/lucide-react.mjs:

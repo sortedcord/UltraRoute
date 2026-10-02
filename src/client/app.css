@@ -34,7 +34,7 @@ button:disabled { cursor: not-allowed; }
 button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focus-visible { outline: 2px solid #3fc7e8; outline-offset: 2px; box-shadow: var(--shadow-focus); }
 ::selection { background: #b8f25f; color: var(--ink); }
 h1, h2, h3, p { margin: 0; }
-.pf-stage { height: 100dvh; padding: 22px; background: radial-gradient(circle, rgb(255 255 255 / 22%) .7px, transparent .7px) 0 0 / 5px 5px, var(--prism-frame); }
+.pf-stage { height: 100dvh; padding: 14px; background: radial-gradient(circle, rgb(255 255 255 / 22%) .7px, transparent .7px) 0 0 / 5px 5px, var(--prism-frame); }
 .pf-canvas { position: relative; display: flex; height: 100%; border: 1px solid var(--hairline); border-radius: 14px; overflow: hidden; background: var(--canvas); box-shadow: var(--shadow-card); }
 .pf-main { flex: 1; min-width: 0; display: flex; flex-direction: column; overflow: hidden; }
 .pf-thread { flex: 1; min-height: 0; display: flex; flex-direction: column; background: var(--canvas); }
@@ -59,6 +59,60 @@ h1, h2, h3, p { margin: 0; }
 .pf-composer-toolbar, .pf-composer-tools, .pf-composer-controls { display: flex; align-items: center; gap: 8px; min-width: 0; }
 .pf-composer-toolbar { justify-content: space-between; padding-top: 10px; border-top: 1px solid var(--hairline); flex-wrap: wrap; }
 .pf-composer-controls { margin-left: auto; }
+
+.pf-plus-menu-wrap { position: relative; }
+.pf-plus-trigger[aria-expanded="true"] { background: var(--canvas-soft); border-color: var(--hairline); color: var(--ink); }
+.pf-plus-menu {
+  position: absolute;
+  z-index: 180;
+  left: 0;
+  bottom: calc(100% + 8px);
+  width: min(300px, calc(100vw - 44px));
+  max-height: min(560px, calc(100dvh - 190px));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 5px;
+  border: 1px solid var(--hairline);
+  border-radius: 10px;
+  background: var(--canvas);
+  box-shadow: var(--shadow-pop);
+}
+
+.pf-plus-sections { display: flex; flex-direction: column; }
+.pf-plus-section + .pf-plus-section { border-top: 1px solid var(--hairline); padding-top: 4px; margin-top: 3px; }
+.pf-plus-menu-down .pf-plus-sections { flex-direction: column-reverse; }
+.pf-plus-group-label { padding: 6px 8px 2px; color: var(--graphite); font-size: 9px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+.pf-plus-item {
+  display: flex;
+  width: 100%;
+  min-height: 32px;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 7px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ink);
+  text-align: left;
+  font-size: 13px;
+  cursor: pointer;
+}
+.pf-plus-item > span { min-width: 0; flex: 1; }
+.pf-plus-item svg { flex-shrink: 0; color: var(--graphite); }
+.pf-plus-item:hover:not(:disabled), .pf-plus-item[aria-expanded="true"] { border-color: var(--hairline); background: var(--canvas-soft); }
+.pf-plus-item:disabled { color: var(--mute); cursor: not-allowed; }
+.pf-plus-item:disabled svg { color: var(--mute); }
+.pf-plus-item small { display: block; color: var(--graphite); font-size: 11px; }
+.pf-plus-item kbd { margin-left: auto; color: var(--graphite); font: 12px/1 var(--font-body); }
+.pf-plus-expand > svg:last-child { margin-left: auto; }
+.pf-plus-divider { height: 1px; margin: 3px 2px; background: var(--hairline); }
+.pf-plus-create-pills { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; padding: 2px 6px 5px; }
+.pf-plus-pill { display: inline-flex; align-items: center; gap: 5px; min-height: 26px; padding: 4px 7px; border: 1px solid var(--hairline); border-radius: 999px; background: var(--canvas); color: var(--graphite); font-size: 11px; line-height: 1.2; cursor: not-allowed; }
+.pf-plus-pill:disabled { opacity: .76; }
+.pf-plus-flyout { position: fixed; z-index: 300; width: 260px; max-height: min(240px, calc(100dvh - 24px)); overflow-y: auto; overscroll-behavior: contain; padding: 6px; border: 1px solid var(--hairline); border-radius: 10px; background: var(--canvas); box-shadow: var(--shadow-pop); }
+@media (max-width: 620px) {
+  .pf-plus-flyout { position: fixed; left: 12px !important; right: 12px; top: auto !important; bottom: 120px; width: auto; max-height: min(240px, calc(100dvh - 150px)); }
+}
 .pf-send { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border: 1px solid transparent; border-radius: 10px; color: var(--lime-ink); background: var(--lime); cursor: pointer; box-shadow: 0 8px 18px -8px rgb(124 226 91 / 55%); flex-shrink: 0; }
 .pf-send:hover:not(:disabled) { background: #92ea73; }
 .pf-send:disabled { background: var(--canvas-soft); border-color: var(--hairline); color: var(--mute); box-shadow: none; }
