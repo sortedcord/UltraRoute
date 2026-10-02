@@ -18,7 +18,7 @@ const mobileViewport: BrowserContextOptions = {
   isMobile: true,
   hasTouch: true,
 };
-const html = `<!doctype html><html><head><meta name="viewport" content="width=device-width, initial-scale=1"></head><body><div id="root"></div><script type="module" src="/bundle.js"></script></body></html>`;
+const html = `<!doctype html><html><head><meta name="viewport" content="width=device-width, initial-scale=1"></head><body><div id="root"></div><script type="module" src="/dist/bundle.js"></script></body></html>`;
 
 async function withWorkspace(
   run: (
@@ -26,12 +26,13 @@ async function withWorkspace(
   ) => Promise<void>,
 ) {
   // Exercise the production entry point, not a separately mounted test component.
-  const bundle = await readFile(new URL("../../public/bundle.js", import.meta.url));
+  const bundle = await readFile(new URL("../../dist/bundle.js", import.meta.url));
   const server = createServer((request, response) => {
     const path = new URL(request.url ?? "/", "http://localhost").pathname;
-    if (path === "/bundle.js") {
+    if (path === "/dist/bundle.js") {
       response.writeHead(200, { "Content-Type": "text/javascript" });
       response.end(bundle);
+      return;
     } else if (
       path === "/api/providers/claude-web/models" ||
       path === "/api/providers/gemini-web/models"

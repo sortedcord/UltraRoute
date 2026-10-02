@@ -96,14 +96,14 @@ process.once("SIGINT", stopCatalogRefresh);
 process.once("SIGTERM", stopCatalogRefresh);
 
 // ── HTTP Server ─────────────────────────────────────────────────────
-const PORT = 3000;
+const PORT = Number(process.env.PORT ?? 3000);
 const server = createServer(
   async (req: IncomingMessage, res: ServerResponse) => {
     const url = new URL(req.url ?? "/", `http://${req.headers.host}`);
 
-    // Serve bundle.js
-    if (req.method === "GET" && url.pathname === "/bundle.js") {
-      const bundlePath = join(process.cwd(), "public", "bundle.js");
+    // Serve the generated client bundle from dist/.
+    if (req.method === "GET" && url.pathname === "/dist/bundle.js") {
+      const bundlePath = join(process.cwd(), "dist", "bundle.js");
       if (existsSync(bundlePath)) {
         res.writeHead(200, {
           "Content-Type": "application/javascript; charset=utf-8",

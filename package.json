@@ -12,7 +12,7 @@
     "test:integration": "node --experimental-strip-types --test tests/integration/**/*.test.ts",
     "typecheck": "tsc --noEmit",
     "format:check": "prettier --check src/providers/chatgpt/*.ts src/server/*.ts src/client/app.tsx tests/unit/chatgpt*.test.ts tests/unit/server*.test.ts tests/integration/*.test.ts",
-    "build:client": "esbuild src/client/app.tsx --bundle --outfile=public/bundle.js --format=esm --jsx=automatic --loader:.css=text --define:process.env.NODE_ENV=\\\"production\\\"",
+    "build:client": "mkdir -p dist && esbuild src/client/app.tsx --bundle --outfile=dist/bundle.js --format=esm --jsx=automatic --loader:.css=text --define:process.env.NODE_ENV=\\\"production\\\"",
     "screenshot:readme": "node scripts/update-readme-screenshot.mjs"
   },
   "keywords": [

@@ -27,6 +27,8 @@ npm run build:client
 npm run server
 ```
 
+`build:client` writes the generated browser bundle to `dist/bundle.js`. The bundle is gitignored; rebuild it after changing client code before running the server. `public/index.html` loads `/dist/bundle.js`.
+
 Open [http://localhost:3000](http://localhost:3000).
 
 The server loads `.env.local` and `.env` when present. Keep both files private. Set `GEMINI_COOKIE_FILE` to the file AuthoCookie updates. The server reads it for model discovery and chat, then uses the refreshed cookie values. If it is unset, UltraRoute reads Gemini cookies from the local Chromium profile. Set `GEMINI_CHROMIUM_PATH` if Chromium is installed elsewhere.
