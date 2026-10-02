@@ -6,6 +6,7 @@ import {
 } from "./providers/chatgpt/index.ts";
 import { ClaudeWebAdapter } from "./providers/claude/index.ts";
 import { GeminiWebAdapter } from "./providers/gemini/index.ts";
+import { ModelCatalogCache, getDefaultModelCatalogCache } from "./shared/modelCatalogCache.ts";
 
 export * from "./shared/index.ts";
 export * from "./registry/index.ts";
@@ -16,7 +17,7 @@ export * from "./providers/gemini/index.ts";
 /**
  * Registers web providers and the static ChatGPT catalog; Claude and Gemini discover models per account.
  */
-export function initializeWebProviders(): void {
+export function initializeWebProviders(modelCatalogCache: ModelCatalogCache = getDefaultModelCatalogCache()): void {
   // 1. ChatGPT Web
   const chatgptAdapter = new ChatGptWebAdapter();
   globalProviderRegistry.register(chatgptAdapter);
@@ -33,10 +34,10 @@ export function initializeWebProviders(): void {
   }
 
   // 2. Claude Web
-  const claudeAdapter = new ClaudeWebAdapter();
+  const claudeAdapter = new ClaudeWebAdapter({ modelCatalogCache });
   globalProviderRegistry.register(claudeAdapter);
 
   // 3. Gemini Web
-  const geminiAdapter = new GeminiWebAdapter();
+  const geminiAdapter = new GeminiWebAdapter({ modelCatalogCache });
   globalProviderRegistry.register(geminiAdapter);
 }

@@ -4,6 +4,7 @@ import { writeFileSync, unlinkSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { GeminiWebAdapter, MockGeminiWebTransport } from "../../src/providers/gemini/adapter.ts";
+import { ModelCatalogCache } from "../../src/shared/modelCatalogCache.ts";
 import { FileCookieSource } from "../../src/providers/gemini/credentials.ts";
 
 describe("Gemini Web: Configured Cookie Source Integration", () => {
@@ -42,21 +43,18 @@ describe("Gemini Web: Configured Cookie Source Integration", () => {
         },
       );
 
-      const adapter = new GeminiWebAdapter({
-        transport,
-        cookieSource,
-      });
+      const adapter = new GeminiWebAdapter({ transport, cookieSource, modelCatalogCache: new ModelCatalogCache() });
 
-      // 1. Discover models with empty credentials -> should use cookieSource
+      // 1. Cold discovery reads the configured cookie file once.
       const discovered = await adapter.discoverModels("");
       assert.strictEqual(discovered.models.length, 1);
       assert.ok((capturedCookie as string | undefined)?.includes("rotated_psid_val"));
 
-      // 2. Discover models with undefined -> should use cookieSource
+      // 2. A cache hit avoids another upstream discovery until the next scheduled refresh.
       capturedCookie = undefined as string | undefined;
       const discovered2 = await adapter.discoverModels(undefined);
       assert.strictEqual(discovered2.models.length, 1);
-      assert.ok((capturedCookie as string | undefined)?.includes("rotated_psid_val"));
+      assert.equal(capturedCookie, undefined);
 
       // 3. Execute with empty credentials -> should use cookieSource
       const res = await adapter.execute(
