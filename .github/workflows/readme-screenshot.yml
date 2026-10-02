@@ -1,0 +1,62 @@
+name: Update README screenshot
+
+on:
+  push:
+    branches: [master]
+    paths-ignore:
+      - "docs/images/chat-workspace.png"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: readme-screenshot-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  screenshot:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run build:client
+      - name: Start local app
+        run: |
+          node --experimental-strip-types src/server/app.ts > /tmp/ultraroute-server.log 2>&1 &
+          echo $! > /tmp/ultraroute-server.pid
+      - name: Wait for the local app
+        run: |
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:3000/ > /dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/ultraroute-server.log
+          exit 1
+      - name: Capture screenshot
+        env:
+          GEMINI_COOKIE: ${{ secrets.GEMINI_COOKIE }}
+          CLAUDE_SESSION_KEY: ${{ secrets.CLAUDE_SESSION_KEY }}
+        run: npm run screenshot:readme
+      - name: Commit screenshot update
+        run: |
+          if git diff --quiet -- README.md docs/images/chat-workspace.png; then
+            echo "README screenshot is current"
+            exit 0
+          fi
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add README.md docs/images/chat-workspace.png
+          git commit -m "docs: refresh chat workspace screenshot"
+          git push origin HEAD:master
+      - name: Stop local app
+        if: always()
+        run: if [ -f /tmp/ultraroute-server.pid ]; then kill "$(cat /tmp/ultraroute-server.pid)" || true; fi
