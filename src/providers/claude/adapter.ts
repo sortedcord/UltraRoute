@@ -7,11 +7,7 @@ import {
   type WebProviderCapabilities,
 } from "../../shared/index.ts";
 import { AccountScopedContinuationCache } from "../../shared/continuationCache.ts";
-import {
-  CredentialError,
-  InvalidRequestError,
-  WebProviderError,
-} from "../../shared/errors.ts";
+import { CredentialError, InvalidRequestError, WebProviderError } from "../../shared/errors.ts";
 import { SseStreamDecoder } from "../../shared/sseDecoder.ts";
 import { CLAUDE_WEB_CONSTANTS } from "./constants.ts";
 import { parseClaudeModelCatalog, type ClaudeModelCatalog } from "./models.ts";
@@ -19,13 +15,13 @@ import { LiveClaudeWebTransport } from "./transport.ts";
 import {
   normalizeClaudeSessionCookie,
   buildClaudeCookieHeader,
-  type ClaudeWebCredentials,
 } from "./credentials.ts";
 import {
   transformToClaudePayload,
   type ClaudeWebWirePayload,
 } from "./payload.ts";
 import { ClaudeSseDecoder } from "./stream.ts";
+import { catalogAccountKey, getDefaultModelCatalogCache, ModelCatalogCache } from "../../shared/modelCatalogCache.ts";
 
 export interface ClaudeContinuationState {
   conversationUuid: string;
@@ -109,7 +105,9 @@ export class MockClaudeWebTransport implements IClaudeWebTransport {
 export interface ClaudeAdapterDeps {
   transport?: IClaudeWebTransport;
   continuationCache?: AccountScopedContinuationCache<ClaudeContinuationState>;
+  modelCatalogCache?: ModelCatalogCache;
 }
+
 
 export class ClaudeWebAdapter extends BaseWebProviderAdapter {
   readonly id = "claude-web";
@@ -118,10 +116,14 @@ export class ClaudeWebAdapter extends BaseWebProviderAdapter {
 
   private readonly transport: IClaudeWebTransport;
   private readonly continuationCache: AccountScopedContinuationCache<ClaudeContinuationState>;
+  private readonly modelCatalogCache: ModelCatalogCache;
+  private readonly organizationByAccount = new Map<string, string>();
+  private readonly organizationLookups = new Map<string, Promise<string>>();
 
   constructor(deps: ClaudeAdapterDeps = {}) {
     super();
     this.transport = deps.transport ?? new LiveClaudeWebTransport();
+    this.modelCatalogCache = deps.modelCatalogCache ?? getDefaultModelCatalogCache();
     this.continuationCache =
       deps.continuationCache ??
       new AccountScopedContinuationCache<ClaudeContinuationState>({
@@ -129,6 +131,48 @@ export class ClaudeWebAdapter extends BaseWebProviderAdapter {
         maxEntries: CLAUDE_WEB_CONSTANTS.CACHE_MAX_ENTRIES,
       });
   }
+
+  private async resolveOrganization(sessionKey: string, cookieHeader: string, organizationId: string | undefined, signal?: AbortSignal): Promise<string> {
+    if (organizationId) return organizationId;
+    const accountKey = catalogAccountKey("claude-web", sessionKey);
+    const cached = this.organizationByAccount.get(accountKey);
+    if (cached) return cached;
+    const pending = this.organizationLookups.get(accountKey);
+    if (pending) return pending;
+    const lookup = (async () => {
+      const orgId = (await this.transport.fetchOrganizations(cookieHeader, signal))[0]?.id;
+      if (!orgId) throw new CredentialError("No active Claude organization found for session");
+      this.organizationByAccount.set(accountKey, orgId);
+      return orgId;
+    })().finally(() => this.organizationLookups.delete(accountKey));
+    this.organizationLookups.set(accountKey, lookup);
+    return lookup;
+  }
+
+  private loadCatalog(sessionKey: string, orgId: string, cookieHeader: string, signal?: AbortSignal) {
+    const loader = async () => parseClaudeModelCatalog(await this.transport.fetchBootstrap(orgId, cookieHeader, signal));
+    return this.modelCatalogCache
+      ? this.modelCatalogCache.get("claude-web", `${sessionKey}::${orgId}`, loader)
+      : loader().then(catalog => ({ catalog, status: { fetchedAt: Date.now(), stale: false } }));
+  }
+
+  async getCatalog(credentials: unknown, signal?: AbortSignal) {
+    const creds = normalizeClaudeSessionCookie(credentials);
+    const cookieHeader = buildClaudeCookieHeader(creds);
+    const orgId = await this.resolveOrganization(creds.sessionKey, cookieHeader, creds.organizationId, signal);
+    return this.loadCatalog(creds.sessionKey, orgId, cookieHeader, signal);
+  }
+
+  async refreshCatalog(credentials: unknown, signal?: AbortSignal) {
+    const creds = normalizeClaudeSessionCookie(credentials);
+    const cookieHeader = buildClaudeCookieHeader(creds);
+    const orgId = await this.resolveOrganization(creds.sessionKey, cookieHeader, creds.organizationId, signal);
+    const loader = async () => parseClaudeModelCatalog(await this.transport.fetchBootstrap(orgId, cookieHeader, signal));
+    return this.modelCatalogCache
+      ? this.modelCatalogCache.refresh("claude-web", `${creds.sessionKey}::${orgId}`, loader)
+      : this.loadCatalog(creds.sessionKey, orgId, cookieHeader, signal);
+  }
+
 
   getCapabilities(_model: string): WebProviderCapabilities {
     return {
@@ -142,35 +186,18 @@ export class ClaudeWebAdapter extends BaseWebProviderAdapter {
     };
   }
 
-  async discoverModels(
-    credentials: unknown,
-    signal?: AbortSignal,
-  ): Promise<ClaudeModelCatalog> {
-    const creds = normalizeClaudeSessionCookie(credentials);
-    const cookieHeader = buildClaudeCookieHeader(creds);
-    const orgId =
-      creds.organizationId ??
-      (await this.transport.fetchOrganizations(cookieHeader, signal))[0]?.id;
-    if (!orgId)
-      throw new CredentialError(
-        "No active Claude organization found for session",
-      );
-    return parseClaudeModelCatalog(
-      await this.transport.fetchBootstrap(orgId, cookieHeader, signal),
-    );
+  async discoverModels(credentials: unknown, signal?: AbortSignal): Promise<ClaudeModelCatalog> {
+    return (await this.getCatalog(credentials, signal)).catalog;
   }
 
-  async validateCredentials(
-    credentials: unknown,
-  ): Promise<{ valid: boolean; error?: string }> {
+
+
+  async validateCredentials(credentials: unknown): Promise<{ valid: boolean; error?: string }> {
     try {
       normalizeClaudeSessionCookie(credentials);
       return { valid: true };
-    } catch (e) {
-      return {
-        valid: false,
-        error: e instanceof Error ? e.message : String(e),
-      };
+    } catch (error) {
+      return { valid: false, error: error instanceof Error ? error.message : String(error) };
     }
   }
 
@@ -179,38 +206,13 @@ export class ClaudeWebAdapter extends BaseWebProviderAdapter {
     credentials: unknown,
     signal?: AbortSignal,
   ): Promise<ChatCompletionResponse | AsyncIterable<ChatCompletionChunk>> {
-    // 1. Normalize credentials
     const creds = normalizeClaudeSessionCookie(credentials);
     const cookieHeader = buildClaudeCookieHeader(creds);
-
-    // 2. Discover active organization if not provided
-    let orgId = creds.organizationId;
-    if (!orgId) {
-      const orgs = await this.transport.fetchOrganizations(
-        cookieHeader,
-        signal,
-      );
-      if (!orgs || orgs.length === 0) {
-        throw new CredentialError(
-          "No active Claude organization found for session",
-        );
-      }
-      orgId = orgs[0]?.id;
-    }
-    if (!orgId) throw new CredentialError("Invalid organization ID");
-
-    // Resolve against this account's current upstream selector; never silently substitute a model.
-    const catalog = parseClaudeModelCatalog(
-      await this.transport.fetchBootstrap(orgId, cookieHeader, signal),
-    );
-    const modelMeta = catalog.models.find(
-      (model) => model.id === request.model,
-    );
+    const orgId = await this.resolveOrganization(creds.sessionKey, cookieHeader, creds.organizationId, signal);
+    const catalog = (await this.loadCatalog(creds.sessionKey, orgId, cookieHeader, signal)).catalog;
+    const modelMeta = catalog.models.find(model => model.id === request.model);
     if (!modelMeta) throw new InvalidRequestError("Unknown Claude model");
-    if (modelMeta.disabled)
-      throw new InvalidRequestError(
-        `Claude model unavailable: ${modelMeta.badge ?? modelMeta.disabledReason ?? "disabled by upstream"}`,
-      );
+    if (modelMeta.disabled) throw new InvalidRequestError(`Claude model unavailable: ${modelMeta.badge ?? modelMeta.disabledReason ?? "disabled by upstream"}`);
     const resolvedModel = modelMeta.id;
 
     // 4. Continuation cache lookup

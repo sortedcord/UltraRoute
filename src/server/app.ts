@@ -1,3 +1,4 @@
+import { homedir } from "node:os";
 import { createServer } from "node:http";
 import type { IncomingMessage, ServerResponse } from "node:http";
 import { readFileSync, existsSync } from "node:fs";
@@ -35,6 +36,7 @@ import {
   ProviderTimeoutError,
 } from "../shared/errors.ts";
 import type { ChatMessage, ReasoningEffort } from "../shared/types.ts";
+import { ModelCatalogCache } from "../shared/modelCatalogCache.ts";
 import { resolveChatRoute, getCredentialsForProvider } from "./routing.ts";
 import {
   awaitWithAbort,
@@ -45,8 +47,6 @@ import {
 } from "./uiStream.ts";
 import type { ChatCompletionRequest } from "../index.ts";
 
-// Initialize providers and models
-initializeWebProviders();
 
 
 // All registered server adapters use real transports, never fixture responses.
@@ -56,16 +56,44 @@ globalProviderRegistry.register(
   }),
 );
 
-// Claude Web
-const liveClaude = new ClaudeWebAdapter();
+const catalogCachePath = process.env.MODEL_CATALOG_CACHE_FILE ?? join(homedir(), ".local", "share", "ultraroute", "model-catalogs.json");
+const modelCatalogCache = new ModelCatalogCache(catalogCachePath);
+const liveClaude = new ClaudeWebAdapter({ modelCatalogCache });
 globalProviderRegistry.register(liveClaude);
 
 // Gemini Web
 const geminiCookieSource = process.env.GEMINI_COOKIE_FILE
   ? new FileCookieSource(process.env.GEMINI_COOKIE_FILE)
   : undefined;
-const liveGemini = new GeminiWebAdapter({ cookieSource: geminiCookieSource });
+const liveGemini = new GeminiWebAdapter({ cookieSource: geminiCookieSource, modelCatalogCache });
 globalProviderRegistry.register(liveGemini);
+const refreshInterval = Number(process.env.MODEL_CATALOG_REFRESH_INTERVAL_MS ?? 6 * 60 * 60 * 1000);
+let refreshInProgress: Promise<void> | undefined;
+const refreshCatalogs = () => {
+  if (refreshInProgress) return refreshInProgress;
+  refreshInProgress = (async () => {
+    try {
+      const extracted = extractChromiumCredentials();
+      const claudeCredentials = getCredentialsForProvider("claude-web", extracted);
+      if (claudeCredentials) await liveClaude.refreshCatalog(claudeCredentials, AbortSignal.timeout(30_000));
+    } catch (error) { console.warn("Claude model catalog refresh failed:", error instanceof Error ? error.message : String(error)); }
+    try {
+      const geminiCredentials = geminiCookieSource
+        ? await geminiCookieSource.getCookie()
+        : getCredentialsForProvider("gemini-web", extractChromiumCredentials());
+      if (geminiCredentials) await liveGemini.refreshCatalog(geminiCredentials, AbortSignal.timeout(60_000));
+    } catch (error) { console.warn("Gemini model catalog refresh failed:", error instanceof Error ? error.message : String(error)); }
+  })().finally(() => { refreshInProgress = undefined; });
+  return refreshInProgress;
+};
+const catalogRefreshTimer = Number.isFinite(refreshInterval) && refreshInterval > 0
+  ? setInterval(() => { void refreshCatalogs(); }, refreshInterval)
+  : undefined;
+catalogRefreshTimer?.unref();
+
+function stopCatalogRefresh() { clearInterval(catalogRefreshTimer); }
+process.once("SIGINT", stopCatalogRefresh);
+process.once("SIGTERM", stopCatalogRefresh);
 
 // ── HTTP Server ─────────────────────────────────────────────────────
 const PORT = 3000;
@@ -111,15 +139,12 @@ const server = createServer(
           "claude-web",
           extractChromiumCredentials(),
         );
-        const catalog = await liveClaude.discoverModels(
-          credentials,
-          AbortSignal.timeout(30_000),
-        );
+        const result = await liveClaude.getCatalog(credentials, AbortSignal.timeout(30_000));
         res.writeHead(200, {
           "Content-Type": "application/json",
           "Cache-Control": "no-store",
         });
-        res.end(JSON.stringify(catalog));
+        res.end(JSON.stringify({ ...result.catalog, catalogStatus: result.status }));
       } catch (error) {
         const failure = publicChatError(error);
         res.writeHead(failure.status, {
@@ -136,9 +161,9 @@ const server = createServer(
         const credentials = geminiCookieSource
           ? await geminiCookieSource.getCookie()
           : getCredentialsForProvider("gemini-web", extractChromiumCredentials());
-        const catalog = await liveGemini.discoverModels(credentials, AbortSignal.timeout(60_000));
+        const result = await liveGemini.getCatalog(credentials, AbortSignal.timeout(60_000));
         res.writeHead(200, { "Content-Type": "application/json", "Cache-Control": "no-store" });
-        res.end(JSON.stringify(catalog));
+        res.end(JSON.stringify({ ...result.catalog, catalogStatus: result.status }));
       } catch (error) {
         const failure = publicChatError(error);
         res.writeHead(failure.status, { "Content-Type": "application/json", "Cache-Control": "no-store" });
@@ -297,6 +322,8 @@ const server = createServer(
     res.end("Not Found");
   },
 );
+server.once("close", stopCatalogRefresh);
+void refreshCatalogs();
 
 const HOST = process.env.HOST || "0.0.0.0";
 server.listen(PORT, HOST, () => {

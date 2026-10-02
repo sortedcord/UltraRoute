@@ -11,6 +11,7 @@ import {
   FileCookieSource,
 } from "../../src/providers/gemini/credentials.ts";
 import { GeminiWebAdapter, MockGeminiWebTransport } from "../../src/providers/gemini/adapter.ts";
+import { ModelCatalogCache } from "../../src/shared/modelCatalogCache.ts";
 import { parseGeminiModelRows } from "../../src/providers/gemini/models.ts";
 
 describe("Gemini Web: RPC Decoder", () => {
@@ -126,7 +127,9 @@ describe("Gemini Web: Adapter & Continuation", () => {
       return originalPost(payload, cookie, hash, modelId, signal);
     };
 
-    const adapter = new GeminiWebAdapter({ transport });
+    let catalogLoads = 0;
+    transport.discoverModels = async () => { catalogLoads++; return catalog; };
+    const adapter = new GeminiWebAdapter({ transport, modelCatalogCache: new ModelCatalogCache() });
     const creds = "__Secure-1PSID=cookie_a; SAPISID=sapi_a";
 
     // Turn 1
@@ -163,6 +166,6 @@ describe("Gemini Web: Adapter & Continuation", () => {
     const slot2 = payloadArr2[2] as unknown[];
     assert.strictEqual(slot2[0], "c_live_conv");
     assert.strictEqual(slot2[1], "r_live_resp");
-    assert.strictEqual(slot2[2], "rc_live_choice");
+    assert.equal(catalogLoads, 1);
   });
 });

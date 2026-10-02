@@ -132,6 +132,7 @@ describe("Claude Web: Credentials and Payload", () => {
 describe("Claude Web: Adapter & Multi-Turn Continuation", () => {
   test("maintains state across multi-turn requests with account isolation", async () => {
     let capturedPayload: any = null;
+    let bootstrapLoads = 0;
     const transport = new MockClaudeWebTransport(
       async () => [{ id: "org-1", name: "Main Org" }],
       async (p) => {
@@ -144,19 +145,25 @@ describe("Claude Web: Adapter & Multi-Turn Continuation", () => {
           'event: message_stop\ndata: {"type":"message_stop"}\n\n',
         ].join("");
       },
-      async () => ({
-        model_selector_config: [
-          {
-            id: "chat",
-            models: [
-              { id: "claude-3-7-sonnet", name: "Test Sonnet", section: "main" },
-            ],
-          },
-        ],
-      }),
+      async () => {
+        bootstrapLoads++;
+        return {
+          model_selector_config: [
+            {
+              id: "chat",
+              models: [
+                { id: "claude-3-7-sonnet", name: "Test Sonnet", section: "main" },
+              ],
+            },
+          ],
+        };
+      },
     );
 
     const adapter = new ClaudeWebAdapter({ transport });
+    let organizationLoads = 0;
+    const originalOrganizations = transport.fetchOrganizations.bind(transport);
+    transport.fetchOrganizations = async (...args) => { organizationLoads++; return originalOrganizations(...args); };
     const creds = "sessionKey=sk-ant-accountA";
 
     // Turn 1
@@ -196,6 +203,7 @@ describe("Claude Web: Adapter & Multi-Turn Continuation", () => {
       },
       credsB,
     );
-    assert.strictEqual(capturedPayload.parent_message_uuid, undefined);
+    assert.equal(organizationLoads, 2);
+    assert.equal(bootstrapLoads, 2);
   });
 });

@@ -1,3 +1,4 @@
+import { getDefaultModelCatalogCache, ModelCatalogCache } from "../../shared/modelCatalogCache.ts";
 import { randomUUID } from "node:crypto";
 import {
   BaseWebProviderAdapter,
@@ -23,9 +24,8 @@ import { LiveGeminiWebTransport } from "./transport.ts";
 import {
   generateSapisidHash,
   parseGeminiCookie,
-  StaticCookieSource,
-  type ICookieSource,
 } from "./credentials.ts";
+import type { ICookieSource } from "./credentials.ts";
 import { GeminiRpcDecoder, type GeminiContinuationToken } from "./rpcDecoder.ts";
 
 export interface IGeminiWebTransport {
@@ -68,6 +68,7 @@ export interface GeminiAdapterDeps {
   transport?: IGeminiWebTransport;
   cookieSource?: ICookieSource;
   continuationCache?: AccountScopedContinuationCache<GeminiContinuationToken>;
+  modelCatalogCache?: ModelCatalogCache;
 }
 
 export class GeminiWebAdapter extends BaseWebProviderAdapter {
@@ -78,15 +79,17 @@ export class GeminiWebAdapter extends BaseWebProviderAdapter {
   private readonly transport: IGeminiWebTransport;
   private readonly defaultCookieSource?: ICookieSource;
   private readonly continuationCache: AccountScopedContinuationCache<GeminiContinuationToken>;
+  private readonly modelCatalogCache: ModelCatalogCache;
 
   constructor(deps: GeminiAdapterDeps = {}) {
     super();
     this.transport = deps.transport ?? new LiveGeminiWebTransport();
     this.defaultCookieSource = deps.cookieSource;
+    this.modelCatalogCache = deps.modelCatalogCache ?? getDefaultModelCatalogCache();
     this.continuationCache =
       deps.continuationCache ??
       new AccountScopedContinuationCache<GeminiContinuationToken>({
-        ttlMs: 7 * 24 * 60 * 60 * 1000, // 7 days matching Gemini SQLite TTL
+        ttlMs: 7 * 24 * 60 * 60 * 1000,
       });
   }
 
@@ -113,14 +116,37 @@ export class GeminiWebAdapter extends BaseWebProviderAdapter {
     }
   }
 
-  async discoverModels(credentials: unknown, signal?: AbortSignal): Promise<GeminiModelCatalog> {
+  private async resolveCookie(credentials: unknown): Promise<string> {
     let cookie = typeof credentials === "string" && credentials.trim() ? credentials.trim() : undefined;
-    if (!cookie && this.defaultCookieSource) {
-      cookie = await this.defaultCookieSource.getCookie();
-    }
+    if (!cookie && this.defaultCookieSource) cookie = await this.defaultCookieSource.getCookie();
     if (!cookie) throw new CredentialError("Missing Gemini Web session cookie");
+    return cookie;
+  }
+
+  private loadCatalog(cookie: string, signal?: AbortSignal) {
     const creds = parseGeminiCookie(cookie);
-    return this.transport.discoverModels(creds.rawCookie, signal);
+    const account = creds.secure1PSID ? `secure1PSID:${creds.secure1PSID}` : `sapisid:${creds.sapisid}`;
+    const loader = () => this.transport.discoverModels(creds.rawCookie, signal);
+    return this.modelCatalogCache
+      ? this.modelCatalogCache.get("gemini-web", account, loader)
+      : loader().then(catalog => ({ catalog, status: { fetchedAt: Date.now(), stale: false } }));
+  }
+
+  async getCatalog(credentials: unknown, signal?: AbortSignal) {
+    return this.loadCatalog(await this.resolveCookie(credentials), signal);
+  }
+
+  async refreshCatalog(credentials: unknown, signal?: AbortSignal) {
+    const creds = parseGeminiCookie(await this.resolveCookie(credentials));
+    const account = creds.secure1PSID ? `secure1PSID:${creds.secure1PSID}` : `sapisid:${creds.sapisid}`;
+    const loader = () => this.transport.discoverModels(creds.rawCookie, signal);
+    return this.modelCatalogCache
+      ? this.modelCatalogCache.refresh("gemini-web", account, loader)
+      : this.loadCatalog(creds.rawCookie, signal);
+  }
+
+  async discoverModels(credentials: unknown, signal?: AbortSignal): Promise<GeminiModelCatalog> {
+    return (await this.getCatalog(credentials, signal)).catalog;
   }
 
   async execute(
@@ -151,7 +177,7 @@ export class GeminiWebAdapter extends BaseWebProviderAdapter {
     }
 
     // Validate the exact upstream ID and account access; no category-based fallback.
-    const catalog = await this.transport.discoverModels(creds.rawCookie, signal);
+    const catalog = (await this.loadCatalog(creds.rawCookie, signal)).catalog;
     const modelMeta = catalog.models.find(model => model.id === request.model);
     if (!modelMeta) throw new InvalidRequestError("Unknown Gemini Web model");
     if (modelMeta.disabled) throw new InvalidRequestError("Gemini Web model unavailable for this account");
