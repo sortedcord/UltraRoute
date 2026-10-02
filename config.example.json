@@ -1,0 +1,38 @@
+{
+  "$schema": "./config.schema.json",
+  "providers": {
+    "chatgpt-web": {
+      "enabled": true,
+      "credentials": {
+        "cookieHeader": "__Secure-next-auth.session-token=PLACEHOLDER_CHATGPT_SESSION_TOKEN; __cf_bm=PLACEHOLDER_CF_BM"
+      },
+      "settings": {
+        "temporaryChat": true,
+        "turnTimeoutMs": 180000
+      }
+    },
+    "claude-web": {
+      "enabled": true,
+      "credentials": {
+        "sessionKey": "sk-ant-sid01-PLACEHOLDER_CLAUDE_SESSION_KEY",
+        "organizationId": "PLACEHOLDER_OPTIONAL_ORG_UUID",
+        "deviceId": "PLACEHOLDER_OPTIONAL_DEVICE_ID"
+      },
+      "settings": {
+        "toolUseIdleFinishMs": 3000,
+        "cacheTtlMs": 1800000
+      }
+    },
+    "gemini-web": {
+      "enabled": true,
+      "credentials": {
+        "cookieFile": "/path/to/shared/cookie.txt",
+        "cookie": "__Secure-1PSID=PLACEHOLDER_SID; SAPISID=PLACEHOLDER_SAPISID"
+      },
+      "settings": {
+        "frontendBuildId": "boq_assistant-bard-web-server_20260920.00_p0",
+        "authoCookieSync": true
+      }
+    }
+  }
+}
