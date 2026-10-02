@@ -23,6 +23,7 @@ import {
   X,
 } from "lucide-react";
 import { DEFAULT_REASONING_LEVELS, ReasoningSlider, reasoningChoice, type ReasoningLevel } from "./reasoning.tsx";
+import { ResponsiveMenu, useMobileViewport } from "./mobileDrawer.tsx";
 
 export interface ModelOption {
   id: string;
@@ -202,6 +203,7 @@ function modelGroup(provider: string) {
 
 export function ModelDropdown({ selected, onSelect }: { selected: string; onSelect: (id: string) => void }) {
   const [open, setOpen] = useState(false);
+  const mobile = useMobileViewport();
   const { models, discoveries, reasoningByModel, onReasoningChange } = useContext(ModelCatalogContext);
   const current = models.find(model => model.id === selected) ?? models[0];
   const [activeGroup, setActiveGroup] = useState(() => modelGroup(current?.provider ?? ""));
@@ -216,7 +218,7 @@ export function ModelDropdown({ selected, onSelect }: { selected: string; onSele
   const reasoningLevel = reasoningLevels[reasoningChoice(reasoningLevels, current ? reasoningByModel[current.id] : undefined, current?.defaultReasoningLevel)];
 
   useEffect(() => {
-    if (!open) return;
+    if (!open || mobile) return;
     const closeEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         event.preventDefault();
@@ -235,7 +237,7 @@ export function ModelDropdown({ selected, onSelect }: { selected: string; onSele
       document.removeEventListener("keydown", closeEscape);
       document.removeEventListener("pointerdown", closeOutside, true);
     };
-  }, [open]);
+  }, [open, mobile]);
 
   return (
     <div ref={selectorRef} className="pf-model-selector">
@@ -244,8 +246,8 @@ export function ModelDropdown({ selected, onSelect }: { selected: string; onSele
         {reasoningLevel && <span className="pf-model-effort">{reasoningLevel.label}</span>}
         <ChevronDown size={14} aria-hidden="true" />
       </button>
-      {open && (
-        <div className="pf-model-menu" role="dialog" aria-label="Choose a model" style={{ height: menuHeight }}>
+      <ResponsiveMenu open={open} onClose={() => setOpen(false)} label="Choose a model">
+        <div className="pf-model-menu" role={mobile ? undefined : "dialog"} aria-label={mobile ? undefined : "Choose a model"} style={{ height: menuHeight }}>
           <div className="pf-model-menu-body">
           <div className="pf-model-provider-rail" role="tablist" aria-label="Model providers" aria-orientation="vertical">
             {MODEL_GROUPS.map((item, index) => (
@@ -286,7 +288,7 @@ export function ModelDropdown({ selected, onSelect }: { selected: string; onSele
           </div>
             {current && reasoningLevel && <ReasoningSlider levels={reasoningLevels} value={reasoningLevel.value} onChange={value => onReasoningChange(current.id, value)} />}
         </div>
-      )}
+      </ResponsiveMenu>
     </div>
   );
 }

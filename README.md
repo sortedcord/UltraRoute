@@ -6,7 +6,11 @@ UltraRoute connects a chat interface to ChatGPT, Claude, and Gemini through thei
 
 The workspace uses the Prismfield design system: a quiet white canvas, a colorful frame, geometric headings, and lime actions. It includes a model picker with provider tabs, a per model reasoning control, inline Gemini source citations, and a responsive chat transcript.
 
-The composer **+** menu keeps “More uploads” and “More tools” in the main list. Their expanded options open in a side flyout to the left on desktop; narrow screens use a viewport-safe panel.
+The composer **+** menu keeps “More uploads” and “More tools” in the main list. Their expanded options remain side flyouts on desktop and expand inline inside the mobile drawer.
+
+On screens narrower than 860px, the model picker and **+** menu slide in from below the viewport without focus-induced jumps. Pull the handle down to dismiss; a short pull snaps back. Tap the handle or the dimmed area, or press Escape, to close. Drawer content scrolls independently, and keyboard focus stays inside the open drawer.
+
+The mobile header shows only the sidebar button. Navigation fills the screen: open it with the button or swipe right from the left edge, then close with the collapse button or Escape. Desktop navigation and anchored menus are unchanged. Drawer and navigation transitions respect reduced-motion preferences.
 
 <!-- README_SCREENSHOT_START -->
 ![UltraRoute chat workspace](docs/images/chat-workspace.png)

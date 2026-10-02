@@ -875,18 +875,25 @@
 
 @media (max-width: 859px) {
   .pf-sidebar {
-    position: absolute;
-    top: 64px;
-    bottom: 0;
-    left: 0;
-    z-index: 200;
-    height: auto;
-    box-shadow: var(--shadow-pop);
+    position: static;
+    width: 100%;
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 100%;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    border: 0;
   }
 
   .pf-model-menu {
-    left: 0;
-    right: auto;
+    position: static;
+    width: 100%;
+    max-width: none;
+    height: min(520px, 65dvh) !important;
+    max-height: none;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
   }
 
   .pf-sidebar-header {

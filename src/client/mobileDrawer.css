@@ -1,0 +1,120 @@
+.pf-mobile-drawer {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  /* The entering handle is off-screen; native autofocus must not scroll this viewport. */
+  overflow: clip;
+  background: transparent;
+  color: var(--ink);
+  font: 13px/1.5 var(--font-body);
+}
+
+.pf-mobile-drawer[open] {
+  display: flex;
+  align-items: flex-end;
+}
+
+.pf-mobile-drawer::backdrop {
+  background: rgb(11 11 15 / 36%);
+  opacity: 1;
+  transition: opacity 220ms ease;
+}
+
+.pf-mobile-drawer[data-phase="entering"]::backdrop,
+.pf-mobile-drawer[data-phase="closing"]::backdrop {
+  opacity: 0;
+}
+
+.pf-mobile-drawer *,
+.pf-mobile-drawer *::before,
+.pf-mobile-drawer *::after {
+  box-sizing: border-box;
+}
+
+.pf-mobile-drawer-sheet {
+  --pf-drawer-offset: 0px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  max-height: 85dvh;
+  padding: 0 env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
+  border: 1px solid var(--hairline);
+  border-bottom: 0;
+  border-radius: 18px 18px 0 0;
+  background: var(--canvas);
+  box-shadow: 0 -12px 32px -16px rgb(11 11 15 / 28%);
+  transform: translateY(var(--pf-drawer-offset));
+  transition: transform 220ms cubic-bezier(.2, .8, .2, 1);
+}
+
+.pf-mobile-drawer[data-phase="entering"] .pf-mobile-drawer-sheet,
+.pf-mobile-drawer[data-phase="closing"] .pf-mobile-drawer-sheet {
+  transform: translateY(100%);
+}
+
+.pf-mobile-drawer-sheet[data-dragging="true"] {
+  transition: none;
+}
+
+.pf-mobile-drawer-handle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 44px;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 17px 17px 0 0;
+  background: transparent;
+  color: var(--graphite);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.pf-mobile-drawer-sheet[data-dragging="true"] .pf-mobile-drawer-handle {
+  cursor: grabbing;
+}
+
+.pf-mobile-drawer-handle span {
+  width: 40px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--hairline-strong);
+  pointer-events: none;
+}
+
+.pf-mobile-drawer-handle:hover span {
+  background: var(--graphite);
+}
+
+.pf-mobile-drawer-handle:focus-visible {
+  outline: 2px solid #3fc7e8;
+  outline-offset: -4px;
+}
+
+.pf-mobile-drawer-content {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pf-mobile-drawer::backdrop,
+  .pf-mobile-drawer-sheet {
+    transition: none;
+  }
+}

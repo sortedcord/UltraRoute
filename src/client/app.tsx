@@ -26,6 +26,8 @@ import {
 import workspaceStyles from "./app.css";
 import panelStyles from "./panels.css";
 import { CitationText, useInlineSourceIds } from "./citationText.tsx";
+import { ResponsiveMenu, useMobileViewport } from "./mobileDrawer.tsx";
+import { ResponsiveSidebar } from "./mobileNavigation.tsx";
 
 
 const OTHER_MODELS: ModelOption[] = [
@@ -55,6 +57,7 @@ const unavailableTitle = "This action is not available in UltraRoute yet";
 
 function ComposerPlusMenu() {
   const [open, setOpen] = useState(false);
+  const mobile = useMobileViewport();
   const [expanded, setExpanded] = useState<PlusMenuCategory>(null);
   const [submenuPosition, setSubmenuPosition] = useState<{ left: number; top: number } | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -63,7 +66,7 @@ function ComposerPlusMenu() {
   const [opensUp, setOpensUp] = useState(true);
   const menuPanelRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    if (!open) return;
+    if (!open || mobile) return;
     const onPointerDown = (event: PointerEvent) => {
       if (event.target instanceof Node && !menuRef.current?.contains(event.target) && !submenuRef.current?.contains(event.target)) {
         setOpen(false);
@@ -84,10 +87,10 @@ function ComposerPlusMenu() {
       document.removeEventListener("pointerdown", onPointerDown, true);
       document.removeEventListener("keydown", onKeyDown);
     };
-  }, [open]);
+  }, [open, mobile]);
 
   useLayoutEffect(() => {
-    if (!open) return;
+    if (!open || mobile) return;
     const trigger = triggerRef.current;
     const menu = menuPanelRef.current;
     if (!trigger || !menu) return;
@@ -95,10 +98,10 @@ function ComposerPlusMenu() {
     const availableAbove = rect.top - 8;
     const availableBelow = window.innerHeight - rect.bottom - 8;
     setOpensUp(availableAbove >= menu.scrollHeight || availableAbove >= availableBelow);
-  }, [open]);
+  }, [open, mobile]);
 
   useEffect(() => {
-    if (!expanded) {
+    if (!expanded || mobile) {
       setSubmenuPosition(null);
       return;
     }
@@ -111,12 +114,26 @@ function ComposerPlusMenu() {
     const left = Math.min(window.innerWidth - menuWidth - gutter, rect.right + 8);
     const top = Math.max(gutter, Math.min(rect.top, window.innerHeight - menuHeight - gutter));
     setSubmenuPosition({ left, top });
-  }, [expanded, open]);
+  }, [expanded, open, mobile]);
 
-
+  const expandedOptions = expanded === "uploads" ? (
+    <>
+      <button type="button" role="menuitem" className="pf-plus-item" disabled title={unavailableTitle}><ImagePlus size={16} aria-hidden="true" /><span>Google Photos</span></button>
+      <button type="button" role="menuitem" className="pf-plus-item" disabled title={unavailableTitle}><GitBranch size={16} aria-hidden="true" /><span>Add from GitHub</span></button>
+      <button type="button" role="menuitem" className="pf-plus-item" disabled title={unavailableTitle}><HardDriveUpload size={16} aria-hidden="true" /><span>Add from Drive</span></button>
+      <button type="button" role="menuitem" className="pf-plus-item" disabled title={unavailableTitle}><Sparkles size={16} aria-hidden="true" /><span>Avatar</span></button>
+      <button type="button" role="menuitem" className="pf-plus-item" disabled title={unavailableTitle}><Code2 size={16} aria-hidden="true" /><span>Import code</span></button>
+      <button type="button" role="menuitem" className="pf-plus-item" disabled title={unavailableTitle}><BookOpenCheck size={16} aria-hidden="true" /><span>Notebooks</span></button>
+    </>
+  ) : (
+    <>
+      <button type="button" role="menuitem" className="pf-plus-item" disabled title={unavailableTitle}><PanelsTopLeft size={16} aria-hidden="true" /><span>Canvas</span></button>
+      <button type="button" role="menuitem" className="pf-plus-item" disabled title={unavailableTitle}><Sparkles size={16} aria-hidden="true" /><span>Personal Intelligence <small>Labs</small></span></button>
+    </>
+  );
   return (
     <div ref={menuRef} className="pf-plus-menu-wrap">
-      {open && (
+      <ResponsiveMenu open={open} onClose={() => { setOpen(false); setExpanded(null); }} label="Add to chat">
         <div ref={menuPanelRef} className={`pf-plus-menu ${opensUp ? "pf-plus-menu-up" : "pf-plus-menu-down"}`} role="menu" aria-label="Add to chat">
           <div className="pf-plus-sections">
             <section className="pf-plus-section pf-plus-section-add">
@@ -127,7 +144,8 @@ function ComposerPlusMenu() {
                 </button>
               </ComposerPrimitive.AddAttachment>
               <button type="button" role="menuitem" className="pf-plus-item" disabled title={unavailableTitle}><Camera size={17} aria-hidden="true" /><span>Take a screenshot</span></button>
-              <button type="button" role="menuitem" className="pf-plus-item pf-plus-expand" data-plus-group="uploads" aria-expanded={expanded === "uploads"} onMouseEnter={() => setExpanded("uploads")} onFocus={() => setExpanded("uploads")} onClick={() => setExpanded("uploads")}><MoreHorizontal size={17} aria-hidden="true" /><span>More uploads</span><ChevronRight size={15} aria-hidden="true" /></button>
+              <button type="button" role="menuitem" className="pf-plus-item pf-plus-expand" data-plus-group="uploads" aria-expanded={expanded === "uploads"} onMouseEnter={() => { if (!mobile) setExpanded("uploads"); }} onFocus={() => { if (!mobile) setExpanded("uploads"); }} onClick={() => setExpanded(current => mobile && current === "uploads" ? null : "uploads")}><MoreHorizontal size={17} aria-hidden="true" /><span>More uploads</span><ChevronRight size={15} aria-hidden="true" /></button>
+              {mobile && expanded === "uploads" && <div className="pf-plus-inline-options" role="group" aria-label="More uploads">{expandedOptions}</div>}
             </section>
             <section className="pf-plus-section pf-plus-section-create">
               <div className="pf-plus-group-label">Create and research</div>
@@ -138,7 +156,8 @@ function ComposerPlusMenu() {
                 <button type="button" className="pf-plus-pill" disabled title={unavailableTitle}><Music2 size={15} aria-hidden="true" /><span>Create music</span></button>
               </div>
               <button type="button" role="menuitem" className="pf-plus-item" disabled title={unavailableTitle}><BrainCircuit size={17} aria-hidden="true" /><span>Deep research</span></button>
-              <button type="button" role="menuitem" className="pf-plus-item pf-plus-expand" data-plus-group="tools" aria-expanded={expanded === "tools"} onMouseEnter={() => setExpanded("tools")} onFocus={() => setExpanded("tools")} onClick={() => setExpanded("tools")}><MoreHorizontal size={17} aria-hidden="true" /><span>More tools</span><ChevronRight size={15} aria-hidden="true" /></button>
+              <button type="button" role="menuitem" className="pf-plus-item pf-plus-expand" data-plus-group="tools" aria-expanded={expanded === "tools"} onMouseEnter={() => { if (!mobile) setExpanded("tools"); }} onFocus={() => { if (!mobile) setExpanded("tools"); }} onClick={() => setExpanded(current => mobile && current === "tools" ? null : "tools")}><MoreHorizontal size={17} aria-hidden="true" /><span>More tools</span><ChevronRight size={15} aria-hidden="true" /></button>
+              {mobile && expanded === "tools" && <div className="pf-plus-inline-options" role="group" aria-label="More tools">{expandedOptions}</div>}
             </section>
             <section className="pf-plus-section pf-plus-section-workspace">
               <div className="pf-plus-group-label">Workspace</div>
@@ -148,28 +167,14 @@ function ComposerPlusMenu() {
             </section>
           </div>
         </div>
-      )}
-      {open && expanded && submenuPosition && createPortal(
+      </ResponsiveMenu>
+      {open && !mobile && expanded && submenuPosition && createPortal(
         <div ref={submenuRef} className="pf-plus-flyout" style={{ left: submenuPosition.left, top: submenuPosition.top }} role="group" aria-label={expanded === "uploads" ? "More uploads" : "More tools"}>
-          {expanded === "uploads" ? (
-            <>
-              <button type="button" role="menuitem" className="pf-plus-item" disabled title={unavailableTitle}><ImagePlus size={16} aria-hidden="true" /><span>Google Photos</span></button>
-              <button type="button" role="menuitem" className="pf-plus-item" disabled title={unavailableTitle}><GitBranch size={16} aria-hidden="true" /><span>Add from GitHub</span></button>
-              <button type="button" role="menuitem" className="pf-plus-item" disabled title={unavailableTitle}><HardDriveUpload size={16} aria-hidden="true" /><span>Add from Drive</span></button>
-              <button type="button" role="menuitem" className="pf-plus-item" disabled title={unavailableTitle}><Sparkles size={16} aria-hidden="true" /><span>Avatar</span></button>
-              <button type="button" role="menuitem" className="pf-plus-item" disabled title={unavailableTitle}><Code2 size={16} aria-hidden="true" /><span>Import code</span></button>
-              <button type="button" role="menuitem" className="pf-plus-item" disabled title={unavailableTitle}><BookOpenCheck size={16} aria-hidden="true" /><span>Notebooks</span></button>
-            </>
-          ) : (
-            <>
-              <button type="button" role="menuitem" className="pf-plus-item" disabled title={unavailableTitle}><PanelsTopLeft size={16} aria-hidden="true" /><span>Canvas</span></button>
-              <button type="button" role="menuitem" className="pf-plus-item" disabled title={unavailableTitle}><Sparkles size={16} aria-hidden="true" /><span>Personal Intelligence <small>Labs</small></span></button>
-            </>
-          )}
+          {expandedOptions}
         </div>,
         document.body,
       )}
-      <button ref={triggerRef} type="button" className={`pf-icon-button${open ? " pf-plus-trigger-open" : ""}`} aria-label={open ? "Close add menu" : "Open add menu"} aria-haspopup="menu" aria-expanded={open} title={open ? "Close add menu" : "Add to chat"} onClick={() => { setOpen(current => !current); setExpanded(null); }}>
+      <button ref={triggerRef} type="button" className={`pf-icon-button${open ? " pf-plus-trigger-open" : ""}`} aria-label={open ? "Close add menu" : "Open add menu"} aria-haspopup={mobile ? "dialog" : "menu"} aria-expanded={open} title={open ? "Close add menu" : "Add to chat"} onClick={() => { setOpen(current => !current); setExpanded(null); }}>
         {open ? <X size={18} aria-hidden="true" /> : <Plus size={18} aria-hidden="true" />}
       </button>
     </div>
@@ -329,6 +334,7 @@ function App() {
   const [selectedModel, setSelectedModel] = useState("gemini-3.5-flash-lite");
   const [reasoningByModel, setReasoningByModel] = useState<Record<string, string>>({});
   const [isSidebarOpen, setIsSidebarOpen] = useState(() => window.innerWidth >= 860);
+  const mobile = useMobileViewport();
   const [threads, setThreads] = useState<SavedThread[]>([]);
   const [activeThreadId, setActiveThreadId] = useState<string>("");
   const [chatKey, setChatKey] = useState(0);
@@ -522,10 +528,10 @@ function App() {
       <style>{workspaceStyles + panelStyles}</style>
       <div className="pf-stage">
       <div className="pf-canvas">
-        {isSidebarOpen && <button type="button" className="pf-drawer-backdrop" aria-label="Close navigation" onClick={() => setIsSidebarOpen(false)} />}
+        <ResponsiveSidebar open={isSidebarOpen} onOpen={() => setIsSidebarOpen(true)} onClose={() => setIsSidebarOpen(false)}>
         <Sidebar
-          onSettings={() => setSettingsOpen(true)}
-          isOpen={isSidebarOpen}
+          onSettings={() => { if (mobile) setIsSidebarOpen(false); setSettingsOpen(true); }}
+          isOpen={mobile || isSidebarOpen}
           onToggle={() => setIsSidebarOpen(false)}
           threads={threads}
           activeThreadId={activeThreadId}
@@ -540,6 +546,7 @@ function App() {
           }}
           onDeleteThread={handleDeleteThread}
         />
+        </ResponsiveSidebar>
         <main className="pf-main">
           <AssistantRuntimeProvider runtime={runtime}>
             {runtimeError && (
