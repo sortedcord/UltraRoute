@@ -5,9 +5,11 @@ import {
   globalProviderRegistry,
   initializeWebProviders,
 } from "../../src/index.ts";
+import { ChatGptWebAdapter } from "../../src/providers/chatgpt/adapter.ts";
+import { resolveChatRoute } from "../../src/server/routing.ts";
 
 describe("Registry: Providers and Models", () => {
-  test("initializes all three providers and registers standard models", () => {
+  test("initializes all web providers without a static model catalog", () => {
     initializeWebProviders();
 
     // Check providers
@@ -19,11 +21,31 @@ describe("Registry: Providers and Models", () => {
     assert(claude, "Claude Web provider should be registered");
     assert(gemini, "Gemini Web provider should be registered");
 
-    // Check model resolution & aliases
-    const gptThinking = globalModelRegistry.resolve("gpt-5-6-sol");
-    assert(gptThinking, "gpt-5-6-sol alias should resolve");
-    assert.strictEqual(gptThinking?.id, "gpt-5-6-thinking");
-    assert.strictEqual(gptThinking?.providerId, "chatgpt-web");
+    assert.equal(globalModelRegistry.resolve("chatgpt-web:5.6"), undefined);
+    assert.throws(() =>
+      resolveChatRoute(globalModelRegistry, "gpt-5-6-sol", "chatgpt-web"),
+    );
+  });
 
+  test("catalog initialization preserves configured ChatGPT adapters", () => {
+    const previous = globalProviderRegistry.get("chatgpt-web");
+    const configured = new ChatGptWebAdapter();
+    globalProviderRegistry.register(configured);
+    try {
+      initializeWebProviders();
+      assert.strictEqual(globalProviderRegistry.get("chatgpt-web"), configured);
+      const route = resolveChatRoute(
+        globalModelRegistry,
+        "chatgpt-web:upstream-version",
+        "chatgpt-web",
+      );
+      assert.deepEqual(route, {
+        providerId: "chatgpt-web",
+        model: "chatgpt-web:upstream-version",
+      });
+    } finally {
+      if (previous) globalProviderRegistry.register(previous);
+      initializeWebProviders();
+    }
   });
 });

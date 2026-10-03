@@ -29,13 +29,14 @@ import {
   CHATGPT_WEB_CONSTANTS,
   FileCookieSource,
 } from "../index.ts";
-import { createChatGptBrowserSession } from "../providers/chatgpt/browser.ts";
+import { WarmChatGptBrowserManager } from "../providers/chatgpt/browser.ts";
 import {
   CredentialError,
   InvalidRequestError,
   ProviderTimeoutError,
 } from "../shared/errors.ts";
-import type { ChatMessage, ReasoningEffort } from "../shared/types.ts";
+import type { ReasoningEffort } from "../shared/types.ts";
+import { convertHttpChatMessages } from "./messages.ts";
 import { ModelCatalogCache } from "../shared/modelCatalogCache.ts";
 import { resolveChatRoute, getCredentialsForProvider } from "./routing.ts";
 import {
@@ -47,17 +48,20 @@ import {
 } from "./uiStream.ts";
 import type { ChatCompletionRequest } from "../index.ts";
 
+const chatGptBrowserManager = new WarmChatGptBrowserManager();
 
-
-// All registered server adapters use real transports, never fixture responses.
-globalProviderRegistry.register(
-  new ChatGptWebAdapter({
-    browserBridgeFactory: createChatGptBrowserSession,
-  }),
-);
-
-const catalogCachePath = process.env.MODEL_CATALOG_CACHE_FILE ?? join(homedir(), ".local", "share", "ultraroute", "model-catalogs.json");
+const catalogCachePath =
+  process.env.MODEL_CATALOG_CACHE_FILE ??
+  join(homedir(), ".local", "share", "ultraroute", "model-catalogs.json");
 const modelCatalogCache = new ModelCatalogCache(catalogCachePath);
+// The server supplies live browser services; initialization never replaces them.
+const liveChatGpt = new ChatGptWebAdapter({
+  transportFactory: (state, signal) =>
+    chatGptBrowserManager.createSession(state, signal),
+  modelCatalogSource: chatGptBrowserManager,
+  modelCatalogCache,
+});
+globalProviderRegistry.register(liveChatGpt);
 const liveClaude = new ClaudeWebAdapter({ modelCatalogCache });
 globalProviderRegistry.register(liveClaude);
 
@@ -65,40 +69,109 @@ globalProviderRegistry.register(liveClaude);
 const geminiCookieSource = process.env.GEMINI_COOKIE_FILE
   ? new FileCookieSource(process.env.GEMINI_COOKIE_FILE)
   : undefined;
-const liveGemini = new GeminiWebAdapter({ cookieSource: geminiCookieSource, modelCatalogCache });
+const liveGemini = new GeminiWebAdapter({
+  cookieSource: geminiCookieSource,
+  modelCatalogCache,
+});
 globalProviderRegistry.register(liveGemini);
-const refreshInterval = Number(process.env.MODEL_CATALOG_REFRESH_INTERVAL_MS ?? 6 * 60 * 60 * 1000);
+initializeWebProviders(modelCatalogCache);
+const shutdownController = new AbortController();
+const activeRequests = new Set<AbortController>();
+const refreshInterval = Number(
+  process.env.MODEL_CATALOG_REFRESH_INTERVAL_MS ?? 6 * 60 * 60 * 1000,
+);
 let refreshInProgress: Promise<void> | undefined;
 const refreshCatalogs = () => {
   if (refreshInProgress) return refreshInProgress;
   refreshInProgress = (async () => {
     try {
-      const extracted = extractChromiumCredentials();
-      const claudeCredentials = getCredentialsForProvider("claude-web", extracted);
-      if (claudeCredentials) await liveClaude.refreshCatalog(claudeCredentials, AbortSignal.timeout(30_000));
-    } catch (error) { console.warn("Claude model catalog refresh failed:", error instanceof Error ? error.message : String(error)); }
+      const credentials = getCredentialsForProvider(
+        "chatgpt-web",
+        extractChromiumCredentials("chatgpt-web"),
+      );
+      if (credentials)
+        await liveChatGpt.refreshCatalog(
+          credentials,
+          AbortSignal.any([
+            shutdownController.signal,
+            AbortSignal.timeout(60_000),
+          ]),
+        );
+    } catch (error) {
+      console.warn(
+        "ChatGPT model catalog refresh failed:",
+        publicChatError(error).message,
+      );
+    }
+    if (shutdownController.signal.aborted) return;
+    try {
+      const extracted = extractChromiumCredentials("claude-web");
+      const claudeCredentials = getCredentialsForProvider(
+        "claude-web",
+        extracted,
+      );
+      if (claudeCredentials)
+        await liveClaude.refreshCatalog(
+          claudeCredentials,
+          AbortSignal.any([
+            shutdownController.signal,
+            AbortSignal.timeout(30_000),
+          ]),
+        );
+    } catch (error) {
+      console.warn(
+        "Claude model catalog refresh failed:",
+        error instanceof Error ? error.message : String(error),
+      );
+    }
+    if (shutdownController.signal.aborted) return;
     try {
       const geminiCredentials = geminiCookieSource
         ? await geminiCookieSource.getCookie()
-        : getCredentialsForProvider("gemini-web", extractChromiumCredentials());
-      if (geminiCredentials) await liveGemini.refreshCatalog(geminiCredentials, AbortSignal.timeout(60_000));
-    } catch (error) { console.warn("Gemini model catalog refresh failed:", error instanceof Error ? error.message : String(error)); }
-  })().finally(() => { refreshInProgress = undefined; });
+        : getCredentialsForProvider(
+            "gemini-web",
+            extractChromiumCredentials("gemini-web"),
+          );
+      if (geminiCredentials)
+        await liveGemini.refreshCatalog(
+          geminiCredentials,
+          AbortSignal.any([
+            shutdownController.signal,
+            AbortSignal.timeout(60_000),
+          ]),
+        );
+    } catch (error) {
+      console.warn(
+        "Gemini model catalog refresh failed:",
+        error instanceof Error ? error.message : String(error),
+      );
+    }
+  })().finally(() => {
+    refreshInProgress = undefined;
+  });
   return refreshInProgress;
 };
-const catalogRefreshTimer = Number.isFinite(refreshInterval) && refreshInterval > 0
-  ? setInterval(() => { void refreshCatalogs(); }, refreshInterval)
-  : undefined;
+const catalogRefreshTimer =
+  Number.isFinite(refreshInterval) && refreshInterval > 0
+    ? setInterval(() => {
+        void refreshCatalogs();
+      }, refreshInterval)
+    : undefined;
 catalogRefreshTimer?.unref();
 
-function stopCatalogRefresh() { clearInterval(catalogRefreshTimer); }
-process.once("SIGINT", stopCatalogRefresh);
-process.once("SIGTERM", stopCatalogRefresh);
+function stopCatalogRefresh() {
+  clearInterval(catalogRefreshTimer);
+}
 
 // ── HTTP Server ─────────────────────────────────────────────────────
 const PORT = Number(process.env.PORT ?? 3000);
-const server = createServer(
+export const server = createServer(
   async (req: IncomingMessage, res: ServerResponse) => {
+    if (shutdownController.signal.aborted) {
+      res.writeHead(503, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ error: "Server is shutting down" }));
+      return;
+    }
     const url = new URL(req.url ?? "/", `http://${req.headers.host}`);
 
     // Serve the generated client bundle from dist/.
@@ -132,19 +205,27 @@ const server = createServer(
     }
     if (
       req.method === "GET" &&
-      url.pathname === "/api/providers/claude-web/models"
+      url.pathname === "/api/providers/chatgpt-web/models"
     ) {
       try {
         const credentials = getCredentialsForProvider(
-          "claude-web",
-          extractChromiumCredentials(),
+          "chatgpt-web",
+          extractChromiumCredentials("chatgpt-web"),
         );
-        const result = await liveClaude.getCatalog(credentials, AbortSignal.timeout(30_000));
+        const result = await liveChatGpt.getCatalog(
+          credentials,
+          AbortSignal.any([
+            shutdownController.signal,
+            AbortSignal.timeout(60_000),
+          ]),
+        );
         res.writeHead(200, {
           "Content-Type": "application/json",
           "Cache-Control": "no-store",
         });
-        res.end(JSON.stringify({ ...result.catalog, catalogStatus: result.status }));
+        res.end(
+          JSON.stringify({ ...result.catalog, catalogStatus: result.status }),
+        );
       } catch (error) {
         const failure = publicChatError(error);
         res.writeHead(failure.status, {
@@ -156,17 +237,71 @@ const server = createServer(
       return;
     }
 
-    if (req.method === "GET" && url.pathname === "/api/providers/gemini-web/models") {
+    if (
+      req.method === "GET" &&
+      url.pathname === "/api/providers/claude-web/models"
+    ) {
+      try {
+        const credentials = getCredentialsForProvider(
+          "claude-web",
+          extractChromiumCredentials("claude-web"),
+        );
+        const result = await liveClaude.getCatalog(
+          credentials,
+          AbortSignal.any([
+            shutdownController.signal,
+            AbortSignal.timeout(30_000),
+          ]),
+        );
+        res.writeHead(200, {
+          "Content-Type": "application/json",
+          "Cache-Control": "no-store",
+        });
+        res.end(
+          JSON.stringify({ ...result.catalog, catalogStatus: result.status }),
+        );
+      } catch (error) {
+        const failure = publicChatError(error);
+        res.writeHead(failure.status, {
+          "Content-Type": "application/json",
+          "Cache-Control": "no-store",
+        });
+        res.end(JSON.stringify({ error: failure.message }));
+      }
+      return;
+    }
+
+    if (
+      req.method === "GET" &&
+      url.pathname === "/api/providers/gemini-web/models"
+    ) {
       try {
         const credentials = geminiCookieSource
           ? await geminiCookieSource.getCookie()
-          : getCredentialsForProvider("gemini-web", extractChromiumCredentials());
-        const result = await liveGemini.getCatalog(credentials, AbortSignal.timeout(60_000));
-        res.writeHead(200, { "Content-Type": "application/json", "Cache-Control": "no-store" });
-        res.end(JSON.stringify({ ...result.catalog, catalogStatus: result.status }));
+          : getCredentialsForProvider(
+              "gemini-web",
+              extractChromiumCredentials("gemini-web"),
+            );
+        const result = await liveGemini.getCatalog(
+          credentials,
+          AbortSignal.any([
+            shutdownController.signal,
+            AbortSignal.timeout(60_000),
+          ]),
+        );
+        res.writeHead(200, {
+          "Content-Type": "application/json",
+          "Cache-Control": "no-store",
+        });
+        res.end(
+          JSON.stringify({ ...result.catalog, catalogStatus: result.status }),
+        );
       } catch (error) {
         const failure = publicChatError(error);
-        res.writeHead(failure.status, { "Content-Type": "application/json", "Cache-Control": "no-store" });
+        res.writeHead(failure.status, {
+          "Content-Type": "application/json",
+          "Cache-Control": "no-store",
+        });
         res.end(JSON.stringify({ error: failure.message }));
       }
       return;
@@ -174,6 +309,7 @@ const server = createServer(
 
     if (req.method === "POST" && url.pathname === "/api/chat") {
       const upstream = new AbortController();
+      activeRequests.add(upstream);
       const disconnected = new AbortController();
       const onDisconnect = () => {
         if (res.writableEnded) return;
@@ -204,46 +340,20 @@ const server = createServer(
         if (
           (body.model !== undefined && typeof body.model !== "string") ||
           (body.provider !== undefined && typeof body.provider !== "string") ||
-          (body.reasoning_effort !== undefined && typeof body.reasoning_effort !== "string")
+          (body.reasoning_effort !== undefined &&
+            typeof body.reasoning_effort !== "string")
         ) {
-          throw new InvalidRequestError("Model, provider, and reasoning_effort must be strings");
+          throw new InvalidRequestError(
+            "Model, provider, and reasoning_effort must be strings",
+          );
         }
         const route = resolveChatRoute(
           globalModelRegistry,
           body.model as string | undefined,
           body.provider as string | undefined,
         );
-        if (!Array.isArray(body.messages) || body.messages.length === 0)
-          throw new InvalidRequestError("Messages cannot be empty");
-        const modelMessages: ChatMessage[] = body.messages.map(
-          (raw: unknown) => {
-            if (!raw || typeof raw !== "object")
-              throw new InvalidRequestError("Invalid message");
-            const message = raw as Record<string, unknown>;
-            const role = message.role;
-            if (role !== "user" && role !== "assistant" && role !== "system")
-              throw new InvalidRequestError("Unsupported message role");
-            const parts = Array.isArray(message.parts)
-              ? message.parts
-              : Array.isArray(message.content)
-                ? message.content
-                : [];
-            const content =
-              typeof message.content === "string"
-                ? message.content
-                : parts
-                    .map((part: unknown) => {
-                      if (!part || typeof part !== "object") return "";
-                      const value = part as Record<string, unknown>;
-                      return value.type === "text" &&
-                        typeof value.text === "string"
-                        ? value.text
-                        : "";
-                    })
-                    .join("");
-            return { role, content };
-          },
-        );
+        const { messages: modelMessages, attachments } =
+          convertHttpChatMessages(body.messages, route.providerId);
 
         if (route.providerId === "google") {
           if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY)
@@ -280,15 +390,20 @@ const server = createServer(
               ? await geminiCookieSource.getCookie()
               : getCredentialsForProvider(
                   route.providerId,
-                  extractChromiumCredentials(),
+                  extractChromiumCredentials(
+                    route.providerId as
+                      "chatgpt-web" | "claude-web" | "gemini-web",
+                  ),
                 );
           if (!credentials)
             throw new CredentialError("Provider credentials missing");
           const request: ChatCompletionRequest = {
             model: route.model,
             messages: modelMessages,
+            attachments,
             stream: true,
-            reasoning_effort: body.reasoning_effort as ReasoningEffort | undefined,
+            reasoning_effort: body.reasoning_effort as
+              ReasoningEffort | undefined,
           };
           const result = await awaitWithAbort(
             provider.execute(request, credentials, upstream.signal),
@@ -311,6 +426,7 @@ const server = createServer(
         }
       } finally {
         clearTimeout(timeout);
+        activeRequests.delete(upstream);
         req.removeListener("aborted", onDisconnect);
         res.removeListener("close", onDisconnect);
         if (!res.destroyed && !res.writableEnded) res.end();
@@ -322,7 +438,37 @@ const server = createServer(
     res.end("Not Found");
   },
 );
-server.once("close", stopCatalogRefresh);
+let shutdown: Promise<void> | undefined;
+const beginShutdown = () => {
+  if (shutdown) return shutdown;
+  stopCatalogRefresh();
+  const reason = new DOMException("Server shutting down", "AbortError");
+  shutdownController.abort(reason);
+  for (const request of activeRequests) request.abort(reason);
+  process.removeListener("SIGINT", onShutdownSignal);
+  process.removeListener("SIGTERM", onShutdownSignal);
+  shutdown = chatGptBrowserManager.close().catch(() => {
+    console.warn("ChatGPT browser shutdown failed");
+  });
+  return shutdown;
+};
+const closeServer = server.close.bind(server);
+server.close = (callback) => {
+  void beginShutdown();
+  const result = closeServer((error) => {
+    void beginShutdown().then(() => callback?.(error));
+  });
+  server.closeAllConnections();
+  return result;
+};
+function onShutdownSignal() {
+  server.close();
+}
+process.once("SIGINT", onShutdownSignal);
+process.once("SIGTERM", onShutdownSignal);
+server.once("close", () => {
+  void beginShutdown();
+});
 void refreshCatalogs();
 
 const HOST = process.env.HOST || "0.0.0.0";

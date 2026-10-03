@@ -1,12 +1,11 @@
-import { globalModelRegistry } from "./registry/models.ts";
 import { globalProviderRegistry } from "./registry/providers.ts";
-import {
-  ChatGptWebAdapter,
-  CHATGPT_WEB_MODELS,
-} from "./providers/chatgpt/index.ts";
+import { ChatGptWebAdapter } from "./providers/chatgpt/index.ts";
 import { ClaudeWebAdapter } from "./providers/claude/index.ts";
 import { GeminiWebAdapter } from "./providers/gemini/index.ts";
-import { ModelCatalogCache, getDefaultModelCatalogCache } from "./shared/modelCatalogCache.ts";
+import {
+  ModelCatalogCache,
+  getDefaultModelCatalogCache,
+} from "./shared/modelCatalogCache.ts";
 
 export * from "./shared/index.ts";
 export * from "./registry/index.ts";
@@ -15,29 +14,29 @@ export * from "./providers/claude/index.ts";
 export * from "./providers/gemini/index.ts";
 
 /**
- * Registers web providers and the static ChatGPT catalog; Claude and Gemini discover models per account.
+ * Registers missing web providers without replacing caller-configured adapters.
+ * Executable ChatGPT hosts must supply a browser transport and catalog source.
  */
-export function initializeWebProviders(modelCatalogCache: ModelCatalogCache = getDefaultModelCatalogCache()): void {
-  // 1. ChatGPT Web
-  const chatgptAdapter = new ChatGptWebAdapter();
-  globalProviderRegistry.register(chatgptAdapter);
-  for (const model of CHATGPT_WEB_MODELS) {
-    globalModelRegistry.register({
-      id: model.id,
-      name: model.name,
-      providerId: chatgptAdapter.id,
-      aliases: model.aliases,
-      capabilities: chatgptAdapter.getCapabilities(model.id),
-      contextWindow: 128_000,
-      maxOutputTokens: 16_384,
-    });
+export function initializeWebProviders(
+  modelCatalogCache: ModelCatalogCache = getDefaultModelCatalogCache(),
+): void {
+  if (!globalProviderRegistry.get("chatgpt-web")) {
+    globalProviderRegistry.register(
+      new ChatGptWebAdapter({ modelCatalogCache }),
+    );
   }
 
   // 2. Claude Web
-  const claudeAdapter = new ClaudeWebAdapter({ modelCatalogCache });
-  globalProviderRegistry.register(claudeAdapter);
+  if (!globalProviderRegistry.get("claude-web")) {
+    globalProviderRegistry.register(
+      new ClaudeWebAdapter({ modelCatalogCache }),
+    );
+  }
 
   // 3. Gemini Web
-  const geminiAdapter = new GeminiWebAdapter({ modelCatalogCache });
-  globalProviderRegistry.register(geminiAdapter);
+  if (!globalProviderRegistry.get("gemini-web")) {
+    globalProviderRegistry.register(
+      new GeminiWebAdapter({ modelCatalogCache }),
+    );
+  }
 }

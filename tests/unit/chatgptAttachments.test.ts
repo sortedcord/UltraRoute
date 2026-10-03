@@ -7,9 +7,11 @@ import {
   resolveChatGptWebAttachments,
   isPublicAttachmentAddress,
   ChatGptWebAttachmentError,
+} from "../../src/providers/chatgpt/attachments.ts";
+import {
   MAX_CHATGPT_WEB_IMAGE_BYTES,
   MAX_CHATGPT_WEB_FILE_BYTES,
-} from "../../src/providers/chatgpt/attachments.ts";
+} from "../../src/shared/chatgptAttachmentLimits.ts";
 
 const png = Buffer.from(
   "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aL1sAAAAASUVORK5CYII=",

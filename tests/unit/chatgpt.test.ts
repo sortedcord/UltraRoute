@@ -13,6 +13,7 @@ import {
   ChatGptTopicStream,
 } from "../../src/providers/chatgpt/transport.ts";
 import { ChatGptWebAdapter } from "../../src/providers/chatgpt/adapter.ts";
+import { chatGptCatalogDeps } from "../fixtures/chatgptModels.ts";
 import {
   CredentialError,
   UpstreamDriftError,
@@ -144,8 +145,11 @@ describe("ChatGPT Web: Adapter & Transport Handoff", () => {
   });
   test("never returns a canned answer when transport is missing", async () => {
     await assert.rejects(
-      new ChatGptWebAdapter().execute(
-        { model: "gpt-5-6", messages: [{ role: "user", content: "Hello" }] },
+      new ChatGptWebAdapter(chatGptCatalogDeps()).execute(
+        {
+          model: "chatgpt-web:5.7",
+          messages: [{ role: "user", content: "Hello" }],
+        },
         "session=fixture",
       ),
       /transport is not configured/,
@@ -154,12 +158,19 @@ describe("ChatGPT Web: Adapter & Transport Handoff", () => {
   test("translates thinking selection and closes owned session after successful turn", async () => {
     let closed = false;
     const adapter = new ChatGptWebAdapter({
-      browserBridgeFactory: async () => ({
-        async executeDirectTurn(input: any) {
+      ...chatGptCatalogDeps(),
+      transportFactory: async () => ({
+        async executeDirectTurn(payload: unknown) {
+          assert.ok(
+            payload &&
+              typeof payload === "object" &&
+              "selection" in payload &&
+              "prompt" in payload,
+          );
+          const input = payload;
           assert.deepStrictEqual(input.selection, {
-            kind: "picker",
-            modelLabel: "GPT-5.6 Sol",
-            effortIndex: 3,
+            model: "native-deliberate-route",
+            thinkingEffort: "extended",
           });
           assert.strictEqual(input.prompt, "USER: What is 2+2?");
           return 'event: delta_encoding\ndata: "v1"\n\nevent: delta\ndata: {"p":"","o":"add","v":{"message":{"author":{"role":"assistant"},"content":{"parts":["Four."]},"status":"finished_successfully","end_turn":true}}}\n\ndata: [DONE]\n\n';
@@ -172,18 +183,46 @@ describe("ChatGPT Web: Adapter & Transport Handoff", () => {
         },
       }),
     });
-    const response: any = await adapter.execute(
+    const response = await adapter.execute(
       {
-        model: "gpt-5-6-thinking",
+        model: "chatgpt-web:5.7",
         reasoning_effort: "high",
         messages: [{ role: "user", content: "What is 2+2?" }],
       },
       "session=fixture",
     );
+    assert.ok("choices" in response);
     assert.strictEqual(response.choices[0].message.content, "Four.");
     assert.strictEqual(response.choices[0].finish_reason, "stop");
     assert.strictEqual(closed, true);
   });
+  test("handoff retains its direct document prefix across an unterminated SSE boundary", async () => {
+    const prefix = [
+      'event: delta_encoding\ndata: "v1"\n\n',
+      'data: {"p":"","o":"add","v":{"message":{"author":{"role":"assistant"},"content":{"parts":["Part"]},"status":"in_progress","end_turn":false}}}\n\n',
+      'data: {"type":"resume_conversation_token","token":"fixture-resume","conversation_id":"fixture-conversation"}\n\n',
+      'data: {"type":"stream_handoff","conversation_id":"fixture-conversation","turn_exchange_id":"fixture-turn","options":[{"type":"subscribe_ws_topic","topic_id":"fixture-topic"},{"type":"resume_sse_endpoint","topic_id":"fixture-topic"}]}',
+    ].join("");
+    const adapter = new ChatGptWebAdapter({
+      ...chatGptCatalogDeps(),
+      transportSession: {
+        executeDirectTurn: async () => prefix,
+        executeWebSocketTurn: async () =>
+          'data: {"p":"/message/content/parts/0","o":"append","v":" two"}\n\ndata: {"p":"","o":"patch","v":[{"p":"/message/status","o":"replace","v":"finished_successfully"},{"p":"/message/end_turn","o":"replace","v":true}]}\n\ndata: [DONE]\n\n',
+      },
+    });
+    const result = await adapter.execute(
+      {
+        model: "chatgpt-web:5.7",
+        messages: [{ role: "user", content: "fixture" }],
+      },
+      "session=fixture",
+    );
+    assert.ok("choices" in result);
+    assert.equal(result.choices[0].message.content, "Part two");
+    assert.equal(result.choices[0].finish_reason, "stop");
+  });
+
   test("demultiplexes catchups and ignores other topics and duplicate stream items", () => {
     const stream = new ChatGptTopicStream("fixture-topic");
     const item = {

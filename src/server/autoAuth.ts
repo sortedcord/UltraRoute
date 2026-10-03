@@ -22,9 +22,42 @@ export interface ExtractedCredentials {
   };
 }
 
-export function extractChromiumCredentials(): ExtractedCredentials | null {
+export type ChromiumCredentialProvider =
+  "chatgpt-web" | "claude-web" | "gemini-web";
+
+function configuredChatGptCredentials(): ExtractedCredentials["chatgpt"] {
+  if (process.env.CHATGPT_BROWSER_PROFILE) {
+    return {
+      cookieHeader: "",
+      browserProfile: process.env.CHATGPT_BROWSER_PROFILE,
+    };
+  }
+  const configuredState = process.env.CHATGPT_STORAGE_STATE_FILE;
+  const configuredCookie = process.env.CHATGPT_COOKIE_HEADER;
+  if (!configuredState && !configuredCookie) return undefined;
+  return {
+    cookieHeader: "",
+    storageState: validateAndNormalizeStorageState(
+      configuredState
+        ? readFileSync(configuredState, "utf8")
+        : configuredCookie,
+    ),
+  };
+}
+
+export function extractChromiumCredentials(
+  provider?: ChromiumCredentialProvider,
+): ExtractedCredentials | null {
+  // Explicit ChatGPT profiles/state need no DBus or unrelated browser-cookie reads.
+  const configuredChatGpt =
+    !provider || provider === "chatgpt-web"
+      ? configuredChatGptCredentials()
+      : undefined;
+  if (provider === "chatgpt-web" && configuredChatGpt)
+    return { chatgpt: configuredChatGpt };
   const pythonScript = `
-import dbus, os, sqlite3, json
+import dbus, os, sqlite3, json, sys
+target = sys.argv[1]
 from hashlib import pbkdf2_hmac
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.primitives import padding
@@ -62,12 +95,12 @@ try:
     cur = conn.cursor()
 
     # Claude
-    cur.execute("SELECT name, encrypted_value FROM cookies WHERE host_key LIKE '%claude.ai%' AND name IN ('sessionKey', 'lastActiveOrg');")
+    cur.execute("SELECT name, encrypted_value FROM cookies WHERE host_key LIKE '%claude.ai%' AND name IN ('sessionKey', 'lastActiveOrg') AND ? IN ('all', 'claude-web');", (target,))
     claude_dict = {name: decrypt(enc) for name, enc in cur.fetchall()}
 
     # Gemini bootstrap needs the complete Google auth session, not just PSID/SAPISID.
     # Only cookies applicable to https://gemini.google.com/app are sent.
-    cur.execute("SELECT name, encrypted_value, value, expires_utc, host_key FROM cookies WHERE host_key IN ('.google.com', 'google.com', 'gemini.google.com', '.gemini.google.com') AND path = '/' AND name IN ('SID', 'HSID', 'SSID', 'APISID', 'SAPISID', 'SIDCC', '__Secure-1PSID', '__Secure-3PSID', '__Secure-1PSIDTS', '__Secure-3PSIDTS', '__Secure-1PSIDCC', '__Secure-3PSIDCC', '__Secure-1PAPISID', '__Secure-3PAPISID') ORDER BY LENGTH(host_key);")
+    cur.execute("SELECT name, encrypted_value, value, expires_utc, host_key FROM cookies WHERE host_key IN ('.google.com', 'google.com', 'gemini.google.com', '.gemini.google.com') AND path = '/' AND name IN ('SID', 'HSID', 'SSID', 'APISID', 'SAPISID', 'SIDCC', '__Secure-1PSID', '__Secure-3PSID', '__Secure-1PSIDTS', '__Secure-3PSIDTS', '__Secure-1PSIDCC', '__Secure-3PSIDCC', '__Secure-1PAPISID', '__Secure-3PAPISID') AND ? IN ('all', 'gemini-web') ORDER BY LENGTH(host_key);", (target,))
     gemini_dict = {}
     for name, enc, plain, expires, host in cur.fetchall():
         val = decrypt(enc) if enc else plain
@@ -76,7 +109,7 @@ try:
             gemini_dict[name] = val
 
     # Preserve browser domain/path attributes; never flatten OpenAI-host cookies onto ChatGPT.
-    cur.execute("SELECT name, encrypted_value, value, host_key, path, expires_utc, is_httponly, is_secure, samesite FROM cookies WHERE host_key IN ('chatgpt.com', '.chatgpt.com', 'openai.com', '.openai.com', 'auth.openai.com', '.auth.openai.com');")
+    cur.execute("SELECT name, encrypted_value, value, host_key, path, expires_utc, is_httponly, is_secure, samesite FROM cookies WHERE host_key IN ('chatgpt.com', '.chatgpt.com', 'openai.com', '.openai.com', 'auth.openai.com', '.auth.openai.com') AND ? IN ('all', 'chatgpt-web');", (target,))
     cgpt_cookies = []
     for name, enc, plain, host, path, expires, httponly, secure, same in cur.fetchall():
         val = decrypt(enc) if enc else plain
@@ -110,11 +143,15 @@ except Exception as e:
 
   let credentials: ExtractedCredentials = {};
   try {
-    const stdout = execFileSync("python3", ["-c", pythonScript], {
-      encoding: "utf-8",
-      timeout: 10_000,
-      stdio: ["ignore", "pipe", "ignore"],
-    });
+    const stdout = execFileSync(
+      "python3",
+      ["-c", pythonScript, provider ?? "all"],
+      {
+        encoding: "utf-8",
+        timeout: 10_000,
+        stdio: ["ignore", "pipe", "ignore"],
+      },
+    );
     credentials = JSON.parse(stdout) as ExtractedCredentials;
   } catch {
     // Chromium profile is optional when the operator configures a cookie or state file.
@@ -122,7 +159,10 @@ except Exception as e:
   // Check for operator-configured Gemini cookie file or header (AuthoCookie sidecar pattern)
   const geminiCookieFile = process.env.GEMINI_COOKIE_FILE;
   const geminiCookieHeader = process.env.GEMINI_COOKIE;
-  if (geminiCookieFile || geminiCookieHeader) {
+  if (
+    (!provider || provider === "gemini-web") &&
+    (geminiCookieFile || geminiCookieHeader)
+  ) {
     let rawCookie = "";
     if (geminiCookieFile && existsSync(geminiCookieFile)) {
       const content = readFileSync(geminiCookieFile, "utf-8").trim();
@@ -145,22 +185,6 @@ except Exception as e:
       };
     }
   }
-  if (process.env.CHATGPT_BROWSER_PROFILE) {
-    credentials.chatgpt = {
-      cookieHeader: "",
-      browserProfile: process.env.CHATGPT_BROWSER_PROFILE,
-    };
-    return credentials;
-  }
-  const configuredState = process.env.CHATGPT_STORAGE_STATE_FILE;
-  const configuredCookie = process.env.CHATGPT_COOKIE_HEADER;
-  if (configuredState || configuredCookie) {
-    const storageState = validateAndNormalizeStorageState(
-      configuredState
-        ? readFileSync(configuredState, "utf8")
-        : configuredCookie,
-    );
-    credentials.chatgpt = { cookieHeader: "", storageState };
-  }
+  if (configuredChatGpt) credentials.chatgpt = configuredChatGpt;
   return credentials;
 }

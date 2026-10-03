@@ -12,11 +12,16 @@ import {
   ProviderTimeoutError,
   UpstreamDriftError,
 } from "../../shared/errors.ts";
+import { CHATGPT_WEB_CONSTANTS } from "./constants.ts";
 import {
-  CHATGPT_WEB_CONSTANTS,
-  CHATGPT_WEB_MODELS,
-  REASONING_EFFORT_MAP,
-} from "./constants.ts";
+  getDefaultModelCatalogCache,
+  type ModelCatalogCache,
+} from "../../shared/modelCatalogCache.ts";
+import {
+  chatGptTransportCapabilities,
+  parseChatGptModelCatalog,
+  type ChatGptModelCatalog,
+} from "./models.ts";
 import {
   validateAndNormalizeStorageState,
   type ChatGptStorageState,
@@ -27,18 +32,33 @@ import {
   type IChatGptTransportSession,
 } from "./transport.ts";
 import { resolveChatGptWebAttachments } from "./attachments.ts";
-import type { ChatGptWebUiSelection } from "./firstParty.ts";
+import type { ChatGptWebSelection } from "./firstParty.ts";
 import {
   isChatGptProfileCredential,
   validateChatGptProfile,
   type ChatGptProfileCredential,
 } from "./profile.ts";
 
+export type ChatGptCredential = ChatGptStorageState | ChatGptProfileCredential;
+
 export interface ChatGptAdapterDeps {
   transportSession?: IChatGptTransportSession;
-  browserBridgeFactory?: (
-    state: ChatGptStorageState | ChatGptProfileCredential,
+  transportFactory?: (
+    state: ChatGptCredential,
+    signal?: AbortSignal,
   ) => Promise<IChatGptTransportSession>;
+  modelCatalogSource?: {
+    getAccountIdentity(
+      state: ChatGptCredential,
+      signal?: AbortSignal,
+    ): Promise<string>;
+    fetchModels(
+      state: ChatGptCredential,
+      signal?: AbortSignal,
+      expectedIdentity?: string,
+    ): Promise<unknown>;
+  };
+  modelCatalogCache?: ModelCatalogCache;
 }
 
 export class ChatGptWebAdapter extends BaseWebProviderAdapter {
@@ -46,36 +66,76 @@ export class ChatGptWebAdapter extends BaseWebProviderAdapter {
   readonly name = "ChatGPT Web";
   readonly defaultBaseUrl = CHATGPT_WEB_CONSTANTS.BASE_URL;
   private readonly deps: ChatGptAdapterDeps;
+  private readonly modelCatalogCache: ModelCatalogCache;
   constructor(deps: ChatGptAdapterDeps = {}) {
     super();
     this.deps = deps;
+    this.modelCatalogCache =
+      deps.modelCatalogCache ?? getDefaultModelCatalogCache();
   }
 
-  getCapabilities(model: string): WebProviderCapabilities {
-    const found = CHATGPT_WEB_MODELS.find(
-      (m) => m.id === model || (m.aliases as readonly string[]).includes(model),
+  getCapabilities(_model: string): WebProviderCapabilities {
+    // This synchronous API has no account context: never reuse another account's metadata.
+    return chatGptTransportCapabilities();
+  }
+
+  private async normalizeCredentials(
+    credentials: unknown,
+  ): Promise<ChatGptCredential> {
+    return isChatGptProfileCredential(credentials)
+      ? {
+          browserProfile: await validateChatGptProfile(
+            credentials.browserProfile,
+          ),
+        }
+      : validateAndNormalizeStorageState(credentials);
+  }
+
+  private async loadCatalog(
+    state: ChatGptCredential,
+    refresh: boolean,
+    signal?: AbortSignal,
+  ) {
+    const source = this.deps.modelCatalogSource;
+    if (!source)
+      throw new GenericUpstreamError(
+        "ChatGPT model catalog source is not configured",
+        503,
+        false,
+      );
+    const account = await source.getAccountIdentity(state, signal);
+    if (typeof account !== "string" || !account.trim())
+      throw new UpstreamDriftError("ChatGPT account identity is missing");
+    const loader = async () =>
+      parseChatGptModelCatalog(
+        await source.fetchModels(state, signal, account),
+      );
+    return refresh
+      ? this.modelCatalogCache.refresh("chatgpt-web", account, loader)
+      : this.modelCatalogCache.get("chatgpt-web", account, loader);
+  }
+
+  async getCatalog(credentials: unknown, signal?: AbortSignal) {
+    return this.loadCatalog(
+      await this.normalizeCredentials(credentials),
+      false,
+      signal,
     );
-    return {
-      // Browser turns buffer upstream; downstream SSE is supported, not token streaming.
-      supportsStreaming: false,
-      supportsReasoning: found
-        ? "reasoningEffortIndex" in found && found.reasoningEffortIndex > 0
-        : false,
-      supportedThinkingEfforts: [
-        "none",
-        "low",
-        "medium",
-        "high",
-        "xhigh",
-        "max",
-      ],
-      supportsToolCalling: false,
-      supportsVision: true,
-      supportsFiles: true,
-      supportsContinuation: false,
-      maxContextTokens: 128_000,
-      maxOutputTokens: 16_384,
-    };
+  }
+
+  async refreshCatalog(credentials: unknown, signal?: AbortSignal) {
+    return this.loadCatalog(
+      await this.normalizeCredentials(credentials),
+      true,
+      signal,
+    );
+  }
+
+  async discoverModels(
+    credentials: unknown,
+    signal?: AbortSignal,
+  ): Promise<ChatGptModelCatalog> {
+    return (await this.getCatalog(credentials, signal)).catalog;
   }
 
   async validateCredentials(
@@ -100,13 +160,13 @@ export class ChatGptWebAdapter extends BaseWebProviderAdapter {
     credentials: unknown,
     signal?: AbortSignal,
   ): Promise<ChatCompletionResponse | AsyncIterable<ChatCompletionChunk>> {
-    const storageState = isChatGptProfileCredential(credentials)
-      ? {
-          browserProfile: await validateChatGptProfile(
-            credentials.browserProfile,
-          ),
-        }
-      : validateAndNormalizeStorageState(credentials);
+    const turnSignal = AbortSignal.any([
+      AbortSignal.timeout(CHATGPT_WEB_CONSTANTS.DEFAULT_TURN_TIMEOUT_MS),
+      ...(signal ? [signal] : []),
+    ]);
+    if (turnSignal.aborted)
+      throw new ProviderTimeoutError("ChatGPT turn cancelled or timed out");
+    const storageState = await this.normalizeCredentials(credentials);
     if (!request.messages?.length)
       throw new InvalidRequestError("Request messages cannot be empty");
     if (
@@ -116,35 +176,26 @@ export class ChatGptWebAdapter extends BaseWebProviderAdapter {
       throw new InvalidRequestError(
         "ChatGPT Web does not provide native third-party tool calls",
       );
-    const model = CHATGPT_WEB_MODELS.find(
-      (m) =>
-        m.id === request.model ||
-        (m.aliases as readonly string[]).includes(request.model),
-    );
+    const catalog = (await this.loadCatalog(storageState, false, turnSignal))
+      .catalog;
+    const model = catalog.models.find((model) => model.id === request.model);
     if (!model) throw new InvalidRequestError("Unknown ChatGPT Web model");
-    const effort =
-      request.reasoning_effort === "none"
-        ? 0
-        : request.reasoning_effort
-          ? REASONING_EFFORT_MAP[request.reasoning_effort]
-          : "reasoningEffortIndex" in model
-            ? model.reasoningEffortIndex
-            : 0;
-    if (effort === undefined)
+    if (model.disabled)
+      throw new InvalidRequestError(
+        "ChatGPT Web model unavailable for this account",
+      );
+    const effort = request.reasoning_effort ?? model.defaultReasoningLevel;
+    const level = model.reasoningLevels.find((level) => level.value === effort);
+    if (!level)
       throw new InvalidRequestError("Unsupported ChatGPT reasoning effort");
-    const selection: ChatGptWebUiSelection =
-      model.uiKind === "free"
-        ? {
-            kind: "free",
-            thinkEnabled: request.reasoning_effort
-              ? effort > 0
-              : model.thinkEnabled,
-          }
-        : {
-            kind: "picker",
-            modelLabel: model.uiLabel,
-            effortIndex: effort as 0 | 1 | 2 | 3 | 4,
-          };
+    if (level.disabled)
+      throw new InvalidRequestError(
+        "ChatGPT reasoning effort unavailable for this account",
+      );
+    const selection: ChatGptWebSelection = {
+      model: level.model,
+      ...(level.thinkingEffort ? { thinkingEffort: level.thinkingEffort } : {}),
+    };
     const sources = [...(request.attachments ?? [])];
     const prompt = request.messages
       .map((message) => {
@@ -184,23 +235,21 @@ export class ChatGptWebAdapter extends BaseWebProviderAdapter {
       .join("\n\n");
     if (Buffer.byteLength(prompt) > CHATGPT_WEB_CONSTANTS.MAX_PROMPT_BYTES)
       throw new InvalidRequestError("ChatGPT prompt exceeds byte limit");
-    const attachments = await resolveChatGptWebAttachments(sources);
-    if (!this.deps.transportSession && !this.deps.browserBridgeFactory)
+    const attachments = await resolveChatGptWebAttachments(sources, {
+      signal: turnSignal,
+    });
+    if (!this.deps.transportSession && !this.deps.transportFactory)
       throw new GenericUpstreamError(
         "ChatGPT browser transport is not configured",
         503,
         false,
       );
-    const turnSignal = AbortSignal.any([
-      AbortSignal.timeout(CHATGPT_WEB_CONSTANTS.DEFAULT_TURN_TIMEOUT_MS),
-      ...(signal ? [signal] : []),
-    ]);
     let transport: IChatGptTransportSession | undefined;
     let finalSse: string;
     try {
       transport =
         this.deps.transportSession ??
-        (await this.deps.browserBridgeFactory!(storageState));
+        (await this.deps.transportFactory!(storageState, turnSignal));
       if (turnSignal.aborted)
         throw new ProviderTimeoutError(
           "ChatGPT browser turn cancelled or timed out",
@@ -211,7 +260,9 @@ export class ChatGptWebAdapter extends BaseWebProviderAdapter {
       );
       const handoff = parseHandoffBootstrap(raw);
       finalSse = handoff
-        ? await transport.executeWebSocketTurn(handoff, turnSignal)
+        ? raw +
+          "\n\n" +
+          (await transport.executeWebSocketTurn(handoff, turnSignal))
         : raw;
     } finally {
       // Close only factory-owned sessions; injected reusable transports belong to their caller.

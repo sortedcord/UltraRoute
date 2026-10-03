@@ -22,10 +22,15 @@ export function resolveChatRoute(
   if (provider === "gemini-web" && model.startsWith("gemini-web:")) {
     return { providerId: "gemini-web", model };
   }
+  if (provider === "chatgpt-web" && model.startsWith("chatgpt-web:")) {
+    // The adapter validates the exact ID against the signed-in account catalog.
+    return { providerId: "chatgpt-web", model };
+  }
   const descriptor = registry.resolve(model);
   if (provider === "google") {
     if (
-      !(descriptor?.id ?? model).startsWith("gemini-") || model.startsWith("gemini-web:") ||
+      !(descriptor?.id ?? model).startsWith("gemini-") ||
+      model.startsWith("gemini-web:") ||
       (descriptor && descriptor.providerId !== "gemini-web")
     ) {
       throw new InvalidRequestError(

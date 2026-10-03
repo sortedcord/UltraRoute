@@ -1,10 +1,11 @@
+import { createHash } from "node:crypto";
+import { existsSync } from "node:fs";
 import {
   chromium,
   type Browser,
   type BrowserContext,
   type Page,
 } from "playwright";
-import { existsSync } from "node:fs";
 import { CHATGPT_WEB_CONSTANTS } from "./constants.ts";
 import {
   validateAndNormalizeStorageState,
@@ -12,10 +13,11 @@ import {
 } from "./storageState.ts";
 import {
   executeChatGptWebFirstPartyTurn,
+  initializeChatGptWebFirstPartyBridge,
+  getChatGptWebAccountIdentity,
+  fetchChatGptWebModels,
   type ChatGptWebFirstPartyRequest,
 } from "./firstParty.ts";
-import { executeChatGptComposerTurn } from "./composer.ts";
-import { installChatGptStreamCapture } from "./streamCapture.ts";
 import {
   ChatGptTopicStream,
   type HandoffBootstrap,
@@ -26,7 +28,6 @@ import {
   ChallengeRequiredError,
   GenericUpstreamError,
   ProviderTimeoutError,
-  RateLimitError,
   UpstreamDriftError,
   WebProviderError,
 } from "../../shared/errors.ts";
@@ -34,294 +35,566 @@ import {
   acquireChatGptProfile,
   isChatGptProfileCredential,
   type ChatGptProfileCredential,
-  type ChatGptProfileLease,
 } from "./profile.ts";
 
+type Credential = ChatGptStorageState | ChatGptProfileCredential;
+interface CatalogLease extends IChatGptTransportSession {
+  getAccountIdentity(signal?: AbortSignal): Promise<string>;
+  fetchModels(
+    signal?: AbortSignal,
+    expectedIdentity?: string,
+  ): Promise<unknown>;
+}
 export interface BrowserSessionDeps {
   launch?: typeof chromium.launch;
-  execute?: typeof executeChatGptWebFirstPartyTurn;
   launchPersistent?: typeof chromium.launchPersistentContext;
+  initialize?: typeof initializeChatGptWebFirstPartyBridge;
+  execute?: typeof executeChatGptWebFirstPartyTurn;
+  getIdentity?: typeof getChatGptWebAccountIdentity;
+  fetchModels?: typeof fetchChatGptWebModels;
+  idleTimeoutMs?: number;
+}
+interface Runtime {
+  context: BrowserContext;
+  page: Page;
+  ready: boolean;
+  dispose(): Promise<void>;
+  frames: string[];
+  bytes: number;
+  frameError?: WebProviderError;
+  observing: boolean;
+  wake?: () => void;
+  resetting?: Promise<void>;
+}
+interface Entry {
+  key: string;
+  tail: Promise<void>;
+  runtime?: Runtime;
+  idle?: NodeJS.Timeout;
+  closed: boolean;
+  opening?: Promise<Runtime>;
+  release?: () => Promise<void>;
+  leases: number;
+  retiring?: Promise<void>;
 }
 
-/** Each request owns a fresh context. Cookies are never copied to other origins or accounts. */
-export async function createChatGptBrowserSession(
-  state: ChatGptStorageState | ChatGptProfileCredential,
-  deps: BrowserSessionDeps = {},
-): Promise<IChatGptTransportSession> {
-  const profile = isChatGptProfileCredential(state) ? state : undefined;
-  const normalized = profile
-    ? undefined
-    : validateAndNormalizeStorageState(state);
-  let browser: Browser | undefined;
-  let context: BrowserContext | undefined;
-  let profileLease: ChatGptProfileLease | undefined;
+function credentialKey(state: Credential): string {
+  if (isChatGptProfileCredential(state))
+    return `profile:${state.browserProfile}`;
+  // Session identity must not change when clearance/analytics cookies rotate.
+  const auth = state.cookies.filter((cookie) =>
+    /(?:session-token|sessiontoken)/i.test(cookie.name),
+  );
+  const cookies = (auth.length ? auth : state.cookies)
+    .map((cookie) => [cookie.domain, cookie.path, cookie.name, cookie.value])
+    .sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b)));
+  return createHash("sha256")
+    .update(JSON.stringify({ cookies, origins: state.origins }))
+    .digest("hex");
+}
+function cancelled(): ProviderTimeoutError {
+  return new ProviderTimeoutError("ChatGPT turn cancelled or timed out");
+}
+async function withAbort<T>(
+  operation: Promise<T>,
+  signal?: AbortSignal,
+): Promise<T> {
+  if (signal?.aborted) throw cancelled();
+  if (!signal) return operation;
+  let abort: () => void = () => {};
+  const stopped = new Promise<never>((_, reject) => {
+    abort = () => reject(cancelled());
+    signal.addEventListener("abort", abort, { once: true });
+  });
   try {
-    const executablePath =
-      process.env.CHATGPT_CHROMIUM_PATH ||
-      (existsSync("/usr/bin/chromium") ? "/usr/bin/chromium" : undefined);
-    if (profile) {
-      profileLease = await acquireChatGptProfile(
-        profile.browserProfile,
-        false,
-        { launch: deps.launchPersistent },
-      );
-      context = profileLease.context;
-    } else {
-      browser = await (deps.launch ?? chromium.launch.bind(chromium))({
-        executablePath,
-        headless:
-          process.env.CHATGPT_WEB_HEADLESS === "1" || !process.env.DISPLAY,
-        timeout: CHATGPT_WEB_CONSTANTS.BROWSER_ACQUIRE_TIMEOUT_MS,
-      });
-      context = await browser.newContext({ storageState: normalized });
-    }
-    const page = await context.newPage();
-    if (profile) {
-      // Keep the new execution tab alive before closing restored tabs: ordinary
-      // headed Chromium exits when its last window is closed.
-      for (const stalePage of context.pages())
-        if (stalePage !== page) await stalePage.close();
-    }
-    return new BrowserSession(
-      async () => {
-        if (profileLease) await profileLease.close();
-        else {
-          await context?.close().catch(() => {});
-          await browser?.close().catch(() => {});
-        }
-      },
-      context,
-      page,
-      deps.execute ??
-        (process.env.CHATGPT_WEB_EXECUTION === "module"
-          ? executeChatGptWebFirstPartyTurn
-          : executeChatGptComposerTurn),
-    );
-  } catch (error) {
-    await profileLease?.close().catch(() => {});
-    if (!profileLease) await context?.close().catch(() => {});
-    await browser?.close().catch(() => {});
-    if (error instanceof WebProviderError) throw error;
-    throw new GenericUpstreamError(
-      "ChatGPT browser could not start. Check Chromium path and display configuration.",
-      503,
-      false,
-    );
+    return await Promise.race([operation, stopped]);
+  } finally {
+    signal.removeEventListener("abort", abort);
   }
 }
 
-class BrowserSession implements IChatGptTransportSession {
-  private frames: string[] = [];
-  private bytes = 0;
-  private frameError: WebProviderError | undefined;
-  private used = false;
-  private dispose: () => Promise<void>;
-  private context: BrowserContext;
-  private page: Page;
-  private execute: typeof executeChatGptWebFirstPartyTurn;
-  constructor(
-    dispose: () => Promise<void>,
-    context: BrowserContext,
-    page: Page,
-    execute: typeof executeChatGptWebFirstPartyTurn,
-  ) {
-    this.dispose = dispose;
-    this.context = context;
-    this.page = page;
-    this.execute = execute;
+/** Owns warm account-isolated Chromium pages. A session is an exclusive turn lease. */
+export class WarmChatGptBrowserManager {
+  private readonly entries = new Map<string, Entry>();
+  private readonly shutdown = new AbortController();
+  private closing?: Promise<void>;
+  private readonly deps: BrowserSessionDeps;
+  private readonly idleTimeoutMs: number;
+  constructor(deps: BrowserSessionDeps = {}) {
+    this.deps = deps;
+    const timeout =
+      deps.idleTimeoutMs ??
+      Number(process.env.CHATGPT_BROWSER_IDLE_TIMEOUT_MS ?? 300_000);
+    if (!Number.isFinite(timeout) || timeout < 0)
+      throw new Error("Invalid ChatGPT browser idle timeout");
+    this.idleTimeoutMs = timeout;
   }
 
-  async close(): Promise<void> {
-    await this.dispose();
-  }
-
-  private async bounded<T>(
-    operation: () => Promise<T>,
-    signal?: AbortSignal,
-  ): Promise<T> {
-    if (signal?.aborted)
-      throw new ProviderTimeoutError("ChatGPT browser turn cancelled");
-    let timer: NodeJS.Timeout | undefined;
-    let abort: () => void = () => {};
-    const deadline = new Promise<never>((_, reject) => {
-      abort = () => {
-        void this.close();
-        reject(new ProviderTimeoutError("ChatGPT browser turn cancelled"));
-      };
-      signal?.addEventListener("abort", abort, { once: true });
-      timer = setTimeout(() => {
-        void this.close();
-        reject(new ProviderTimeoutError("ChatGPT browser turn timed out"));
-      }, CHATGPT_WEB_CONSTANTS.DEFAULT_TURN_TIMEOUT_MS);
-    });
-    try {
-      return await Promise.race([operation(), deadline]);
-    } catch (error) {
-      throw browserError(error);
-    } finally {
-      clearTimeout(timer);
-      signal?.removeEventListener("abort", abort);
-    }
-  }
-
-  async executeDirectTurn(
-    payload: unknown,
+  async getAccountIdentity(
+    state: Credential,
     signal?: AbortSignal,
   ): Promise<string> {
-    if (this.used)
-      throw new UpstreamDriftError("ChatGPT browser session already consumed");
-    this.used = true;
-    return this.bounded(async () => {
-      await installChatGptStreamCapture(this.page);
-      // Observe the first-party socket. Do not recreate socket authentication or conduit tokens.
-      await this.page.addInitScript(() => {
-        const NativeSocket = window.WebSocket;
-        const sockets: WebSocket[] = [];
-        (window as any).__ultraSockets = sockets;
-        window.WebSocket = class extends NativeSocket {
-          constructor(url: string | URL, protocols?: string | string[]) {
-            super(url, protocols);
-            const parsed = new URL(String(url));
-            if (
-              parsed.protocol === "wss:" &&
-              (parsed.hostname === "chatgpt.com" ||
-                parsed.hostname.endsWith(".chatgpt.com"))
-            )
-              sockets.push(this);
+    const session = await this.createSession(state, signal);
+    try {
+      return await session.getAccountIdentity(signal);
+    } finally {
+      await session.close?.();
+    }
+  }
+
+  async fetchModels(
+    state: Credential,
+    signal?: AbortSignal,
+    expectedIdentity?: string,
+  ): Promise<unknown> {
+    const session = await this.createSession(state, signal);
+    try {
+      return await session.fetchModels(signal, expectedIdentity);
+    } finally {
+      await session.close?.();
+    }
+  }
+
+  async createSession(
+    state: Credential,
+    signal?: AbortSignal,
+  ): Promise<CatalogLease> {
+    const combined = AbortSignal.any([
+      this.shutdown.signal,
+      ...(signal ? [signal] : []),
+    ]);
+    if (combined.aborted) throw cancelled();
+    const normalized = isChatGptProfileCredential(state)
+      ? state
+      : validateAndNormalizeStorageState(state);
+    const key = credentialKey(normalized);
+    let entry = this.entries.get(key);
+    if (entry?.closed) {
+      await withAbort(entry.retiring ?? Promise.resolve(), combined);
+      return this.createSession(normalized, signal);
+    }
+    if (!entry) {
+      entry = { key, tail: Promise.resolve(), closed: false, leases: 0 };
+      this.entries.set(key, entry);
+    }
+    clearTimeout(entry.idle);
+    entry.leases++;
+    const previous = entry.tail;
+    const gate = Promise.withResolvers<void>();
+    entry.tail = previous.catch(() => {}).then(() => gate.promise);
+    try {
+      await withAbort(previous, combined);
+      if (entry.closed || combined.aborted) throw cancelled();
+      clearTimeout(entry.idle);
+    } catch (error) {
+      // Never unlock a later request before its predecessor has released.
+      void previous
+        .finally(() => {
+          gate.resolve();
+          entry.leases--;
+          this.scheduleIdle(entry);
+        })
+        .catch(() => {});
+      throw error;
+    }
+    const owned = entry;
+    let released = false;
+    let used = false;
+    let invalid = false;
+    let recovering: Promise<void> | undefined;
+    let active: Promise<unknown> | undefined;
+    let releasing: Promise<void> | undefined;
+    const release = (): Promise<void> => {
+      releasing ??= (async () => {
+        released = true;
+        try {
+          await active?.catch(() => {});
+          await owned.opening?.catch(() => {});
+          await recovering;
+          const runtime = owned.runtime;
+          if (runtime) {
+            runtime.observing = false;
+            runtime.frames = [];
+            runtime.bytes = 0;
+            if (invalid && !recovering && !owned.closed)
+              await this.resetPage(runtime);
           }
-        };
-      });
-      this.page.on("websocket", (socket) => {
-        const url = new URL(socket.url());
-        if (
-          url.protocol !== "wss:" ||
-          !(
-            url.hostname === "chatgpt.com" ||
-            url.hostname.endsWith(".chatgpt.com")
-          )
-        )
-          return;
-        socket.on("framereceived", (frame) => {
-          const text =
-            typeof frame.payload === "string"
-              ? frame.payload
-              : frame.payload.toString("utf8");
-          this.bytes += Buffer.byteLength(text);
-          if (
-            this.frames.length >= CHATGPT_WEB_CONSTANTS.MAX_SOCKET_FRAMES ||
-            this.bytes > CHATGPT_WEB_CONSTANTS.MAX_RESPONSE_BYTES
-          ) {
-            this.frameError = new UpstreamDriftError(
-              "ChatGPT WebSocket buffer bound exceeded",
-            );
-            return;
+        } finally {
+          owned.release = undefined;
+          owned.leases--;
+          gate.resolve();
+          this.scheduleIdle(owned);
+        }
+      })();
+      return releasing;
+    };
+    owned.release = release;
+    const run = <T>(
+      operation: (runtime: Runtime, turnSignal: AbortSignal) => Promise<T>,
+      turnSignal?: AbortSignal,
+    ): Promise<T> => {
+      const combinedTurn = AbortSignal.any([
+        combined,
+        ...(turnSignal ? [turnSignal] : []),
+        AbortSignal.timeout(CHATGPT_WEB_CONSTANTS.DEFAULT_TURN_TIMEOUT_MS),
+      ]);
+      const work = (async () => {
+        if (released || combinedTurn.aborted) throw cancelled();
+        let abort: () => void = () => {};
+        try {
+          const initializing = (owned.opening ??= this.ensureRuntime(
+            owned,
+            normalized,
+          ).finally(() => {
+            owned.opening = undefined;
+          }));
+          const runtime = await withAbort(initializing, combinedTurn);
+          owned.opening = undefined;
+          abort = () => {
+            invalid = true;
+            // Interrupt all page-local native requests; retain the browser context.
+            recovering ??= this.resetPage(runtime).catch(() => {});
+            runtime.wake?.();
+          };
+          combinedTurn.addEventListener("abort", abort, { once: true });
+          if (combinedTurn.aborted) {
+            abort();
+            throw cancelled();
           }
-          this.frames.push(text);
+          await withAbort(this.ensureReady(runtime), combinedTurn);
+          return await withAbort(
+            operation(runtime, combinedTurn),
+            combinedTurn,
+          );
+        } catch (error) {
+          invalid = true;
+          if (combinedTurn.aborted) throw cancelled();
+          throw browserError(error);
+        } finally {
+          combinedTurn.removeEventListener("abort", abort);
+        }
+      })();
+      active = work;
+      return work;
+    };
+    return {
+      getAccountIdentity: (turnSignal) =>
+        run(
+          (runtime, scopedSignal) =>
+            (this.deps.getIdentity ?? getChatGptWebAccountIdentity)(
+              runtime.page,
+              scopedSignal,
+            ),
+          turnSignal,
+        ),
+      fetchModels: (turnSignal, expectedIdentity) =>
+        run(
+          (runtime, scopedSignal) =>
+            (this.deps.fetchModels ?? fetchChatGptWebModels)(
+              runtime.page,
+              scopedSignal,
+              expectedIdentity,
+            ),
+          turnSignal,
+        ),
+      executeDirectTurn: (payload, turnSignal) => {
+        if (used)
+          return Promise.reject(
+            new UpstreamDriftError("ChatGPT turn lease already consumed"),
+          );
+        used = true;
+        return run(async (runtime, scopedSignal) => {
+          runtime.frames = [];
+          runtime.bytes = 0;
+          runtime.frameError = undefined;
+          runtime.observing = true;
+          return (this.deps.execute ?? executeChatGptWebFirstPartyTurn)(
+            runtime.page,
+            payload as ChatGptWebFirstPartyRequest,
+            { signal: scopedSignal },
+          );
+        }, turnSignal);
+      },
+      executeWebSocketTurn: (bootstrap, turnSignal) =>
+        run(
+          (runtime, scopedSignal) =>
+            this.readHandoff(runtime, bootstrap, scopedSignal),
+          turnSignal,
+        ),
+      close: release,
+    };
+  }
+
+  private async ensureRuntime(
+    entry: Entry,
+    state: Credential,
+  ): Promise<Runtime> {
+    if (entry.runtime && !entry.runtime.page.isClosed()) return entry.runtime;
+    if (entry.runtime) {
+      try {
+        entry.runtime.page = await entry.runtime.context.newPage();
+        entry.runtime.ready = false;
+        await this.installSocketObserver(entry.runtime);
+        return entry.runtime;
+      } catch {
+        await entry.runtime.dispose().catch(() => {});
+        entry.runtime = undefined;
+      }
+    }
+    let browser: Browser | undefined;
+    let context: BrowserContext | undefined;
+    let dispose: (() => Promise<void>) | undefined;
+    try {
+      if (isChatGptProfileCredential(state)) {
+        const lease = await acquireChatGptProfile(state.browserProfile, false, {
+          launch: this.deps.launchPersistent,
         });
-      });
-      const response = await this.page.goto(
-        CHATGPT_WEB_CONSTANTS.TEMPORARY_CHAT_URL,
-        {
-          waitUntil: "domcontentloaded",
+        context = lease.context;
+        dispose = lease.close;
+      } else {
+        browser = await (this.deps.launch ?? chromium.launch.bind(chromium))({
+          executablePath:
+            process.env.CHATGPT_CHROMIUM_PATH ||
+            (existsSync("/usr/bin/chromium") ? "/usr/bin/chromium" : undefined),
+          headless:
+            process.env.CHATGPT_WEB_HEADLESS === "1" || !process.env.DISPLAY,
           timeout: CHATGPT_WEB_CONSTANTS.BROWSER_ACQUIRE_TIMEOUT_MS,
-        },
+        });
+        context = await browser.newContext({ storageState: state });
+        const ownedContext = context;
+        const ownedBrowser = browser;
+        dispose = async () => {
+          await ownedContext.close().catch(() => {});
+          await ownedBrowser.close().catch(() => {});
+        };
+      }
+      const page = await context.newPage();
+      const runtime: Runtime = {
+        context,
+        page,
+        ready: false,
+        dispose,
+        frames: [],
+        bytes: 0,
+        observing: false,
+      };
+      entry.runtime = runtime;
+      if (entry.closed || this.shutdown.signal.aborted) {
+        await dispose();
+        throw cancelled();
+      }
+      await this.installSocketObserver(runtime);
+      // Dedicated profiles belong to this manager, not to the operator's browser.
+      for (const stale of context.pages())
+        if (stale !== page) await stale.close();
+      return runtime;
+    } catch (error) {
+      await dispose?.().catch(() => {});
+      if (!dispose) {
+        await context?.close().catch(() => {});
+        await browser?.close().catch(() => {});
+      }
+      entry.runtime = undefined;
+      throw browserError(error);
+    }
+  }
+
+  private async ensureReady(runtime: Runtime): Promise<void> {
+    if (runtime.ready) return;
+    const response = await runtime.page.goto(
+      CHATGPT_WEB_CONSTANTS.TEMPORARY_CHAT_URL,
+      {
+        waitUntil: "domcontentloaded",
+        timeout: CHATGPT_WEB_CONSTANTS.BROWSER_ACQUIRE_TIMEOUT_MS,
+      },
+    );
+    if (response?.status() === 401)
+      throw new CredentialError(
+        "ChatGPT session expired; sign in to the dedicated profile",
       );
-      if (response?.status() === 401)
-        throw new CredentialError(
-          "ChatGPT session expired; refresh the configured browser session",
-        );
-      if (response?.status() === 403)
-        throw new ChallengeRequiredError(
-          "ChatGPT security verification required in the operator browser",
-        );
-      if (new URL(this.page.url()).origin !== CHATGPT_WEB_CONSTANTS.BASE_URL)
-        throw new CredentialError(
-          "ChatGPT session requires login in the operator browser",
-        );
-      await this.page.waitForFunction(
-        (selector) =>
-          document.querySelector(selector) ||
-          /just a moment|verify you are human/i.test(document.title),
-        CHATGPT_WEB_CONSTANTS.COMPOSER_SELECTOR,
-        { timeout: CHATGPT_WEB_CONSTANTS.BROWSER_ACQUIRE_TIMEOUT_MS },
+    if (response?.status() === 403)
+      throw new ChallengeRequiredError(
+        "Complete ChatGPT verification in the dedicated browser",
       );
+    if (new URL(runtime.page.url()).origin !== CHATGPT_WEB_CONSTANTS.BASE_URL)
+      throw new CredentialError(
+        "ChatGPT requires login in the dedicated browser",
+      );
+    await (this.deps.initialize ?? initializeChatGptWebFirstPartyBridge)(
+      runtime.page,
+    );
+    runtime.ready = true;
+  }
+
+  private resetPage(runtime: Runtime): Promise<void> {
+    if (runtime.resetting) return runtime.resetting;
+    runtime.resetting = (async () => {
+      runtime.ready = false;
+      runtime.observing = false;
+      const old = runtime.page;
+      // Keep a window alive before closing a native headed Chromium's last page.
+      const replacement = await runtime.context
+        .newPage()
+        .catch(() => undefined);
+      await old.close().catch(() => {});
+      if (replacement) {
+        runtime.page = replacement;
+        await this.installSocketObserver(runtime);
+      }
+    })().finally(() => {
+      runtime.resetting = undefined;
+    });
+    return runtime.resetting;
+  }
+
+  private async installSocketObserver(runtime: Runtime): Promise<void> {
+    await runtime.page.addInitScript(() => {
+      const NativeSocket = window.WebSocket;
+      const sockets: WebSocket[] = [];
+      const scope = window as Window & { __ultraSockets?: WebSocket[] };
+      scope.__ultraSockets = sockets;
+      window.WebSocket = class extends NativeSocket {
+        constructor(url: string | URL, protocols?: string | string[]) {
+          super(url, protocols);
+          const target = new URL(String(url));
+          if (
+            target.protocol === "wss:" &&
+            (target.hostname === "chatgpt.com" ||
+              target.hostname.endsWith(".chatgpt.com"))
+          )
+            sockets.push(this);
+        }
+      };
+    });
+    runtime.page.on("websocket", (socket) => {
+      const target = new URL(socket.url());
       if (
-        await this.page.evaluate(() =>
-          /just a moment|verify you are human/i.test(document.title),
+        target.protocol !== "wss:" ||
+        !(
+          target.hostname === "chatgpt.com" ||
+          target.hostname.endsWith(".chatgpt.com")
         )
       )
-        throw new ChallengeRequiredError(
-          "ChatGPT security verification required in the operator browser",
-        );
-      // SSR exposes the composer/model button before React attaches their actions.
-      // The observed first-party page finishes initialization at network idle.
-      await this.page.waitForLoadState("networkidle", {
-        timeout: CHATGPT_WEB_CONSTANTS.BROWSER_ACQUIRE_TIMEOUT_MS,
+        return;
+      socket.on("framereceived", (frame) => {
+        if (!runtime.observing) return;
+        const text =
+          typeof frame.payload === "string"
+            ? frame.payload
+            : frame.payload.toString("utf8");
+        runtime.bytes += Buffer.byteLength(text);
+        if (
+          runtime.frames.length >= CHATGPT_WEB_CONSTANTS.MAX_SOCKET_FRAMES ||
+          runtime.bytes > CHATGPT_WEB_CONSTANTS.MAX_RESPONSE_BYTES
+        )
+          runtime.frameError = new UpstreamDriftError(
+            "ChatGPT handoff response exceeded its limit",
+          );
+        else runtime.frames.push(text);
+        runtime.wake?.();
       });
-      return this.execute(this.page, payload as ChatGptWebFirstPartyRequest, {
-        signal,
-      });
-    }, signal);
+      socket.on("close", () => runtime.wake?.());
+    });
   }
 
-  async executeWebSocketTurn(
+  private async readHandoff(
+    runtime: Runtime,
     bootstrap: HandoffBootstrap,
-    signal?: AbortSignal,
+    signal: AbortSignal,
   ): Promise<string> {
-    return this.bounded(async () => {
-      const subscribed = await this.page.evaluate((topic) => {
-        const sockets = (window as any).__ultraSockets as
-          WebSocket[] | undefined;
-        const socket = sockets?.find((s) => s.readyState === WebSocket.OPEN);
-        if (!socket) return false;
-        socket.send(
-          JSON.stringify([
-            { id: 1, command: { type: "subscribe", topic_id: topic } },
-          ]),
-        );
-        return true;
-      }, bootstrap.websocketTopicId);
-      if (!subscribed)
-        throw new UpstreamDriftError(
-          "ChatGPT handoff socket unavailable; first-party socket contract changed",
-        );
-      const topic = new ChatGptTopicStream(bootstrap.websocketTopicId);
-      const items: string[] = [];
-      let index = 0;
+    const subscribed = await runtime.page.evaluate((topic) => {
+      const scope = window as Window & { __ultraSockets?: WebSocket[] };
+      const sockets = scope.__ultraSockets;
+      const socket = sockets?.find(
+        (candidate) => candidate.readyState === WebSocket.OPEN,
+      );
+      if (!socket) return false;
+      socket.send(
+        JSON.stringify([
+          {
+            id: crypto.randomUUID(),
+            command: { type: "subscribe", topic_id: topic },
+          },
+        ]),
+      );
+      return true;
+    }, bootstrap.websocketTopicId);
+    if (!subscribed)
+      throw new UpstreamDriftError(
+        "ChatGPT first-party handoff socket is unavailable",
+      );
+    const topic = new ChatGptTopicStream(bootstrap.websocketTopicId);
+    const items: string[] = [];
+    let cursor = 0;
+    try {
       for (;;) {
-        if (this.frameError) throw this.frameError;
-        if (signal?.aborted)
-          throw new ProviderTimeoutError("ChatGPT browser turn cancelled");
-        while (index < this.frames.length) {
-          const result = topic.ingestFrame(this.frames[index++]);
+        if (signal.aborted) throw cancelled();
+        if (runtime.frameError) throw runtime.frameError;
+        while (cursor < runtime.frames.length) {
+          const result = topic.ingestFrame(runtime.frames[cursor++]);
           items.push(...result.encodedItems);
           if (result.done) return items.join("") + "\ndata: [DONE]\n\n";
         }
-        await new Promise((resolve) =>
-          setTimeout(resolve, CHATGPT_WEB_CONSTANTS.POLL_INTERVAL_MS),
+        await withAbort(
+          new Promise<void>((resolve) => {
+            runtime.wake = resolve;
+          }),
+          signal,
         );
       }
-    }, signal);
+    } finally {
+      runtime.wake = undefined;
+    }
+  }
+
+  private scheduleIdle(entry: Entry): void {
+    if (
+      entry.closed ||
+      entry.leases !== 0 ||
+      this.entries.get(entry.key) !== entry
+    )
+      return;
+    clearTimeout(entry.idle);
+    entry.idle = setTimeout(() => {
+      void this.retire(entry);
+    }, this.idleTimeoutMs);
+    entry.idle.unref();
+  }
+
+  private retire(entry: Entry): Promise<void> {
+    if (entry.retiring) return entry.retiring;
+    entry.closed = true;
+    clearTimeout(entry.idle);
+    entry.retiring = (async () => {
+      await entry.release?.();
+      await entry.opening?.catch(() => {});
+      await entry.tail.catch(() => {});
+      await entry.runtime?.dispose().catch(() => {});
+      entry.runtime = undefined;
+      if (this.entries.get(entry.key) === entry) this.entries.delete(entry.key);
+    })();
+    return entry.retiring;
+  }
+
+  close(): Promise<void> {
+    this.closing ??= (async () => {
+      this.shutdown.abort();
+      await Promise.all(
+        [...this.entries.values()].map((entry) => this.retire(entry)),
+      );
+    })();
+    return this.closing;
   }
 }
 
 function browserError(error: unknown): WebProviderError {
   if (error instanceof WebProviderError) return error;
-  // Only classify known bridge status signals; never expose the original page exception.
-  const message = error instanceof Error ? error.message : "";
-  if (/status 401\b/.test(message))
-    return new CredentialError("ChatGPT session expired; refresh credentials");
-  if (/status 403\b/.test(message))
-    return new ChallengeRequiredError(
-      "ChatGPT security verification required in the operator browser",
-    );
-  if (/status 429\b/.test(message))
-    return new RateLimitError("ChatGPT account quota or rate limit reached");
-  if (/timed out|timeout/i.test(message))
-    return new ProviderTimeoutError("ChatGPT browser turn timed out");
-  if (/bridge|module|contract|asset/i.test(message))
-    return new UpstreamDriftError(
-      "ChatGPT first-party bridge failed; check frontend module/CSP diagnostics",
-    );
-  return new GenericUpstreamError("ChatGPT browser request failed");
+  if (
+    error instanceof Error &&
+    (error.name === "AbortError" || error.name === "TimeoutError")
+  )
+    return cancelled();
+  return new UpstreamDriftError("ChatGPT in-page browser execution failed", {
+    category: "browser-runtime",
+  });
 }
