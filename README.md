@@ -1,6 +1,6 @@
 # UltraRoute
 
-UltraRoute connects a chat interface to ChatGPT, Claude, and Gemini through their web sessions. It also supports Gemini through the Google API. The server translates chat requests and provider responses while keeping credentials on the server.
+UltraRoute connects a chat interface to ChatGPT, Claude, and Gemini Web through their signed-in web sessions. The server translates chat requests and provider responses while keeping credentials on the server.
 
 ## Chat workspace
 
@@ -13,6 +13,7 @@ On screens narrower than 860px, the model picker and **+** menu slide in from be
 The mobile header shows only the sidebar button. Navigation fills the screen: open it with the button or swipe right from the left edge, then close with the collapse button or Escape. Desktop navigation and anchored menus are unchanged. Drawer and navigation transitions respect reduced-motion preferences.
 
 <!-- README_SCREENSHOT_START -->
+
 ![UltraRoute chat workspace](docs/images/chat-workspace.png)
 <!-- README_SCREENSHOT_END -->
 
@@ -73,10 +74,6 @@ Gemini model discovery uses the signed in account's model picker. It keeps Googl
 
 Gemini Web returns completed answers through the StreamGenerate protocol. Continued chats are buffered before UltraRoute returns them. Gemini's bootstrap can provide either `SNlM0e` or `thykhd`; UltraRoute also sends `FdrFJe` when present.
 
-### Gemini API
-
-Set `GOOGLE_GENERATIVE_AI_API_KEY` to use Gemini through the Google API. This route is separate from Gemini Web and uses the official Google SDK.
-
 ## Security and limitations
 
 - Keep cookies, session keys, API keys, browser state files, and browser profiles private. Never commit real credentials.
@@ -97,7 +94,6 @@ Tests using actual provider sessions are opt in. The normal integration command 
 The ChatGPT browser fixture suite is `tests/integration/chatgptInPage.test.ts`. It routes fabricated native-runtime modules and responses locally, covering repeated turns, cancellation, UTF-8/size bounds, typed errors, and upload privacy. It does not certify current upstream behavior. Live profile tests use the warm manager and close it explicitly after execution.
 
 `tests/integration/mobileWorkspace.test.ts` exercises the built workspace against local catalog fixtures, including discovered ChatGPT family/preset choices, per-model reasoning memory, and loading/error states without fallback models, alongside mobile and desktop navigation.
-
 
 ## Project layout
 

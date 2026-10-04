@@ -355,66 +355,33 @@ export const server = createServer(
         const { messages: modelMessages, attachments } =
           convertHttpChatMessages(body.messages, route.providerId);
 
-        if (route.providerId === "google") {
-          if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY)
-            throw new CredentialError("Google API key missing");
-          const [{ google }, { streamText }] = await Promise.all([
-            import("@ai-sdk/google"),
-            import("ai"),
-          ]);
-          upstream.signal.throwIfAborted();
-          const result = streamText({
-            model: google(route.model),
-            messages: modelMessages.map((message) => ({
-              role: message.role as "user" | "assistant" | "system",
-              content: message.content as string,
-            })),
-            abortSignal: upstream.signal,
-          });
-          await writeUIResponse(
-            res,
-            result.toUIMessageStreamResponse({
-              sendReasoning: true,
-              onError: (error) =>
-                publicChatError(error, upstream.signal).message,
-            }),
-            disconnected.signal,
-          );
-        } else {
-          const provider = globalProviderRegistry.get(route.providerId);
-          if (!provider)
-            throw new InvalidRequestError("Provider is unavailable");
-          // Refresh browser credentials on every request so sign-in/session changes take effect.
-          const credentials =
-            route.providerId === "gemini-web" && geminiCookieSource
-              ? await geminiCookieSource.getCookie()
-              : getCredentialsForProvider(
-                  route.providerId,
-                  extractChromiumCredentials(
-                    route.providerId as
-                      "chatgpt-web" | "claude-web" | "gemini-web",
-                  ),
-                );
-          if (!credentials)
-            throw new CredentialError("Provider credentials missing");
-          const request: ChatCompletionRequest = {
-            model: route.model,
-            messages: modelMessages,
-            attachments,
-            stream: true,
-            reasoning_effort: body.reasoning_effort as
-              ReasoningEffort | undefined,
-          };
-          const result = await awaitWithAbort(
-            provider.execute(request, credentials, upstream.signal),
-            upstream.signal,
-          );
-          await writeUIResponse(
-            res,
-            createProviderUIMessageStreamResponse(result, upstream.signal),
-            disconnected.signal,
-          );
-        }
+        const provider = globalProviderRegistry.get(route.providerId);
+        if (!provider) throw new InvalidRequestError("Provider is unavailable");
+        // Refresh browser credentials on every request so sign-in/session changes take effect.
+        const credentials =
+          route.providerId === "gemini-web" && geminiCookieSource
+            ? await geminiCookieSource.getCookie()
+            : getCredentialsForProvider(
+                route.providerId,
+                extractChromiumCredentials(
+                  route.providerId as
+                    "chatgpt-web" | "claude-web" | "gemini-web",
+                ),
+              );
+        if (!credentials)
+          throw new CredentialError("Provider credentials missing");
+        const request: ChatCompletionRequest = {
+          model: route.model,
+          messages: modelMessages,
+          attachments,
+          stream: true,
+          reasoning_effort: body.reasoning_effort as
+            ReasoningEffort | undefined,
+        };
+        const result = await awaitWithAbort(
+          provider.execute(request, credentials, upstream.signal),
+          upstream.signal,
+        );
       } catch (error) {
         const safe = publicChatError(error, upstream.signal);
         logChatError(error, upstream.signal);

@@ -36,7 +36,6 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "@ai-sdk/google": "^4.0.87",
     "@ai-sdk/react": "^4.0.129",
     "@assistant-ui/ai-sdk": "^0.0.8",
     "@assistant-ui/core": "^0.3.22",

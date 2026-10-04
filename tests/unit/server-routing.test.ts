@@ -55,34 +55,30 @@ describe("Chat server model routing", () => {
         InvalidRequestError,
       );
   });
-  test("keeps the Google SDK separate and routes opaque Gemini Web IDs", () => {
+  test("routes discovered Gemini Web IDs and rejects removed Google API selections", () => {
     assert.deepEqual(
       resolveChatRoute(registry, "gemini-web:opaque-id", "gemini-web"),
-      {
-        providerId: "gemini-web",
-        model: "gemini-web:opaque-id",
-      },
+      { providerId: "gemini-web", model: "gemini-web:opaque-id" },
     );
-    assert.deepEqual(
-      resolveChatRoute(registry, "gemini-3.5-flash-lite", "google"),
-      {
-        providerId: "google",
-        model: "gemini-3.5-flash-lite",
-      },
+    assert.throws(
+      () => resolveChatRoute(registry, "gemini-3.5-flash-lite", "google"),
+      InvalidRequestError,
     );
-    assert.deepEqual(
-      resolveChatRoute(registry, "gemini-new-sdk-model", "google"),
-      {
-        providerId: "google",
-        model: "gemini-new-sdk-model",
-      },
+    assert.throws(
+      () => resolveChatRoute(registry, "gemini-new-sdk-model", "google"),
+      InvalidRequestError,
+    );
+    assert.throws(
+      () => resolveChatRoute(registry, "gemini-3.5-flash-lite"),
+      InvalidRequestError,
     );
   });
-  test("only the SDK default routes without a provider", () => {
-    assert.deepEqual(resolveChatRoute(registry), {
-      providerId: "google",
-      model: "gemini-3.5-flash-lite",
-    });
+  test("requires an explicit model and never falls back to Gemini Web", () => {
+    assert.throws(() => resolveChatRoute(registry), InvalidRequestError);
+    assert.throws(
+      () => resolveChatRoute(registry, "gemini-3.5-flash-lite"),
+      InvalidRequestError,
+    );
     assert.throws(
       () => resolveChatRoute(registry, "gemini-web:unknown"),
       InvalidRequestError,
@@ -99,11 +95,9 @@ describe("Chat server model routing", () => {
   test("rejects explicit provider/model mismatches", () => {
     for (const [model, provider] of [
       ["custom-alias", "claude-web"],
-      ["gemini-3.5-flash-lite", "gemini-web"],
-      ["gemini-web:opaque-id", "google"],
-      ["custom-model", "unknown"],
+      ["gemini-web:opaque-id", "unregistered-provider"],
+      ["custom-model", "unregistered-provider"],
       ["chatgpt-web:5.6", "gemini-web"],
-      ["chatgpt-web:5.6", "google"],
     ])
       assert.throws(
         () => resolveChatRoute(registry, model, provider),
@@ -139,7 +133,6 @@ describe("Chat server model routing", () => {
       getCredentialsForProvider("gemini-web", credentials),
       "__Secure-1PSID=gemini",
     );
-    assert.equal(getCredentialsForProvider("google", credentials), undefined);
     assert.equal(
       getCredentialsForProvider("chatgpt-web", {
         chatgpt: { cookieHeader: "new-session" },

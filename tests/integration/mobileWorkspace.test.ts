@@ -56,6 +56,17 @@ const chatgptCatalog = {
   })),
   defaultModel: "chatgpt-web:5.6",
 };
+const geminiCatalog = {
+  models: [
+    {
+      id: "gemini-web:account-default",
+      name: "Gemini Web Account Default",
+      disabled: false,
+      availability: "Available",
+    },
+  ],
+  defaultModel: "gemini-web:account-default",
+};
 
 async function withWorkspace(
   run: (
@@ -79,9 +90,13 @@ async function withWorkspace(
       path === "/api/providers/claude-web/models" ||
       path === "/api/providers/gemini-web/models"
     ) {
-      // Empty web catalogs leave the separate Google SDK choice usable.
+      // Gemini Web remains discovery-backed; empty catalogs expose no API fallback.
       response.writeHead(200, { "Content-Type": "application/json" });
-      response.end(JSON.stringify({ models: [] }));
+      response.end(
+        JSON.stringify(
+          path.includes("gemini-web") ? geminiCatalog : { models: [] },
+        ),
+      );
     } else if (path.startsWith("/api/")) {
       response.writeHead(503, { "Content-Type": "application/json" });
       response.end(
@@ -336,7 +351,7 @@ test(
       const { dialog, sheet, box } = await openSheet(page, "Choose a model");
       await assertChatCannotFocus(page, dialog);
       await dialog
-        .getByRole("menuitemradio", { name: /Gemini 3\.5 Flash Lite/ })
+        .getByRole("menuitemradio", { name: /Gemini Web Account Default/ })
         .waitFor();
       const handle = await bounds(dialog.locator(".pf-mobile-drawer-handle"));
       const start = {
@@ -725,11 +740,22 @@ test(
       ]);
       await page
         .getByRole("button", {
-          name: "Select model: Gemini 3.5 Flash Lite",
+          name: "Select model: Gemini Web Account Default",
           exact: true,
         })
         .waitFor();
       await opener.click();
+      await dialog.getByRole("tab", { name: "Gemini", exact: true }).click();
+      await dialog
+        .getByRole("menuitemradio", {
+          name: "Gemini Web Account Default Available",
+          exact: true,
+        })
+        .waitFor();
+      await dialog
+        .getByRole("tab", { name: "Miscellaneous", exact: true })
+        .click();
+      assert.equal(await dialog.getByRole("menuitemradio").count(), 0);
       await dialog.getByRole("tab", { name: "OpenAI", exact: true }).click();
       await dialog
         .getByRole("menuitemradio", {

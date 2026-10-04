@@ -7,14 +7,15 @@ export interface ChatRoute {
   model: string;
 }
 
-const GOOGLE_SDK_MODEL = "gemini-3.5-flash-lite";
-
-/** Explicit SDK selection is independent of the web model registry. */
+/** Resolve only registered models and explicitly selected web-provider models. */
 export function resolveChatRoute(
   registry: ModelRegistry,
-  model: string = GOOGLE_SDK_MODEL,
+  model?: string,
   provider?: string,
 ): ChatRoute {
+  if (model === undefined) {
+    throw new InvalidRequestError("A model must be selected.");
+  }
   if (provider === "claude-web" && model.startsWith("claude-")) {
     // Claude validates the exact ID and account access against its upstream catalog.
     return { providerId: "claude-web", model };
@@ -27,18 +28,6 @@ export function resolveChatRoute(
     return { providerId: "chatgpt-web", model };
   }
   const descriptor = registry.resolve(model);
-  if (provider === "google") {
-    if (
-      !(descriptor?.id ?? model).startsWith("gemini-") ||
-      model.startsWith("gemini-web:") ||
-      (descriptor && descriptor.providerId !== "gemini-web")
-    ) {
-      throw new InvalidRequestError(
-        "The selected model does not belong to Google.",
-      );
-    }
-    return { providerId: "google", model: descriptor?.id ?? model };
-  }
   if (descriptor) {
     if (provider !== undefined && provider !== descriptor.providerId) {
       throw new InvalidRequestError(
@@ -46,9 +35,6 @@ export function resolveChatRoute(
       );
     }
     return { providerId: descriptor.providerId, model: descriptor.id };
-  }
-  if (provider === undefined && model === GOOGLE_SDK_MODEL) {
-    return { providerId: "google", model };
   }
   throw new InvalidRequestError(
     "Unknown model or incompatible provider selection.",

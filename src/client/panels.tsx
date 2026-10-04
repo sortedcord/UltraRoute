@@ -591,7 +591,6 @@ export function ModelDropdown({
                           {model.name}
                         </span>
                         <span className="pf-model-option-detail">
-                          {model.provider === "google" ? "API · " : ""}
                           {model.availability ??
                             (model.effort
                               ? `${model.effort} reasoning`

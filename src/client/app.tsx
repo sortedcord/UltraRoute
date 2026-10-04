@@ -73,15 +73,6 @@ import { ResponsiveMenu, useMobileViewport } from "./mobileDrawer.tsx";
 import { createAttachmentAdapter } from "./attachments.ts";
 import { ResponsiveSidebar } from "./mobileNavigation.tsx";
 
-const OTHER_MODELS: ModelOption[] = [
-  {
-    id: "gemini-3.5-flash-lite",
-    name: "Gemini 3.5 Flash Lite",
-    effort: "Standard",
-    provider: "google",
-  },
-];
-
 type PlusMenuCategory = "uploads" | "tools" | null;
 
 const unavailableTitle = "This action is not available in UltraRoute yet";
@@ -800,7 +791,7 @@ function ClaudeComposer({
 
 function App() {
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [selectedModel, setSelectedModel] = useState("gemini-3.5-flash-lite");
+  const [selectedModel, setSelectedModel] = useState("");
   const [reasoningByModel, setReasoningByModel] = useState<
     Record<string, string>
   >({});
@@ -827,9 +818,11 @@ function App() {
     loading: true,
     error: null,
   });
+  const [geminiDefaultModel, setGeminiDefaultModel] = useState<
+    string | undefined
+  >();
   const models = useMemo(
     () => [
-      ...OTHER_MODELS,
       ...chatgptDiscovery.models,
       ...claudeDiscovery.models,
       ...geminiDiscovery.models,
@@ -840,7 +833,17 @@ function App() {
   useEffect(() => {
     const selected = models.find((model) => model.id === selectedModel);
     if (!selected || selected.disabled) {
-      const available = models.find((model) => !model.disabled);
+      if (
+        !selectedModel &&
+        (claudeDiscovery.loading ||
+          geminiDiscovery.loading ||
+          chatgptDiscovery.loading)
+      )
+        return;
+      const available =
+        models.find(
+          (model) => model.id === geminiDefaultModel && !model.disabled,
+        ) ?? models.find((model) => !model.disabled);
       if (available) setSelectedModel(available.id);
     }
     setReasoningByModel((previous) => {
@@ -863,7 +866,14 @@ function App() {
       }
       return next;
     });
-  }, [models, selectedModel]);
+  }, [
+    models,
+    selectedModel,
+    geminiDefaultModel,
+    claudeDiscovery.loading,
+    geminiDiscovery.loading,
+    chatgptDiscovery.loading,
+  ]);
 
   useEffect(() => {
     let active: AbortController | undefined;
@@ -985,12 +995,14 @@ function App() {
           reasoningLevels: GEMINI_REASONING_LEVELS,
           defaultReasoningLevel: "low",
         }));
-        if (!abort.signal.aborted)
+        if (!abort.signal.aborted) {
+          setGeminiDefaultModel(catalog.defaultModel);
           setGeminiDiscovery({
             models: discovered,
             loading: false,
             error: null,
           });
+        }
       } catch (error) {
         if (!abort.signal.aborted)
           setGeminiDiscovery((previous) => ({
