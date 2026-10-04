@@ -13,7 +13,6 @@ On screens narrower than 860px, the model picker and **+** menu slide in from be
 The mobile header shows only the sidebar button. Navigation fills the screen: open it with the button or swipe right from the left edge, then close with the collapse button or Escape. Desktop navigation and anchored menus are unchanged. Drawer and navigation transitions respect reduced-motion preferences.
 
 <!-- README_SCREENSHOT_START -->
-
 ![UltraRoute chat workspace](docs/images/chat-workspace.png)
 <!-- README_SCREENSHOT_END -->
 
